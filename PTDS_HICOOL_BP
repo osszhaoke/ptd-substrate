@@ -1,0 +1,313 @@
+deck: PTDS_HICOOL_BP
+deck_version: "1.5"
+global_tagline: "Trusted Human Context Infrastructure for the AI Agent Era."
+slides:
+
+  # ---------------------------------------------------------
+  # Cover
+  # ---------------------------------------------------------
+  - slide_id: Cover-00
+    section: "Cover"
+    section_title: "封面"
+    subsection: ""
+    slide_title: "碳硅协作的个人可信数据底座 Personal Trusted Data Substrate"
+    slide_type: title_slide
+    source_type: internal_claim
+    keywords: [PTDS, AI Infrastructure, Carbon-Silicon Collaboration, Local First]
+    internal_link: "定义项目全局基调：将隐性运行状态转为可计算的持续上下文"
+    diagram_labels: ["C·S", "PTD SUBSTRATE"]
+
+  # ---------------------------------------------------------
+  # Section A: 外部环境
+  # ---------------------------------------------------------
+  - slide_id: A-01
+    section: "A"
+    section_title: "外部环境"
+    subsection: "业界共识"
+    slide_title: "2026 业界共识：Agent 爆发前夜，AI 巨头共同走向 Context AI"
+    slide_type: quote_panel
+    source_type: external_quote
+    keywords: [Context AI, Persistent Agents, Pacing Tools, On-device Privacy]
+    entities:
+      - name: "Jensen Huang"
+        role: "NVIDIA CEO"
+        date: "2026-06"
+        venue: "GTC Taipei Keynote"
+        claim_summary: "软件正从指令式转向协作式，Agentic AI 将持续观察用户环境并自主编排工具"
+      - name: "Sam Altman"
+        role: "OpenAI CEO"
+        date: "2026-07"
+        venue: "Relentless Podcast"
+        claim_summary: "AI 的关键变化是 Persistent Agent 的长时程任务执行能力，需要为高自治系统建立约束"
+      - name: "Dario Amodei"
+        role: "Anthropic CEO"
+        date: "2026-05"
+        venue: "Code with Claude"
+        claim_summary: "Agent 能力指数级增长，社会需要建立步调控制工具以保持人类掌控"
+      - name: "Mark Zuckerberg"
+        role: "Meta CEO"
+        date: "2026-01"
+        venue: "Q1 财报电话会"
+        claim_summary: "可穿戴 AI 的核心是理解个人上下文，推动个人赋能与主体性"
+      - name: "Tim Cook"
+        role: "Apple CEO"
+        date: "2026-06"
+        venue: "WWDC 2026"
+        claim_summary: "最强 AI 是端侧、深度理解个人上下文且数据不出端的智能"
+    internal_link: "本页作为 PTDS 定位的外部背书，不构成 PTDS 自身主张"
+    diagram_labels: ["环境获取", "硅基边界", "碳基授权", "多源互文", "必选隐私"]
+
+  - slide_id: A-02
+    section: "A"
+    section_title: "外部环境"
+    subsection: "时代背景"
+    slide_title: "主体性经济的杂音：碳硅同框，当超级个体自己就是最大的单点故障"
+    slide_type: framework_diagram
+    source_type: internal_claim
+    keywords: [Agency Economy, SPOF, Carbon-based Node, Cognitive Load]
+    internal_link: "推导宏观背景：AI 算力无限并发导致碳基节点成为系统瓶颈"
+    diagram_labels: ["技术要素", "经济要素", "政策要素", "组织要素: 生产关系的跃迁", "交互要素: 碳硅角色的反转", "危机呈现", "洞察启示"]
+
+  - slide_id: A-03
+    section: "A"
+    section_title: "外部环境"
+    subsection: "痛点洞察"
+    slide_title: "成因追溯：AI 改变了企业的生产函数，却没有改变人的运行约束"
+    slide_type: problem_statement
+    source_type: internal_claim
+    keywords: [Data Silo, Context Missing, State Dissipation, Trust Deficit]
+    internal_link: "指出当前系统缺陷：缺乏统一、可信的碳基状态上下文归集模式"
+    diagram_labels: ["传统组织", "OPC 公司", "业务节奏", "状态节律", "人类独有状态上下文", "归集本地", "汇聚云端"]
+
+  # ---------------------------------------------------------
+  # Section B: 产品模式
+  # ---------------------------------------------------------
+  - slide_id: B-01
+    section: "B"
+    section_title: "产品模式"
+    subsection: "目标客户"
+    slide_title: "早期采用者：首批用户不是大众，是 AI Context Native 原住民"
+    slide_type: target_audience
+    source_type: internal_claim
+    keywords: [Early Adopters, Context Native, OPCer, Biohacker, AI Builders, Adoption Curve]
+    entities:
+      - name: "一人公司 (OPCer)"
+        behavior: "决策质量直接决定现金流，身体状态与业务高度耦合"
+      - name: "超级个体 (Superindividual)"
+        behavior: "深度依赖 Notion/Claude，具备极强的知识层上下文管理习惯"
+      - name: "生物黑客 (Biohackers)"
+        behavior: "已拥有海量高频数据，急需转化为可被业务关联的资产"
+      - name: "AI Native 开发者 (Builders)"
+        behavior: "熟练使用 MCP/A2A 协议，迫切需要调用 Human Context API"
+    internal_link: "明确 GTM 策略：遵循基础设施采用曲线，优先服务 Context Native 人群"
+
+  - slide_id: B-02
+    section: "B"
+    section_title: "产品模式"
+    subsection: "产品定位"
+    slide_title: "PTDS 宣言：应当是 AI 理解人的状态，而不是人不断适应 AI 的节律"
+    slide_type: manifesto
+    source_type: internal_claim
+    keywords: [Evidence Not Advice, Objective Ledger, Open Substrate, Neutrality]
+    internal_link: "确立产品哲学与边界：做客观账本，拒绝做替人决策的保姆"
+    diagram_labels: ["数据边界", "决策边界", "价值边界", "治理边界", "We Build", "We Don't Build"]
+
+  - slide_id: B-03
+    section: "B"
+    section_title: "产品模式"
+    subsection: "产品架构"
+    slide_title: "PTDS 2026 版 产品架构"
+    slide_type: architecture
+    source_type: internal_claim
+    keywords: [Human Schema, Evidence Ledger, Retrospective Re-computation, SSM/Mamba, Local First]
+    internal_link: "展示内部硬核架构：数据与推理分离，支持回溯式重计算"
+    diagram_labels: ["推断引擎 IE", "个人可信数据基座 PTDSR", "连接运行时 CR", "数源层 DS", "个人级可信交互 Runtime PTIR", "统一碳基状态本体建模", "信度证据链"]
+
+  - slide_id: B-04
+    section: "B"
+    section_title: "产品模式"
+    subsection: "生态架构"
+    slide_title: "PTDS 2026 版 未来生态飞轮"
+    slide_type: ecosystem_diagram
+    source_type: internal_claim
+    keywords: [API Gateway, Agent Marketplace, Context API, DPI]
+    internal_link: "展示外部生态愿景：连接个人节点与商业 Agent 的开放网络"
+    diagram_labels: ["PTDS 应用生态森林", "PTDS 底层协议与运行环境", "PTDS 可信网络网关", "网关级可信交互 Runtime", "个人可信数据空间节点"]
+
+  - slide_id: B-05
+    section: "B"
+    section_title: "产品模式"
+    subsection: "竞品分析"
+    slide_title: "PTDS 填补的是碳硅边界之间缺失的“可信碳基状态上下文层”"
+    slide_type: comparison_matrix
+    source_type: internal_claim
+    keywords: [Layer Missing, Trust Layer, Industry Stratification, Data Translation]
+    structured_data:
+      matrix:
+        - layer: "数据消费"
+          role: "任务执行"
+          representatives: ["ChatGPT Health", "Claude for Healthcare"]
+          core_asset: "上下文理解、自然语言交互"
+        - layer: "数据消费"
+          role: "提供建议"
+          representatives: ["Bevel", "Welltory", "蚂蚁阿福"]
+          core_asset: "日级指标、恢复评分、生活方式建议"
+        - layer: "数据转译"
+          role: "状态转译与证明"
+          representatives: ["个人可信数据基座 PTDS"]
+          core_asset: "原始长时序、人类状态建模、信度证据链、回溯式重计算"
+          is_ptds_position: true
+        - layer: "数据归集"
+          role: "数据管理"
+          representatives: ["苹果健康", "华为健康"]
+          core_asset: "生态绑定、流量入口、本地数据"
+        - layer: "数据生产"
+          role: "数据获取"
+          representatives: ["华为手表", "Apple Watch"]
+          core_asset: "生态绑定、数据采集"
+    internal_link: "定义产业分层：证明 PTDS 处于不可替代的生态位"
+
+  - slide_id: B-06
+    section: "B"
+    section_title: "产品模式"
+    subsection: "开发模式"
+    slide_title: "工程范式：Protocol-Driven Development 协议驱动的开发"
+    slide_type: engineering_paradigm
+    source_type: internal_claim
+    keywords: [Protocol over Product, PDD, Vibe Coding, Agent Native, Machine Readable Docs]
+    internal_link: "展示 AI 时代的开发方法论：文档即接口，协议即产品"
+    diagram_labels: ["RFC & Schema", "Machine-Readable Docs", "Vibe Coding Guide", "Custom PTDS Runtime", "AI Coding Agent", "Customized PTDS"]
+
+  # ---------------------------------------------------------
+  # Section C: 业务模式
+  # ---------------------------------------------------------
+  - slide_id: C-01
+    section: "C"
+    section_title: "业务模式"
+    subsection: "开发路线"
+    slide_title: "从碳硅交互开源协议到 AI 时代的个人数字公共基础设施 (DPI)"
+    slide_type: roadmap
+    source_type: internal_claim
+    keywords: [GA, SDK, Data Cooperative, Community Flywheel, Three-track Evolution]
+    internal_link: "展示工程、商业、社区三轨并行的演进路径"
+    diagram_labels: ["工程路线图", "商业路线图", "社区路线图", "Phase 1 - 2026-2027", "Phase 2 - 2027-2028", "Phase 3 - 2028+"]
+
+  - slide_id: C-02
+    section: "C"
+    section_title: "业务模式"
+    subsection: "商业模式"
+    slide_title: "我们如何盈利：以开源标准筑基，以可信服务变现"
+    slide_type: business_model
+    source_type: internal_claim
+    keywords: [Open Core, API Billing, Enterprise Runtime, Zero Data Brokerage]
+    structured_data:
+      revenue_tiers:
+        - tier: "开源标准层 - Open Core"
+          monetization: false
+          strategic_goal: "建立分布式节点网络与事实标准"
+        - tier: "可信服务层 - Trusted API Services"
+          monetization: true
+          pricing_model: "按 API 调用次数 (Pay-as-you-go) / 阶梯计费"
+        - tier: "企业运行时 - Enterprise Runtime"
+          monetization: true
+          pricing_model: "年度 License 授权费 + 实施与维护订阅费"
+    internal_link: "明确商业化路径与不卖原始数据的底线"
+
+  - slide_id: C-03
+    section: "C"
+    section_title: "业务模式"
+    subsection: "治理架构"
+    slide_title: "标准与商业分离，守住个人数据主权，防范使命漂移风险"
+    slide_type: governance_model
+    source_type: internal_claim
+    keywords: [Stewardship, Foundation, Mission Lock, Data Sovereignty, Dual-track]
+    internal_link: "展示双轨制治理架构，回应中立性与商业永续的拷问"
+    diagram_labels: ["PTDS 基金会", "PTDS 个人节点", "PTDS 有限公司", "PTDS 治理原则"]
+
+  - slide_id: C-04
+    section: "C"
+    section_title: "业务模式"
+    subsection: "融资计划"
+    slide_title: "以开源标准为起点，推动可信基础设施规模化"
+    slide_type: funding_plan
+    source_type: internal_claim
+    keywords: [R&D Focus, Developer Ecosystem, Zero CAC, Compounding Returns]
+    internal_link: "展示资金用途分配与 18 个月可量化里程碑"
+    diagram_labels: ["核心研发 (R&D)", "开发者生态 (Ecosystem)", "合规与运营 (Ops & Compliance)"]
+
+  - slide_id: C-05
+    section: "C"
+    section_title: "业务模式"
+    subsection: "风险洞察"
+    slide_title: "战略假设与验证：通过社区、PoC 与真实场景持续验证核心协议边界"
+    slide_type: risk_validation
+    source_type: internal_claim
+    keywords: [Strategic Assumptions, Validation Loop, Falsifiability, PoC]
+    internal_link: "展示认知成熟度：设定可证伪的假设与验证闭环"
+    diagram_labels: ["生态假设", "协议假设", "商业假设", "治理假设", "核心假设", "验证指标", "里程碑"]
+
+  # ---------------------------------------------------------
+  # Section D: 团队介绍
+  # ---------------------------------------------------------
+  - slide_id: D-01
+    section: "D"
+    section_title: "团队介绍"
+    subsection: "发起人介绍"
+    slide_title: "发起人介绍"
+    slide_type: team
+    source_type: internal_claim
+    keywords: [Infra DNA, Data Space Architect, Open Source Governance, Vibe Coding]
+    entities:
+      - name: "赵可"
+        role: "协议 / 整体架构"
+        background: "科大讯飞可信数据空间解决方案架构师"
+      - name: "梁正"
+        role: "产品 / 工程实现"
+        background: "科大讯飞可信数据空间、AI 数字员工产品负责人"
+      - name: "郑重"
+        role: "链接 / 社区治理"
+        background: "八年跨国学术社区运营经验"
+    internal_link: "证明团队具备构建底层数据基建的复合能力"
+
+  # ---------------------------------------------------------
+  # Section E: 附录
+  # ---------------------------------------------------------
+  - slide_id: E-01
+    section: "E"
+    section_title: "附录"
+    subsection: "术语速查"
+    slide_title: "PTDS Terminology（术语速查）"
+    slide_type: glossary
+    source_type: internal_claim
+    keywords: [Semantic Dictionary, Ontology, Human Context, Carbon Capability]
+    internal_link: "提供高密度 Infra 词汇字典，统一语义认知"
+
+  - slide_id: E-02
+    section: "E"
+    section_title: "附录"
+    subsection: "访谈回响"
+    slide_title: "项目组在 WAIC After Party 7.19-7.20 路演后的 6 位参会者"
+    slide_type: market_validation
+    source_type: external_quote
+    keywords: [Market Validation, Open Connection, Narrative Resonance]
+    internal_link: "提供真实的双边市场需求背书"
+
+  - slide_id: E-03
+    section: "E"
+    section_title: "附录"
+    subsection: "业界思考"
+    slide_title: "WAIC 2026的四个信号（项目组分析）"
+    slide_type: industry_signals
+    source_type: internal_claim
+    keywords: [Industry Signals, Infrastructure Shift, Trust Dimension]
+    internal_link: "展示对 2026 年产业趋势的敏锐嗅觉"
+
+  - slide_id: E-04
+    section: "E"
+    section_title: "附录"
+    subsection: "产品验证"
+    slide_title: "PTDS 已入围江苏省省级医保 AI 黑客松，并现场完成产品演示"
+    slide_type: poc_validation
+    source_type: internal_claim
+    keywords: [Hackathon PoC, Engineering Delivery, Privacy Compliance, Edge Computing]
+    internal_link: "提供极端隐私要求下的真实工程交付证据"
