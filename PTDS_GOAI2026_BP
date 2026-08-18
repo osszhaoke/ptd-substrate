@@ -1,0 +1,75 @@
+# PTDS_GOAI2026_BP.yaml
+# Personal Trusted Data Substrate — Agent-Native BP Manifest
+# Machine-readable companion to: PTDS BP 碳硅协作数据底座 v1.9.7
+# Generated for: GOAI 2026 Global Open-source AI Challenge — Agent Infra Track
+#
+# Status legend used throughout this file:
+#   designed      = specified in the BP / this manifest, not yet implemented as running code
+#   experimental  = a first implementation exists, unverified / not yet conformance-tested
+#   implemented   = runnable, has at least one passing conformance check
+#
+# Honesty note: as of this manifest's generation, PTDS Human Runtime and HRGAG are NOT yet
+# implemented as running code. This manifest declares the PROTOCOL the semifinal build will
+# target, not a claim that the build already exists. Semifinal (复赛) engineering work is
+# currently gated on GOAI Top-30 announcement (2026-08-26) and is deliberately paused;
+# this manifest is the only GOAI-specific artifact being advanced in the interim.
+
+manifest_meta:
+  project: "PTD SUBSTRATE — Personal Trusted Data Substrate"
+  tagline: "Open Infrastructure for Human Itself"
+  version: "0.1.0"
+  bp_source_version: "v1.9.7"
+  license: "Apache-2.0"
+  spdx_license_id: "Apache-2.0"
+  track: "Agent Infra"
+  submission_date: "2026-08-18"
+  manifest_version: "0.2.0"
+  repository: "https://github.com/osszhaoke/ptd-substrate"
+  contact: "PTDS Core Team"
+  last_updated: "2026-08-18"
+
+team:
+  - name: "赵可 (Zhao Ke)"
+    role: "协议与总体架构 / Protocol & Overall Architecture"
+    education: "Master in Management (MiM), Cranfield School of Management"
+    professional_background: "Solutions architect for data elements, iFLYTEK; distributed data-circulation application architecture (trusted data space, privacy computing frameworks)"
+    responsibilities:
+      - "PTDS / Human Runtime overall architecture"
+      - "Multi-modal fused personal data substrate — protocol, architecture, core implementation"
+      - "Evidence Ledger protocol, architecture, core implementation"
+      - "Defines Runtime's trusted execution boundaries and minimal-constraint architecture"
+    problem_domain_focus: "Key-person cognitive decision risk in organizational management; quantified-self practice"
+
+  - name: "梁正 (Liang Zheng)"
+    role: "产品与工程实现 / Product & Engineering Implementation"
+    education: "MSc Spatial Data Science, University College London (UCL)"
+    professional_background: "Former iFLYTEK trusted-data-space and AI Digital Employee product lead; skilled in Vibe Coding"
+    responsibilities:
+      - "AI Agent execution of PDD (Protocol-Driven Development) and Runtime instantiation"
+      - "Constructs AgentTeams and Skill Orchestration structure tree"
+      - "Orchestration with HRGAG via MCP/百炼 ecosystem (Bailian/Model Studio/AgentRun)"
+      - "Turns machine-readable protocol into a generated, runnable local Human Runtime"
+    problem_domain_focus: "Improving decision-making capability of carbon-based (human) employees; optimizing collaboration efficiency with their digital twin"
+
+  - name: "申紫宁 (Shen Zining)"
+    role: "建模与数理验证 / Modeling & Mathematical Verification"
+    education: "BSc Data Science (Year 3), Xiamen University Tan Kah Kee College"
+    professional_background: "National college math-modeling competition award; provincial government big-data award; long-term Apache open-source community operations contributor"
+    responsibilities:
+      - "Policy / Evidence / Human Schema definition"
+      - "Operator implementation and verification"
+      - "Conformance testing — verifies Runtime Protocol / Schema instantiation results, trust and security boundaries"
+      - "Evidence-chain mathematical/formal verification focus (for Retrospective Re-computation readiness)"
+    problem_domain_focus: "Individual mental-health states; depression representation strategies; awareness of physiological stress"
+
+abbreviations:
+  - term: "HRGAG"
+    full: "Human Runtime Governance Agent Group"
+  - term: "PTDS"
+    full: "Personal Trusted Data Substrate"
+  - term: "PDD"
+    full: "Protocol-Driven Development"
+
+# ---------------------------------------------------------------------------
+# 1. Composition Manifest — defines what the Runtime is composed of
+# --------
