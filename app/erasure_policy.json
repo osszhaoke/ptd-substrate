@@ -1,0 +1,126 @@
+{
+  "schema": "ptds-erasure-policy/1",
+  "provider": "oura",
+  "stores": [
+    {
+      "path": "startorch/oura_raw/bodies/*/*.json",
+      "action": "registered_hashes_only"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db",
+      "action": "retain_append_only_metadata"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.v*-backup-*",
+      "action": "optional_exact_archives"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.v*-quarantine-*",
+      "action": "optional_exact_archives"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.recovery-tmp",
+      "action": "recover_before_preview"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.upgrade-tmp",
+      "action": "upgrade_owner_only"
+    },
+    {
+      "path": "startorch/evidence/ledger.db",
+      "action": "retain_append_only_evidence"
+    },
+    {
+      "path": "startorch/evidence/events.jsonl",
+      "action": "readonly_projection"
+    },
+    {
+      "path": "formal_and_derived_data",
+      "action": "retain_readonly_mark"
+    },
+    {
+      "path": "system_or_external_backups",
+      "action": "outside_application_control"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db-journal",
+      "action": "retain_append_only_metadata"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db-wal",
+      "action": "retain_append_only_metadata"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db-shm",
+      "action": "retain_append_only_metadata"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.recovery-tmp-journal",
+      "action": "recover_before_preview"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.recovery-tmp-wal",
+      "action": "recover_before_preview"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.recovery-tmp-shm",
+      "action": "recover_before_preview"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.upgrade-tmp-journal",
+      "action": "upgrade_owner_only"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.upgrade-tmp-wal",
+      "action": "upgrade_owner_only"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.upgrade-tmp-shm",
+      "action": "upgrade_owner_only"
+    },
+    {
+      "path": "startorch/evidence/ledger.db-journal",
+      "action": "retain_append_only_evidence"
+    },
+    {
+      "path": "startorch/evidence/ledger.db-wal",
+      "action": "retain_append_only_evidence"
+    },
+    {
+      "path": "startorch/evidence/ledger.db-shm",
+      "action": "retain_append_only_evidence"
+    },
+    {
+      "path": "startorch/evidence/.projection-*",
+      "action": "replaceable_export_temporary"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.recovery-tmp/raw.db",
+      "action": "recover_before_preview"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.recovery-tmp/schema.db",
+      "action": "recover_before_preview"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.recovery-tmp/swap.json",
+      "action": "recover_before_preview"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.recovery-tmp/raw.db-journal",
+      "action": "recover_before_preview"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.recovery-tmp/raw.db-wal",
+      "action": "recover_before_preview"
+    },
+    {
+      "path": "startorch/oura_raw/raw.db.recovery-tmp/raw.db-shm",
+      "action": "recover_before_preview"
+    }
+  ],
+  "revoke_capability": "requires_separately_verified_remote_adapter",
+  "default_include_archives": false,
+  "default_revoke": false,
+  "retention_deadline": "NOT_DECIDED"
+}

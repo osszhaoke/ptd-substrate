@@ -1,0 +1,93 @@
+{
+  "schema": "rulepack/0.1",
+  "pack_id": "sjia-mas",
+  "version": "0.1",
+  "note_zh": "阈值按出处原文单位登记，加载时用字典的同一换算规则转为规范单位。临床内容由队内专家核实，expert_review 由专家设置。",
+  "selection": {
+    "DECIMAL": "LATEST",
+    "BOOLEAN": "ANY_TRUE",
+    "overrides": {
+      "TEMP": "MAX"
+    }
+  },
+  "rules": {
+    "R1": {
+      "kind": "GATED_REQUIRED_K_OF_N",
+      "name_zh": "2016 EULAR/ACR/PRINTO sJIA 合并 MAS 分类标准",
+      "short_zh": "2016 分类标准（R1）",
+      "source": "Ravelli A, et al. 2016 EULAR/ACR/PRINTO classification criteria",
+      "expert_review": "PENDING",
+      "gate": [
+        {"id": "FEVER", "flag": "FEVER"},
+        {"id": "SJIA_KNOWN_OR_SUSPECTED", "flag": "SJIA_KNOWN_OR_SUSPECTED"},
+        {"id": "LAB_NOT_OTHERWISE_EXPLAINED", "flag": "LAB_NOT_OTHERWISE_EXPLAINED"}
+      ],
+      "required": [
+        {"id": "FERRITIN", "code": "FERRITIN", "op": ">", "value": "684", "unit": "ng/mL"}
+      ],
+      "additional": [
+        {"id": "PLT", "code": "PLT", "op": "<=", "value": "181", "unit": "×10^9/L"},
+        {"id": "AST", "code": "AST", "op": ">", "value": "48", "unit": "U/L"},
+        {"id": "TG", "code": "TG", "op": ">", "value": "156", "unit": "mg/dL"},
+        {"id": "FIB", "code": "FIB", "op": "<=", "value": "360", "unit": "mg/dL"}
+      ],
+      "additional_min": 2
+    },
+    "R2": {
+      "kind": "K_OF_N",
+      "name_zh": "HLH-2004 标准（八项满足五项）",
+      "short_zh": "HLH-2004 标准（R2）",
+      "source": "Henter JI, et al. HLH-2004",
+      "expert_review": "PENDING",
+      "note_zh": "HLH-2004 用于 sJIA 合并 MAS 时敏感性有限。分子诊断分支不在本次范围。",
+      "fidelity_zh": "原表并列 3.0 mmol/L 与 265 mg/dL，本包采用 SI 优先政策换算为 265.71 mg/dL（工程政策，不是原文纠错）。原表发热无数值阈值，38.5 °C 为操作化定义。未建模：空腹条件、婴儿血红蛋白例外、噬血部位、无恶性肿瘤证据。",
+      "criteria": [
+        {"id": "FEVER", "any": [
+          {"code": "TEMP", "op": ">=", "value": "38.5", "unit": "°C"},
+          {"flag": "FEVER"}
+        ]},
+        {"id": "SPLENOMEGALY", "flag": "SPLENOMEGALY"},
+        {"id": "CYTOPENIA", "k_of": 2, "items": [
+          {"code": "HB", "op": "<", "value": "90", "unit": "g/L"},
+          {"code": "PLT", "op": "<", "value": "100", "unit": "×10^9/L"},
+          {"code": "ANC", "op": "<", "value": "1.0", "unit": "×10^9/L"}
+        ]},
+        {"id": "TG_OR_FIB", "any": [
+          {"code": "TG", "op": ">=", "value": "3.0", "unit": "mmol/L"},
+          {"code": "FIB", "op": "<=", "value": "1.5", "unit": "g/L"}
+        ]},
+        {"id": "HEMOPHAGOCYTOSIS", "flag": "HEMOPHAGOCYTOSIS"},
+        {"id": "NK_LOW", "flag": "NK_LOW"},
+        {"id": "FERRITIN", "code": "FERRITIN", "op": ">=", "value": "500", "unit": "ng/mL"},
+        {"id": "SCD25", "code": "SCD25", "op": ">=", "value": "2400", "unit": "U/mL"}
+      ],
+      "min_met": 5
+    },
+    "R3": {
+      "kind": "LINEAR_SCORE",
+      "name_zh": "MS 评分（Minoia 等，2019）",
+      "short_zh": "MS 评分（R3）",
+      "source": "Minoia F, et al. 2019, MS score",
+      "expert_review": "PENDING",
+      "fidelity_zh": "前提按审计引用的原文（Table 4 与正文）恢复为发热 + 已知或疑似 sJIA，待专家对原文核实；ARTHRITIS 指活动性关节炎",
+      "gate": [
+        {"id": "FEVER", "flag": "FEVER"},
+        {"id": "SJIA_KNOWN_OR_SUSPECTED", "flag": "SJIA_KNOWN_OR_SUSPECTED"}
+      ],
+      "terms": [
+        {"flag": "CNS_INVOLVEMENT", "coef": "2.44"},
+        {"flag": "HEMORRHAGE", "coef": "1.54"},
+        {"flag": "ARTHRITIS", "coef": "-1.30"},
+        {"code": "PLT", "coef": "-0.003", "unit": "×10^9/L"},
+        {"code": "LDH", "coef": "0.001", "unit": "U/L"},
+        {"code": "FIB", "coef": "-0.004", "unit": "mg/dL"},
+        {"code": "FERRITIN", "coef": "0.0001", "unit": "ng/mL"}
+      ],
+      "cutoff": {"op": ">=", "value": "-2.1"}
+    }
+  },
+  "combine": {
+    "alert_on_met": ["R1", "R2", "R3"],
+    "undetermined_on_indeterminate": ["R1", "R3"]
+  }
+}

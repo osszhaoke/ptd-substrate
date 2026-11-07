@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; font-src data:; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'"><style>/*FONTS*/
+html,body{margin:0;padding:0;background:transparent;overflow:hidden}body{font-family:"Source Sans 3","Noto Sans SC",sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}#card{position:relative;left:0;top:0;width:100%;max-width:none;box-shadow:none;transform-origin:top left}#card .tl-h{cursor:move}
+</style><style id="shared"></style></head><body><div id="card" class="tl-card" role="dialog" aria-label="近期读数"></div><script>/*COMPONENT*/</script><script>
+(function(){
+var card=document.getElementById('card'), current=null, pinned=true, scale=1, signature='',findBusy=false,findMessage='';
+document.getElementById('shared').textContent=PTDSTail.css;
+function send(action,extra){window.webkit.messageHandlers.tail.postMessage(Object.assign({action:action},extra||{}));}
+function measure(){var r=card.getBoundingClientRect();send('size',{width:r.width/scale,height:r.height/scale,metrics:['.tl-h','.tl-t','.tl-l','.tl-v','.tl-u','.tl-a','.tl-f'].map(function(s){var e=card.querySelector(s);if(!e)return null;var c=getComputedStyle(e),r=e.getBoundingClientRect();return {selector:s,width:r.width/scale,height:r.height/scale,font:c.fontSize,line:c.lineHeight};})});}
+window.tailPin=function(value){pinned=value;var b=card.querySelector('[data-desktop-pin]');if(b)b.outerHTML=PTDSTail.pin(pinned,false);};
+window.tailUpdate=function(d){
+ if(d.device==="pillbox"&&!d.connected){findBusy=false;findMessage="";}
+ current=d;card.setAttribute("aria-label",d.device==="pillbox"?"我的药盒":"近期读数");card.title=d.device==="pillbox"?"按 Esc 关闭药盒窗口":"按 Esc 关闭读数窗口；手机分享仍继续";card.classList.toggle('pb-card',d.device==='pillbox');scale=d.displayScale||1;card.style.transform="scale("+scale+")";var v=d.visual||{};card.style.width=(v.width||300)+"px";card.style.height="auto";document.body.style.fontFamily=v.font||'';document.body.style.fontSize=v.size||'15px';document.body.style.lineHeight=v.line||'1.6';
+ Object.keys(v.tokens||{}).forEach(function(k){document.documentElement.style.setProperty(k,v.tokens[k]);});
+ d.native=true;d.pinned=pinned;if(d.device==='pillbox'){d.findBusy=findBusy;d.message=findMessage;}d.icon=d.device==='oura'?PTDSTail.ouraIcon:PTDSTail.bandIcon;
+ var next=PTDSTail.html(d);if(next!==signature){var active=document.activeElement,attr=active&&active.getAttribute('data-desktop-pin');card.innerHTML=next;signature=next;if(attr)card.querySelector('[data-desktop-pin]').focus();}
+ requestAnimationFrame(measure);document.fonts.ready.then(measure);
+};
+window.tailFindState=function(busy,message){findBusy=busy;findMessage=message;signature='';if(current)window.tailUpdate(current);};
+window.tailOffline=function(){signature='';if(current&&current.device==='pillbox'){findBusy=false;findMessage='未连接，请重新连接药盒';window.tailUpdate(Object.assign({},current,{connected:false,battery:null,battery_at:null}));return;}var summary=card.querySelector('.tl-sharing span');if(summary)summary.textContent='分享状态待更新';var status=card.querySelector('.sub2');if(status){status.textContent='未连接';status.title=status.textContent;}};
+card.addEventListener('click',function(e){if(e.target.closest('[data-desktop-pin]'))send('pin');else if(e.target.closest('[data-pillbox-find]')){if(!findBusy&&current&&current.connected){findBusy=true;findMessage='正在发送寻找指令…';window.tailUpdate(current);send('find');}}else if(e.target.closest('[data-tl-share]')){e.stopPropagation();send('share');}else if(e.target.closest('[data-tl-x]'))send('close');else if(e.target.closest('[data-tl-go]'))send('show');});
+card.addEventListener('mousedown',function(e){if(e.button===0&&e.target.closest('.tl-h')&&!e.target.closest('button'))send('drag');});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){e.preventDefault();send('close');}});
+card.title='按 Esc 关闭读数窗口；手机分享仍继续';
+send('ready');
+})();
+</script></body></html>

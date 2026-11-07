@@ -1,0 +1,211 @@
+{
+  "schema": "h1-dictionary/0.1",
+  "version": "0.1",
+  "status": "FROZEN",
+  "note_zh": "单位字面量逐字匹配，不做大小写、空格或 Unicode 归一化。新增代码或单位必须发布新版本，且只增不改。",
+  "codes": {
+    "FERRITIN": {
+      "label_zh": "铁蛋白",
+      "family": "LAB",
+      "value_type": "DECIMAL",
+      "unit_canonical": "ng/mL",
+      "comparators_allowed": true,
+      "units": {
+        "ng/mL": "IDENTITY",
+        "ng/ml": "IDENTITY",
+        "μg/L": "IDENTITY",
+        "µg/L": "IDENTITY",
+        "ug/L": "IDENTITY"
+      }
+    },
+    "PLT": {
+      "label_zh": "血小板计数",
+      "family": "LAB",
+      "value_type": "DECIMAL",
+      "unit_canonical": "×10^9/L",
+      "comparators_allowed": true,
+      "units": {
+        "×10^9/L": "IDENTITY",
+        "×10⁹/L": "IDENTITY",
+        "10^9/L": "IDENTITY",
+        "×10^3/μL": "IDENTITY",
+        "×10^3/µL": "IDENTITY",
+        "×10³/μL": "IDENTITY",
+        "×10³/µL": "IDENTITY"
+      }
+    },
+    "AST": {
+      "label_zh": "天门冬氨酸氨基转移酶",
+      "family": "LAB",
+      "value_type": "DECIMAL",
+      "unit_canonical": "U/L",
+      "comparators_allowed": true,
+      "units": {
+        "U/L": "IDENTITY",
+        "IU/L": "IDENTITY"
+      }
+    },
+    "TG": {
+      "label_zh": "甘油三酯",
+      "family": "LAB",
+      "value_type": "DECIMAL",
+      "unit_canonical": "mg/dL",
+      "comparators_allowed": true,
+      "units": {
+        "mg/dL": "IDENTITY",
+        "mg/dl": "IDENTITY",
+        "mmol/L": "SCALE:88.57",
+        "mmol/l": "SCALE:88.57"
+      }
+    },
+    "FIB": {
+      "label_zh": "纤维蛋白原",
+      "family": "LAB",
+      "value_type": "DECIMAL",
+      "unit_canonical": "mg/dL",
+      "comparators_allowed": true,
+      "units": {
+        "mg/dL": "IDENTITY",
+        "mg/dl": "IDENTITY",
+        "g/L": "SCALE:100",
+        "g/l": "SCALE:100"
+      }
+    },
+    "LDH": {
+      "label_zh": "乳酸脱氢酶",
+      "family": "LAB",
+      "value_type": "DECIMAL",
+      "unit_canonical": "U/L",
+      "comparators_allowed": true,
+      "units": {
+        "U/L": "IDENTITY",
+        "IU/L": "IDENTITY"
+      }
+    },
+    "HB": {
+      "label_zh": "血红蛋白",
+      "family": "LAB",
+      "value_type": "DECIMAL",
+      "unit_canonical": "g/L",
+      "comparators_allowed": true,
+      "units": {
+        "g/L": "IDENTITY",
+        "g/l": "IDENTITY",
+        "g/dL": "SCALE:10",
+        "g/dl": "SCALE:10"
+      }
+    },
+    "ANC": {
+      "label_zh": "中性粒细胞绝对计数",
+      "family": "LAB",
+      "value_type": "DECIMAL",
+      "unit_canonical": "×10^9/L",
+      "comparators_allowed": true,
+      "units": {
+        "×10^9/L": "IDENTITY",
+        "×10⁹/L": "IDENTITY",
+        "10^9/L": "IDENTITY",
+        "×10^3/μL": "IDENTITY",
+        "×10^3/µL": "IDENTITY",
+        "×10³/μL": "IDENTITY",
+        "×10³/µL": "IDENTITY"
+      }
+    },
+    "SCD25": {
+      "label_zh": "可溶性 CD25（sIL-2R）",
+      "family": "LAB",
+      "value_type": "DECIMAL",
+      "unit_canonical": "U/mL",
+      "comparators_allowed": true,
+      "units": {
+        "U/mL": "IDENTITY",
+        "U/ml": "IDENTITY"
+      }
+    },
+    "TEMP": {
+      "label_zh": "体温",
+      "family": "VITAL",
+      "value_type": "DECIMAL",
+      "unit_canonical": "°C",
+      "comparators_allowed": false,
+      "units": {
+        "°C": "IDENTITY",
+        "℃": "IDENTITY",
+        "°F": "F_TO_C:Q4",
+        "℉": "F_TO_C:Q4"
+      }
+    },
+    "FEVER": {
+      "label_zh": "发热",
+      "family": "FLAG",
+      "value_type": "BOOLEAN",
+      "unit_canonical": null,
+      "comparators_allowed": false,
+      "units": {}
+    },
+    "SPLENOMEGALY": {
+      "label_zh": "脾大",
+      "family": "FLAG",
+      "value_type": "BOOLEAN",
+      "unit_canonical": null,
+      "comparators_allowed": false,
+      "units": {}
+    },
+    "CNS_INVOLVEMENT": {
+      "label_zh": "中枢神经系统受累",
+      "family": "FLAG",
+      "value_type": "BOOLEAN",
+      "unit_canonical": null,
+      "comparators_allowed": false,
+      "units": {}
+    },
+    "HEMORRHAGE": {
+      "label_zh": "出血表现",
+      "family": "FLAG",
+      "value_type": "BOOLEAN",
+      "unit_canonical": null,
+      "comparators_allowed": false,
+      "units": {}
+    },
+    "ARTHRITIS": {
+      "label_zh": "活动性关节炎",
+      "family": "FLAG",
+      "value_type": "BOOLEAN",
+      "unit_canonical": null,
+      "comparators_allowed": false,
+      "units": {}
+    },
+    "HEMOPHAGOCYTOSIS": {
+      "label_zh": "噬血现象",
+      "family": "FLAG",
+      "value_type": "BOOLEAN",
+      "unit_canonical": null,
+      "comparators_allowed": false,
+      "units": {}
+    },
+    "NK_LOW": {
+      "label_zh": "NK 细胞活性降低或缺失",
+      "family": "FLAG",
+      "value_type": "BOOLEAN",
+      "unit_canonical": null,
+      "comparators_allowed": false,
+      "units": {}
+    },
+    "SJIA_KNOWN_OR_SUSPECTED": {
+      "label_zh": "已知或疑似 sJIA",
+      "family": "FLAG",
+      "value_type": "BOOLEAN",
+      "unit_canonical": null,
+      "comparators_allowed": false,
+      "units": {}
+    },
+    "LAB_NOT_OTHERWISE_EXPLAINED": {
+      "label_zh": "化验异常无其他解释",
+      "family": "FLAG",
+      "value_type": "BOOLEAN",
+      "unit_canonical": null,
+      "comparators_allowed": false,
+      "units": {}
+    }
+  }
+}

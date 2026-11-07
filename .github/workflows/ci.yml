@@ -1,0 +1,15 @@
+name: Release checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: sh scripts/verify_release.sh
+      - run: python3 -B -I scripts/check_publication.py
+      - run: python3 -B -I tests/release_smoke.py
+      - run: python3 -B -I tests/test_partner_visible_language.py

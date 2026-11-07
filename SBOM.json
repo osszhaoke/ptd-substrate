@@ -1,0 +1,138 @@
+{
+  "components": [
+    {
+      "license": "Apache-2.0",
+      "name": "PTDS",
+      "source": "app/",
+      "text": "LICENSE",
+      "version": "0.3.0-alpha.1"
+    },
+    {
+      "distribution": "embedded unchanged with attribution",
+      "license": "MIT",
+      "name": "sqlite-memory",
+      "sha256": "66eb95cdb7535fe4fa4ef8598ab87ff8f95828423967e798cc14be46f34850ef",
+      "source": "app/third_party/sqlite_memory/sqlite_memory.py",
+      "text": "app/third_party/sqlite_memory/LICENSE",
+      "version": "vendored snapshot; upstream version not declared"
+    },
+    {
+      "copyright": "(c) 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'.",
+      "distribution": "embedded fonts retain attribution and font license; not sold separately",
+      "fontSha256": [
+        "c366ee2192dabfadf62e09fe6ca64928e460568b47fff5c8fb77235293c119d9",
+        "6ca93cd63ca1860faebf782495aa3c5c79bc106ef104f9da8abc099badf6c719",
+        "d3257435479a06393fa5ed9e802402da59c66166b6167a63f2bc8935df9a4cf1",
+        "319c4304b0797b480c5c59fb8496ec5e229a72444216bdbe8312c3637741a698",
+        "ec62ca8b4f5746d3e95f4c53118fa0c189d661e3330600718e6bb862413b32ab",
+        "9aa9d948d44ecafb7878c4e6b247d188156a901025d5b936a08c3147dc1ff969",
+        "2a8f5681729509f60c7c20add1935a7b26017c059c1136fa5c3c33ffbe80b8fb",
+        "6125a596ac8220352e6a457c9789427b1203f08d3d81a3fe88b0229df3d7914b",
+        "81a4bee81087ad30c280e775c61e244ef19833ab7d8ea1b840b0b55e7f9a777e",
+        "944a0e579e6a40861b6caa0c6d3511a9369ba855d31ccad039b5d170a0101e6a",
+        "01d6802a578cdd75f5bdeab421b63026a142595d7266b8fd79066d8153d0eb88",
+        "880190cca2c2e919adcb33f6e27b98bab9f2a2400635c4e3a1c8eee652049d84",
+        "542ab1f5cee8c5a562f4d19a78fcc723a19131470b97c6838f154895c65c29c4",
+        "657e54ef6421764882d875605f5beaa7d9c7c8dd530d634bba6c037a5e471b98",
+        "5de11a0d17fd2a1d537f2172f4497a88472a46aac8d2c38c3d7a60ad5e1d67cd",
+        "53b9986127ebc5bac108906ea3799789c4c165d176c0ff0f89c684c22aa719f8",
+        "0bd541a3ac60372f814d8bd3b760f6d6d25b4722f01fce9fac7f010f05713f7c",
+        "ed244599c7c3a21a268e8cdc02068273b7a9746589ade79870690e1173795e43",
+        "a4237f26a776c28bbfb31bde365e243cc5a93a9e1f6cb47e6408906792542d5e",
+        "63967b228950db8e5ecb678e28c09c09b0458ca80d27159febb7210a24dd4a14",
+        "756853977491d0fd1b8a09b1163bdbfc9b6352e66b31fc967cf271748408640e",
+        "3255e208417e6bb129373f9c2c23df98388dcf6335a1afd0e602a675836102c3",
+        "e1a80c83bceb4795b7046b22a67f0cb28442a9325396cd43bc180ee59ca80fca",
+        "c11c69ede18ff39bf9178a4da7cb842e20fb7a8eb21d78da8e7d75e0efd117ab",
+        "3f285ee516c61143ac53cdbac627217c437bd1f927926d4a81f179caa5625f4b",
+        "4e4467f30076acca8e59e88f1c4bb1879509c598e7125c7a935fa2e8cab4d820",
+        "c13f5fb9bcb9eed7babb638633f378a4cb6f7d61035adbe080be6fd1729a29fc",
+        "b3ca19d66fda99a4d67ec4127ce343e48df0fc3dd452a43e529dbc80c7e8e72c",
+        "add28cffd5cdfaf0aef3678d6f32e9bf8b4e2988b64f81c5747e53da5affe7f8",
+        "cdde352909892b90d26960d1f8532f8cd303c135b2ea0c074ff77c52e922b43d",
+        "40b2d3e78c44bfb87427f11926d783497536a3e6e1e7dbae24077b7f432fb990",
+        "d0bafad41f12a0e7ed967baa2ce708e3393f1164d0da9e04558e2bee8bc7a5d3",
+        "a5b38b0625d15863b3683f3d5787b59628bfb64d14ae1a771e930c459c30a488",
+        "d28ca8fd897c8e9e10652ab87760ae8c47204c29934b2bb9d6fb035150f9dcf4",
+        "c4a80d4bead0555b6c57360a39b1d49653d7ed703f942a1a590441b8c0e0b8ab",
+        "40928bd409d02ab43fa13390370889a793f9138241b08a7536416b909d37ba96",
+        "1301b0242c676cfdc7eb19031a90448e06c14421eec55d3b10af62d2054ab1ec",
+        "2aa25ff91e2ae42318df17dce417cadfcbbdd4444020d40ac40af6144c71c154",
+        "558ef81bdd9a97f9f43c781ffd9042d41649d362ca43fc7fe2ef4b76756b20e7",
+        "8ce7ed7c5bb2a3db662644aebed23689ebd7fc63d6a7f1031e828dd4fe7f82f3",
+        "e1dd01cad7d44f8315132281016fa8f89da9bd63071e1115a727977336767f8c",
+        "b3638e014ebb928c55f64d3bf9bda9e8a0ea9515f9d90a260fbaa3f723e8f12a",
+        "91305523e8604f6df304814ddfe2e7d0e613500e849ef7692dc3aa6e6ee446c8",
+        "d64fdddb7340671572bf9c36bfb77cbc5fb387ee77c246f022ce5597357d1ff6",
+        "cff254ddf6c7a92cc26f920aea5d83a6ce49d251fe274e7f293cb801a243cbbb",
+        "06b5953cc895e3bba0c0ab010394895a941e320f5bc593028df2edb7675444ac",
+        "0eb9644e122e6670af12504fa11d0fb762e285bf072b8cb6c835271723641f0f",
+        "7abe47dc5399162fd21c85edd46c12bd65910641293160002c52d730afc9d538",
+        "20de292d81dbe63f20becde7a937d2dc6c1526a0dda235f0703a9f6cf196c16a",
+        "4ba20e1574c37591796afab552ba79e245cdd1b5f1bf6d8dbcf518268e31bc42",
+        "157840a454168646200806f35ee0cbc649e98e7550630906514fdfea133ccc07",
+        "cc9f1504ae004e90337b9224af6b25ae1fd9ff9261d319476fa61863564133a8"
+      ],
+      "license": "OFL-1.1",
+      "name": "Noto Sans SC",
+      "source": "app/web/product.html",
+      "text": "licenses/NotoSansSC-OFL.txt",
+      "version": "Version 2.004-H2;hotconv 1.0.118;makeotfexe 2.5.65603"
+    },
+    {
+      "copyright": "© 2023 Adobe (http://www.adobe.com/), with Reserved Font Name ‘Source’",
+      "distribution": "embedded fonts retain attribution and font license; not sold separately",
+      "fontSha256": [
+        "4ada67bcec99272eb0436af51037042ac5096c9ec6ac47249ea523f69824ac84",
+        "3225d31ca9270181cec25609af70822532b672c47e6e37543da336fe3bb3a178",
+        "58c0d2f3a879c7236389a082a2083af6a6e17946686185397aa880c251ebd81f"
+      ],
+      "license": "OFL-1.1",
+      "name": "Source Sans 3",
+      "source": "app/web/product.html",
+      "text": "licenses/NotoSansSC-OFL.txt",
+      "version": "Version 3.052;hotconv 1.1.0;makeotfexe 2.6.0"
+    },
+    {
+      "bundled": false,
+      "license": "PSF-2.0",
+      "name": "CPython standard library",
+      "source": "user installation",
+      "version": "3.14.8 tested"
+    },
+    {
+      "bundled": false,
+      "license": "public domain",
+      "name": "SQLite",
+      "source": "Python sqlite3 runtime",
+      "version": "3.53.4 tested"
+    },
+    {
+      "bundled": false,
+      "frameworks": [
+        "Foundation",
+        "AppKit",
+        "PDFKit",
+        "Vision",
+        "WebKit"
+      ],
+      "license": "Apple system software license",
+      "name": "macOS frameworks",
+      "source": "macOS",
+      "version": "27.0.1 tested"
+    }
+  ],
+  "fictional_samples": [
+    {
+      "path": "data/sample-import.csv",
+      "sha256": "cae42b9c3d96d6b469cd53cebb56cc61120d95f8626bbc28ce42c3f63cfe53ab"
+    },
+    {
+      "path": "app/fixtures/fictional-genotype-sample.txt",
+      "sha256": "8ed7d6713049c2c51a464f024c4479f205e19c2d4ae18b5ae9aedfa4971a629e"
+    }
+  ],
+  "release": "v0.3.0-alpha.1",
+  "runtime_installs": [],
+  "schema": "ptds-release-components/1"
+}

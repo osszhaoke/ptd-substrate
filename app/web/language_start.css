@@ -1,0 +1,27 @@
+#first-language {
+  box-sizing: border-box;
+  width: min(25rem, calc(100% - 2rem));
+  max-height: calc(100% - 2rem);
+  margin: auto;
+  overflow: auto;
+  padding: clamp(1.25rem, 5vw, 2rem);
+  border: 1px solid var(--theme-line-control);
+  border-radius: 16px;
+  background: var(--theme-surface-raised);
+  color: var(--theme-text-primary);
+  font: inherit;
+  text-align: center;
+}
+#first-language::backdrop { background: rgba(13, 17, 23, .58); }
+#first-language h1 { margin: 0 0 1.35rem; font-size: 1.35rem; line-height: 1.45; }
+#first-language h1 span { display: block; }
+#first-language h1 span + span { font-size: 1rem; font-weight: 500; }
+.first-language-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; }
+#first-language button {
+  min-height: 44px; padding: .6rem; border: 1px solid var(--theme-line-control);
+  border-radius: 9px; font: inherit; color: inherit; background: transparent; cursor: pointer;
+}
+#first-language button:hover { background: var(--component-sidebar-selBg); }
+#first-language button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+#first-language .first-language-system { margin-top: .8rem; border-color: transparent; font-size: .9rem; }
+html[lang="en"] .launch .tagline.below > .zh { display: none; }

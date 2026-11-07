@@ -1,0 +1,29 @@
+{
+  "schema": "dynamic-config/0.2",
+  "config_id": "sjia-dynamic",
+  "version": "0.2",
+  "provenance": "PLACEHOLDER_NOT_LITERATURE",
+  "note_zh": "全部阈值和权重为研发举例的演示值，未经临床验证；0.2 在 0.1 的 6 项化验之上，按需求书 13 项指标补了血红蛋白、中性粒细胞、D-二聚体，以及发热（持续）、脾大、中枢神经受累、出血（新出现）。按 QA-1 由文献起草、专家确认后发布新版本。",
+  "default_sensitivity": "MEDIUM",
+  "sensitivity_multipliers": {
+    "LOW": "1.5",
+    "MEDIUM": "1.0",
+    "HIGH": "0.5"
+  },
+  "general_sum_threshold": "2",
+  "indicators": [
+    {"code": "FERRITIN", "role": "CORE", "bad_direction": "UP", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.5", "weight": "1"},
+    {"code": "PLT", "role": "CORE", "bad_direction": "DOWN", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.25", "weight": "1"},
+    {"code": "FIB", "role": "GENERAL", "bad_direction": "DOWN", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.25", "weight": "1"},
+    {"code": "AST", "role": "GENERAL", "bad_direction": "UP", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.5", "weight": "1"},
+    {"code": "TG", "role": "GENERAL", "bad_direction": "UP", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.3", "weight": "1"},
+    {"code": "LDH", "role": "GENERAL", "bad_direction": "UP", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.5", "weight": "1"},
+    {"code": "HB", "role": "GENERAL", "bad_direction": "DOWN", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.2", "weight": "1"},
+    {"code": "ANC", "role": "GENERAL", "bad_direction": "DOWN", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.3", "weight": "1"},
+    {"code": "DDIMER", "role": "GENERAL", "bad_direction": "UP", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.5", "weight": "1"},
+    {"code": "FEVER", "role": "GENERAL", "bad_direction": "UP", "basis": {"kind": "PREVIOUS"}, "measure": "PERSIST", "threshold": null, "weight": "1"},
+    {"code": "SPLENOMEGALY", "role": "GENERAL", "bad_direction": "UP", "basis": {"kind": "PREVIOUS"}, "measure": "APPEAR", "threshold": null, "weight": "1"},
+    {"code": "CNS_INVOLVEMENT", "role": "CORE", "bad_direction": "UP", "basis": {"kind": "PREVIOUS"}, "measure": "APPEAR", "threshold": null, "weight": "1"},
+    {"code": "HEMORRHAGE", "role": "CORE", "bad_direction": "UP", "basis": {"kind": "PREVIOUS"}, "measure": "APPEAR", "threshold": null, "weight": "1"}
+  ]
+}

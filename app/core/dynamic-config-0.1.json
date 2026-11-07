@@ -1,0 +1,18 @@
+{
+  "schema": "dynamic-config/0.1",
+  "config_id": "sjia-dynamic",
+  "version": "0.1",
+  "provenance": "PLACEHOLDER_NOT_LITERATURE",
+  "note_zh": "全部阈值为演示占位值，未经临床验证；按 QA-1 由文献起草、专家确认后发布新版本。",
+  "default_sensitivity": "MEDIUM",
+  "sensitivity_multipliers": {"LOW": "1.5", "MEDIUM": "1.0", "HIGH": "0.5"},
+  "general_sum_threshold": "2",
+  "indicators": [
+    {"code": "FERRITIN", "role": "CORE", "bad_direction": "UP", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.5", "weight": "1"},
+    {"code": "PLT", "role": "CORE", "bad_direction": "DOWN", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.25", "weight": "1"},
+    {"code": "FIB", "role": "GENERAL", "bad_direction": "DOWN", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.25", "weight": "1"},
+    {"code": "AST", "role": "GENERAL", "bad_direction": "UP", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.5", "weight": "1"},
+    {"code": "TG", "role": "GENERAL", "bad_direction": "UP", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.3", "weight": "1"},
+    {"code": "LDH", "role": "GENERAL", "bad_direction": "UP", "basis": {"kind": "PREVIOUS"}, "measure": "PCT", "threshold": "0.5", "weight": "1"}
+  ]
+}

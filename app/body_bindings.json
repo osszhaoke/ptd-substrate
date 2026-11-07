@@ -1,0 +1,24 @@
+{
+  "version": "body-binding/1",
+  "asset_id": "ptds-body-front",
+  "asset_version": "1",
+  "meaning": "display grouping only, not disease localization",
+  "regions": {
+    "neuro": {"label": "神经", "scope": "anatomical", "anchor_ids": ["brain"], "label_anchor": "neuro"},
+    "temperature": {"label": "体温", "scope": "anatomical", "anchor_ids": ["forehead"], "label_anchor": "temperature"},
+    "hepatic": {"label": "肝脏相关", "scope": "anatomical", "anchor_ids": ["liver"], "label_anchor": "hepatic"},
+    "joints": {"label": "关节", "scope": "anatomical", "anchor_ids": ["left_knee", "right_knee", "left_elbow", "right_elbow", "left_wrist", "right_wrist"], "label_anchor": "joints"},
+    "hematology": {"label": "血液", "scope": "systemic", "anchor_ids": []},
+    "coagulation": {"label": "凝血", "scope": "systemic", "anchor_ids": []},
+    "metabolic": {"label": "全身相关", "scope": "systemic", "anchor_ids": []}
+  },
+  "metrics": {
+    "CNS_INVOLVEMENT": ["neuro"],
+    "FEVER": ["temperature"], "TEMP": ["temperature"],
+    "AST": ["hepatic"], "ALT": ["hepatic"], "GGT": ["hepatic"], "ALP": ["hepatic"], "TBIL": ["hepatic"], "DBIL": ["hepatic"], "ALB": ["hepatic"],
+    "LDH": ["metabolic"], "TG": ["metabolic"],
+    "FERRITIN": ["hematology"], "PLT": ["hematology"], "HB": ["hematology"], "WBC": ["hematology"], "ANC": ["hematology"], "LYMPH": ["hematology"],
+    "FIB": ["coagulation"], "DDIMER": ["coagulation"], "PT": ["coagulation"], "APTT": ["coagulation"], "INR": ["coagulation"], "TT": ["coagulation"], "FDP": ["coagulation"], "HEMORRHAGE": ["coagulation"],
+    "ARTHRITIS": ["joints"]
+  }
+}

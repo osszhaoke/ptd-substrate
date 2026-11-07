@@ -1,0 +1,14 @@
+PTDS
+The original project components in this distribution are licensed under Apache License 2.0.
+
+sqlite-memory, copyright (c) 2026 Daniele Poerio. MIT License.
+The original permission notice is included in app/third_party/sqlite_memory/LICENSE
+and licenses/sqlite_memory-LICENSE.txt.
+
+The web page embeds 52 Noto Sans SC subsets (2.004-H2) and 3 Source Sans 3 subsets (3.052). Their license and the original
+Adobe notices with the reserved font name Source appear in licenses/NotoSansSC-OFL.txt.
+The fonts are licensed under SIL Open Font License 1.1. The fonts and sqlite-memory
+retain their own licenses. No rights to provider brands or accounts are granted.
+
+Python, its SQLite runtime and macOS system frameworks are provided by the user's
+system. These runtimes are not distributed with this release.

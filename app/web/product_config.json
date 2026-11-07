@@ -1,0 +1,849 @@
+{
+  "_note": "第四批产品外壳配置（E1：成熟度、导航、预置授权都从这里读，界面只显示）。改一行 maturity 就能升级一个入口。成熟度为初稿，由 产品负责人 逐项改（Q3 a）。",
+  "maturity": {
+    "order": [
+      "ready",
+      "adapted",
+      "beta",
+      "dev",
+      "plan"
+    ],
+    "levels": {
+      "ready": {
+        "zh": "可用",
+        "icon": "icon:circle-check",
+        "rule": "现场能真实走通",
+        "allow": "全部操作"
+      },
+      "dev": {
+        "zh": "开发中",
+        "icon": "icon:hammer",
+        "rule": "已确定要做，正在排期或实现",
+        "allow": "只读预览或只留位置；操作一律置灰，条目不可点"
+      },
+      "plan": {
+        "zh": "规划中",
+        "icon": "icon:map",
+        "rule": "在路线图上，还没有设计",
+        "allow": "一页说明，不做任何假界面"
+      },
+      "adapted": {
+        "zh": "已适配",
+        "icon": "icon:plug-zap",
+        "rule": "接入已适配，可以接入",
+        "allow": "全部操作"
+      },
+      "beta": {
+        "zh": "早期测试",
+        "icon": "icon:flask-conical",
+        "rule": "能跑通，结果仍在验证，只用于测试",
+        "allow": "一页说明，不显示任何结果（等接口与数据）"
+      }
+    }
+  },
+  "modules": [
+    {
+      "id": "torch",
+      "zh": "星炬",
+      "sub": "掌握数据",
+      "icon": "icon:database",
+      "nav": [
+        {
+          "id": "guard",
+          "zh": "星炬导航",
+          "icon": "icon:house",
+          "maturity": "ready"
+        },
+        {
+          "id": "sources",
+          "zh": "我的数源",
+          "icon": "icon:inbox",
+          "maturity": "ready",
+          "partial": [
+            {
+              "zh": "更多设备",
+              "maturity": "dev"
+            },
+            {
+              "zh": "谷歌健康、小米健康、华为健康",
+              "maturity": "dev"
+            }
+          ]
+        },
+        {
+          "id": "data",
+          "zh": "我的数据",
+          "icon": "icon:file-text",
+          "maturity": "ready",
+          "partial": [
+            {
+              "zh": "多版本历史",
+              "maturity": "dev"
+            }
+          ]
+        },
+        {
+          "id": "graph",
+          "zh": "证据图谱",
+          "icon": "icon:waypoints",
+          "maturity": "beta",
+          "band": false
+        }
+      ],
+      "tagline": "数据：接入｜纳管｜留痕"
+    },
+    {
+      "id": "track",
+      "zh": "星轨",
+      "sub": "理解状态",
+      "icon": "icon:orbit",
+      "nav": [
+        {
+          "id": "wall",
+          "zh": "状态轨迹",
+          "icon": "icon:layout-grid",
+          "maturity": "ready"
+        },
+        {
+          "id": "eng",
+          "zh": "状态工程",
+          "icon": "icon:wand-sparkles",
+          "maturity": "beta",
+          "partial": [
+            {
+              "zh": "\"我的体征\"模板",
+              "maturity": "ready"
+            }
+          ],
+          "has": "\"我的体征\"模板可以从头走通：选模板、绑数据、定规则、配通知、审方案",
+          "missing": "自定义规则与阈值"
+        },
+        {
+          "id": "alerts",
+          "zh": "状态通知",
+          "icon": "icon:bell-ring",
+          "maturity": "ready"
+        },
+        {
+          "id": "adv",
+          "zh": "状态实验室",
+          "icon": "icon:git-compare",
+          "maturity": "beta",
+          "partial": [
+            {
+              "zh": "反事实推断",
+              "maturity": "plan"
+            }
+          ]
+        },
+        {
+          "id": "rules",
+          "zh": "状态规则库",
+          "icon": "icon:scroll-text",
+          "maturity": "plan"
+        }
+      ],
+      "tagline": "状态：计算｜理解｜追溯"
+    },
+    {
+      "id": "cluster",
+      "zh": "星簇",
+      "sub": "可信协作",
+      "icon": "icon:network",
+      "nav": [
+        {
+          "id": "overview",
+          "zh": "授权总览",
+          "icon": "icon:shield-check",
+          "maturity": "ready"
+        },
+        {
+          "id": "objects",
+          "zh": "我的授权",
+          "icon": "icon:key-round",
+          "maturity": "ready",
+          "partial": [
+            {
+              "zh": "他人的智能体",
+              "maturity": "dev"
+            }
+          ]
+        },
+        {
+          "id": "records",
+          "zh": "授权记录",
+          "icon": "icon:history",
+          "maturity": "ready"
+        },
+        {
+          "id": "rules",
+          "zh": "授权规则",
+          "icon": "icon:key-round",
+          "maturity": "ready",
+          "partial": [
+            {
+              "zh": "Telegram、WhatsApp 推送",
+              "maturity": "dev"
+            }
+          ]
+        },
+        {
+          "id": "space",
+          "zh": "星簇协作",
+          "icon": "icon:messages-square",
+          "maturity": "plan"
+        }
+      ],
+      "tagline": "授权：可控｜可信｜互联"
+    }
+  ],
+  "foot": [
+    {
+      "id": "spirit",
+      "zh": "星灵 · 本地 AI 助手",
+      "icon": "icon:sparkles",
+      "maturity": "beta",
+      "has": "本地 AI 已经在识别录入里，把化验单上的文字对到指标代码；星灵在每一页原位回答这是什么、从哪来、去哪看，本机千问只看等级标签，不看具体数值",
+      "missing": "星灵还没在你的电脑上用真实数据和本机千问验收；不支持多轮追问和预填表单"
+    }
+  ],
+  "sources": [
+    {
+      "id": "wearable",
+      "zh": "来自穿戴设备",
+      "icon": "icon:watch",
+      "items": [
+        {
+          "id": "oura",
+          "zh": "Oura",
+          "sub": "指环",
+          "maturity": "adapted",
+          "go": "connect"
+        },
+        {
+          "id": "somaloop",
+          "zh": "Somaloop",
+          "sub": "手环",
+          "maturity": "adapted",
+          "go": "connect"
+        },
+        {
+          "id": "qkeer",
+          "zh": "Qkeer",
+          "sub": "指环",
+          "maturity": "adapted",
+          "go": "connect"
+        },
+        {
+          "id": "whoop",
+          "zh": "Whoop",
+          "sub": "手环",
+          "maturity": "adapted",
+          "go": "device:whoop"
+        },
+        {
+          "id": "muse",
+          "zh": "Muse S Athena",
+          "sub": "脑机接口",
+          "maturity": "adapted"
+        },
+        {
+          "id": "more",
+          "zh": "更多设备",
+          "sub": "更多手环、指环、手表",
+          "maturity": "dev"
+        },
+        {
+          "id": "garmin",
+          "zh": "Garmin",
+          "sub": "CIRQA · Garmin Connect 同步",
+          "maturity": "adapted",
+          "go": "device:garmin"
+        },
+        {
+          "id": "eight_sleep",
+          "zh": "Eight Sleep",
+          "sub": "智能床垫",
+          "maturity": "adapted",
+          "go": "device:eight_sleep"
+        }
+      ]
+    },
+    {
+      "id": "file",
+      "zh": "来自文件报告",
+      "icon": "icon:file-image",
+      "items": [
+        {
+          "id": "ocr",
+          "zh": "化验单识别",
+          "sub": "拖入一份化验单，在这台电脑上识别成指标，逐项确认后保存",
+          "maturity": "adapted",
+          "go": "entry:ocr"
+        },
+        {
+          "id": "csv",
+          "zh": "CSV 表格",
+          "sub": "按模板整理好的表格，逐行检查后整份保存",
+          "maturity": "ready",
+          "go": "entry:table"
+        },
+        {
+          "id": "xlsx",
+          "zh": "Excel、XML 表格",
+          "sub": "表头与 CSV 模板相同",
+          "maturity": "adapted",
+          "go": "entry:table"
+        },
+        {
+          "id": "gene",
+          "zh": "基因测序数据",
+          "sub": "纳入星炬管理（纳管），目前没有卡片使用",
+          "maturity": "adapted",
+          "go": "gene"
+        }
+      ]
+    },
+    {
+      "id": "phone",
+      "zh": "来自手机健康",
+      "icon": "icon:smartphone",
+      "items": [
+        {
+          "id": "apple",
+          "zh": "苹果健康",
+          "sub": "iPhone 上的健康 App。在 iPhone 上点一下，把里面的数据同步到星炬",
+          "maturity": "adapted",
+          "go": "apple"
+        },
+        {
+          "id": "hc",
+          "zh": "谷歌健康",
+          "sub": "Android 手机上的 Health Connect",
+          "maturity": "dev"
+        },
+        {
+          "id": "mi",
+          "zh": "小米健康",
+          "sub": "经 Health Connect 中转，兼容性待验证",
+          "maturity": "dev"
+        },
+        {
+          "id": "hw",
+          "zh": "华为健康",
+          "sub": "独立生态，接入条件待验证",
+          "maturity": "dev"
+        }
+      ]
+    },
+    {
+      "id": "manual",
+      "zh": "来自手动录入",
+      "icon": "icon:pencil",
+      "items": [
+        {
+          "id": "manual",
+          "zh": "手工录入",
+          "sub": "逐项填写数值和单位，星炬按字典换算",
+          "maturity": "ready",
+          "go": "entry:manual"
+        }
+      ]
+    }
+  ],
+  "instance_cards": {
+    "_note": "E1：每个实例启用哪些状态卡是配置，不按实例种类推断。键为 instance_id，default 用于未单列的实例。",
+    "default": [
+      "SJIA_FOCUS"
+    ]
+  },
+  "cards": {
+    "SJIA_FOCUS": {
+      "zh": "sJIA 关注卡",
+      "sub": "检测指标 · 三条规则 + 变化",
+      "events": [
+        {
+          "id": "LEVEL_UP",
+          "zh": "综合关注等级升到观察或关注",
+          "notify": true
+        },
+        {
+          "id": "RESULT_UPDATED",
+          "zh": "结果按新数据更新",
+          "notify": false
+        }
+      ]
+    },
+    "VITALS": {
+      "zh": "我的体征",
+      "sub": "设备读数 · 只显示读数和是否最新",
+      "events": [
+        {
+          "id": "READING_UPDATED",
+          "zh": "读数更新",
+          "notify": false
+        },
+        {
+          "id": "DEVICE_OFFLINE",
+          "zh": "设备断开（接入失效，或超过 36 小时没有新读数）",
+          "notify": true
+        }
+      ]
+    }
+  },
+  "wall_placeholders": [
+    {
+      "id": "PGX",
+      "zh": "基因用药提示",
+      "sub": "把基因检测结果和用药清单放在一起看",
+      "maturity": "plan",
+      "why": "基因结果和用药清单分在不同的报告里，本人很难自己对照。",
+      "principles": [
+        "只提示\"值得和医生讨论\"，不给用药结论",
+        "基因数据只在本机，出域按星簇授权"
+      ],
+      "relation": "基因测序数据由星炬\"来自文件报告\"纳管；卡片由星轨状态工程创建；对外透出走星簇。"
+    },
+    {
+      "id": "LONGEVITY",
+      "zh": "长寿指标",
+      "sub": "长期趋势：血脂、血糖、炎症指标",
+      "maturity": "dev",
+      "sample": {
+        "rows": [
+          [
+            "低密度脂蛋白",
+            "2.6",
+            "mmol/L",
+            "持平"
+          ],
+          [
+            "空腹血糖",
+            "5.1",
+            "mmol/L",
+            "持平"
+          ],
+          [
+            "超敏 C 反应蛋白",
+            "0.8",
+            "mg/L",
+            "下降"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "SLEEP",
+      "zh": "睡眠",
+      "sub": "设备睡眠数据的长期观察",
+      "maturity": "plan",
+      "why": "睡眠数据分散在不同设备里，单看一晚没有意义。",
+      "principles": [
+        "只显示读数和变化，不打分",
+        "每个数都能追到哪台设备、哪一晚"
+      ],
+      "relation": "数据来自星炬接入的设备（例如 Oura）；与\"我的体征\"共用绑定方式。"
+    }
+  ],
+  "templates": [
+    {
+      "id": "VITALS",
+      "zh": "我的体征",
+      "sub": "设备读数：心率、体温等。只显示读数和是否最新，不算等级，也不提醒",
+      "maturity": "ready"
+    },
+    {
+      "id": "SJIA_FOCUS",
+      "zh": "sJIA 关注卡",
+      "sub": "检测指标：三条规则 + 变化。",
+      "maturity": "view"
+    },
+    {
+      "id": "CUSTOM",
+      "zh": "自定义规则",
+      "sub": "自己选指标、写规则和阈值",
+      "maturity": "beta"
+    }
+  ],
+  "onepagers": {
+    "rules": {
+      "why": "关注卡用了哪一版规则、规则出自哪里、有没有经过专家核实，本人和医生都应该能查到。",
+      "principles": [
+        "每张卡都写明规则包版本和出处",
+        "专家核实状态如实显示，未核实就写未核实",
+        "规则变了，旧结果保留，可以对比"
+      ],
+      "relation": "规则包由星轨使用；核实结论写进证据图谱；对外引用时随授权一起出域。",
+      "facts": "card_state"
+    },
+    "space": {
+      "why": "把状态卡和社区节点、研究项目连起来，在我同意的范围内参与协作。",
+      "principles": [
+        "参与与退出都由我决定",
+        "每次出域都经过星簇授权并留痕",
+        "协作方看到的内容，和授权规则里的预览一致"
+      ],
+      "relation": "星簇协作建立在授权规则、授权对象和授权记录之上。"
+    }
+  },
+  "cluster": {
+    "levels": {
+      "order": [
+        "signal",
+        "summary",
+        "basis",
+        "data"
+      ],
+      "signal": {
+        "zh": "仅信号",
+        "sub": "不含任何健康信息",
+        "template": "PTDS 有一条新提醒，请打开 PTDS 查看。"
+      },
+      "summary": {
+        "zh": "摘要",
+        "sub": "提醒原文：时点、等级、哪些指标往哪个方向变，不带数值"
+      },
+      "basis": {
+        "zh": "依据",
+        "sub": "摘要 + 指标数值 + 规则结论；只能给已核验的对象，逐条批准"
+      },
+      "data": {
+        "zh": "数据",
+        "sub": "结构化的状态卡，只给智能体"
+      }
+    },
+    "methods": {
+      "push": "推送",
+      "read": "读取"
+    },
+    "durations": [
+      {
+        "id": "1h",
+        "zh": "1 小时",
+        "hours": 1
+      },
+      {
+        "id": "24h",
+        "zh": "24 小时",
+        "hours": 24
+      },
+      {
+        "id": "7d",
+        "zh": "7 天",
+        "hours": 168
+      },
+      {
+        "id": "30d",
+        "zh": "30 天",
+        "hours": 720
+      },
+      {
+        "id": "forever",
+        "zh": "长期，直到我撤销",
+        "hours": null
+      }
+    ],
+    "objects": [
+      {
+        "id": "self",
+        "kind": "self",
+        "zh": "我自己",
+        "form": "human",
+        "channels": [
+          {
+            "id": "local",
+            "zh": "本机通道：Mac 通知、手环",
+            "maturity": "ready",
+            "default_level": "summary",
+            "max_level": "summary"
+          },
+          {
+            "id": "tg_self",
+            "zh": "发到我自己的 Telegram",
+            "maturity": "dev",
+            "default_level": "signal",
+            "max_level": "summary"
+          }
+        ],
+        "verified": "本人"
+      },
+      {
+        "id": "family",
+        "kind": "other",
+        "zh": "家属（示例）",
+        "form": "human",
+        "channels": [
+          {
+            "id": "tg",
+            "zh": "Telegram",
+            "maturity": "dev",
+            "default_level": "signal",
+            "max_level": "summary"
+          },
+          {
+            "id": "wa",
+            "zh": "WhatsApp",
+            "maturity": "dev",
+            "default_level": "signal",
+            "max_level": "summary"
+          }
+        ],
+        "verified": "未核验"
+      },
+      {
+        "id": "doctor",
+        "kind": "other",
+        "zh": "主治医生（示例）",
+        "form": "human",
+        "channels": [
+          {
+            "id": "wa",
+            "zh": "WhatsApp",
+            "maturity": "dev",
+            "default_level": "signal",
+            "max_level": "basis"
+          }
+        ],
+        "verified": "已核验（示例）"
+      },
+      {
+        "id": "my_agent",
+        "kind": "agent_mine",
+        "zh": "我的本机智能体",
+        "form": "machine",
+        "channels": [
+          {
+            "id": "mcp",
+            "zh": "本机 MCP（只读）",
+            "maturity": "ready",
+            "default_level": "data",
+            "max_level": "data",
+            "transport": "LOCAL_MCP"
+          }
+        ],
+        "verified": "本机"
+      },
+      {
+        "id": "other_agent",
+        "kind": "agent_other",
+        "zh": "他人的智能体（医生的系统、研究项目）",
+        "form": "machine",
+        "maturity": "dev",
+        "channels": [],
+        "verified": "需要身份核验与协议约定"
+      },
+      {
+        "id": "phone_browser",
+        "kind": "self",
+        "zh": "临时手机浏览器",
+        "form": "machine",
+        "verified": "需在 Mac 核对配对号码",
+        "channels": [
+          {
+            "id": "phone_https",
+            "zh": "手机 HTTPS（仅查看）",
+            "maturity": "ready",
+            "default_level": "data",
+            "max_level": "data",
+            "transport": "PHONE_HTTPS"
+          }
+        ]
+      },
+      {
+        "id": "report_phone",
+        "kind": "self",
+        "zh": "我的手机 · 状态报告",
+        "form": "machine",
+        "verified": "需在 Mac 核对配对号码",
+        "channels": [
+          {
+            "id": "report_https",
+            "zh": "手机报告（只读）",
+            "maturity": "ready",
+            "default_level": "data",
+            "max_level": "data",
+            "transport": "REPORT_HTTPS"
+          }
+        ]
+      }
+    ],
+    "preset_grants": [
+      {
+        "id": "G-001",
+        "object": "self",
+        "channel": "local",
+        "method": "push",
+        "level": "summary",
+        "card": "*",
+        "events": "*",
+        "duration": "forever",
+        "preset": true,
+        "note": "系统预置。站内横幅不算出域，不经过这里"
+      },
+      {
+        "id": "G-002",
+        "object": "doctor",
+        "channel": "wa",
+        "method": "push",
+        "level": "signal",
+        "card": "SJIA_FOCUS",
+        "events": [
+          "LEVEL_UP"
+        ],
+        "duration": "30d",
+        "example": true
+      }
+    ],
+    "agent_restate": "示意：智能体按读到的字段复述，原型用模板代替模型输出",
+    "phone_tail": {
+      "resource": "SOMALOOP_TAIL",
+      "zh": "Somaloop 四项近期读数",
+      "object": "phone_browser",
+      "channel": "phone_https",
+      "duration": "1h",
+      "purpose": "临时只读查看",
+      "codes": [
+        "SOMALOOP_HR",
+        "SOMALOOP_SPO2",
+        "SOMALOOP_SKIN_TEMP",
+        "SOMALOOP_HRV"
+      ],
+      "scope_zh": "心率、血氧、皮肤温度、HRV，以及单位、原始观测时间和必要连接状态；不含历史、病历、文件和设备控制"
+    },
+    "state_report": {
+      "resource": "STATE_REPORT",
+      "zh": "状态报告",
+      "object": "report_phone",
+      "channel": "report_https",
+      "duration": "30d",
+      "purpose": "查看授权后生成的指定订阅报告；通知仅提示报告就绪"
+    }
+  },
+  "_note_sources": "第四批 4b（产品负责人 10-12）：四类命名固定为 来自穿戴设备 / 来自文件报告 / 来自手机健康 / 来自手动录入；只开稳定来源，其余 hidden:true 空置，改一行即可显示。",
+  "apple_health": {
+    "_note": "示意。首版同步哪些指标由 产品负责人 与后端定，本线程不扩大范围；下面三项只为演示回执结构。",
+    "types": [
+      {
+        "code": "STEPS",
+        "zh": "步数",
+        "unit": "步"
+      },
+      {
+        "code": "RESTING_HR",
+        "zh": "静息心率",
+        "unit": "次/分"
+      },
+      {
+        "code": "SLEEP_HOURS",
+        "zh": "睡眠时长",
+        "unit": "小时"
+      }
+    ],
+    "upstream": {
+      "STEPS": "iPhone",
+      "RESTING_HR": "Oura",
+      "SLEEP_HOURS": "Oura"
+    },
+    "seq": {
+      "STEPS": [
+        "6210",
+        "8432",
+        "7105",
+        "9012",
+        "5530",
+        "10233",
+        "7788",
+        "8120"
+      ],
+      "RESTING_HR": [
+        "58",
+        "57",
+        "58",
+        "59",
+        "57",
+        "58",
+        "56",
+        "57"
+      ],
+      "SLEEP_HOURS": [
+        "7.2",
+        "6.8",
+        "7.5",
+        "6.9",
+        "8.1",
+        "7.0",
+        "7.4",
+        "6.6"
+      ]
+    },
+    "first_days": 7,
+    "code_ttl_min": 10,
+    "phone_name": "伙伴手机（示例）",
+    "transport": "LAN_HTTP"
+  },
+  "bridge": {
+    "phone_name": "我的 iPhone（示意）",
+    "privacy": "在同一个 Wi‑Fi 内传输，只保存在这台电脑上。",
+    "chain": "设备写进健康 App → 我在 iPhone 上点同步 → 星炬接收。前两步在手机上，星炬看不到。",
+    "code_minutes": 10
+  },
+  "advanced": [
+    {
+      "id": "retro",
+      "zh": "回溯式重计算",
+      "maturity": "beta",
+      "what": "用新的规则版本或更正后的数据，把过去的时点重算一遍；新旧结果并排，旧结果保留。",
+      "needs": "历次计算列表（A3）与重算结果（A4）。"
+    },
+    {
+      "id": "compete",
+      "zh": "竞争性解释",
+      "maturity": "beta",
+      "what": "同一组数据，按不同规则或假设各算一遍，并排列出各自成立与否、依据是哪些数据。",
+      "needs": "多规则 / 多假设的计算接口与结果字段。"
+    },
+    {
+      "id": "cf",
+      "zh": "反事实推断",
+      "maturity": "plan",
+      "what": "如果某项数据不同，结果会怎样。",
+      "needs": "—"
+    }
+  ],
+  "source_groups": {
+    "wearable": "指环、手环接入后，读数自动进入我的数据",
+    "file": "化验单、表格、基因测序数据",
+    "phone": "手机健康 App 里已经汇总的数据",
+    "manual": "自己填写的观察值"
+  },
+  "grant_types": [
+    {
+      "id": "self",
+      "zh": "授权给我自己",
+      "sub": "Mac 通知、手环；发到我自己的 Telegram",
+      "object": "self",
+      "maturity": "ready"
+    },
+    {
+      "id": "other",
+      "zh": "授权给他人",
+      "sub": "家属、医生；经 Telegram、WhatsApp",
+      "object": "family",
+      "maturity": "ready"
+    },
+    {
+      "id": "agent",
+      "zh": "授权给我的智能体",
+      "sub": "本机智能体经 MCP 只读",
+      "object": "my_agent",
+      "maturity": "ready"
+    },
+    {
+      "id": "agent_other",
+      "zh": "授权给他人的智能体",
+      "sub": "医生的系统、研究项目",
+      "object": "other_agent",
+      "maturity": "dev"
+    }
+  ]
+}

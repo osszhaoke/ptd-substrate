@@ -1,0 +1,26 @@
+{
+  "instances": [
+    {
+      "key": "PARTNER",
+      "id": "partner-demo",
+      "name": "Sample space",
+      "tz": "Asia/Shanghai",
+      "kind": "DEMO",
+      "accept": [
+        "SYNTHETIC"
+      ],
+      "default_nature": "SYNTHETIC",
+      "replay": false,
+      "cards": []
+    }
+  ],
+  "band_bridge": false,
+  "starling": {
+    "enabled": false
+  },
+  "device_targets": {
+    "garmin": "PARTNER",
+    "qkeer": "PARTNER",
+    "somaloop_agent": "PARTNER"
+  }
+}

@@ -1,0 +1,3263 @@
+{
+ "schema": "h1-dictionary/0.1",
+ "version": "0.9",
+ "status": "PTDS_LOCAL",
+ "note_zh": "单位字面量逐字匹配，不做大小写、空格或 Unicode 归一化。新增代码或单位必须发布新版本，且只增不改。 0.2 为 PTDS 本地版（10-17 演示用），只在 0.1 上新增；正式契约 10-17 后定。 0.3 在 0.2 上补齐常见化验套餐（血常规、肝肾功、电解质、血脂、凝血、免疫、甲功）。 0.4 在 0.3 上补收缩压、舒张压、腰围、皮质醇，以及尿素的 mg/dL（BUN）写法。 0.5 补 Oura 夜间最低心率、卧床时长、入睡/醒来时刻、运动时长，以及糖化血红蛋白 mmol/mol、胆固醇 mg/dL 写法。 0.6 补 Oura 当天总消耗、活动消耗（千卡）。 0.7 补批量入库用的代码：苹果健康、Withings、连续血糖的当天汇总（最低、平均、最高、合计），以及 Withings 的体重、体脂率、血氧、呼吸、睡眠、血压、脉搏波速度；血糖 mg/dL 按 0.0555 换成 mmol/L。 0.8 补测试数据集化验单里出现、给了数值的指标：血常规补充、酶、血气、肿瘤标志物、自身抗体、细胞因子、淋巴细胞亚群、感染相关抗体；25-羟基维生素 D ng/mL 按 2.496 换成 nmol/L。 0.9 新增 Garmin 个人设备来源及明确字段；不将 Garmin 分数解释为医学结论。",
+ "codes": {
+  "FERRITIN": {
+   "label_zh": "铁蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "ng/mL",
+   "comparators_allowed": true,
+   "units": {
+    "ng/mL": "IDENTITY",
+    "ng/ml": "IDENTITY",
+    "μg/L": "IDENTITY",
+    "µg/L": "IDENTITY",
+    "ug/L": "IDENTITY"
+   }
+  },
+  "PLT": {
+   "label_zh": "血小板计数",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "×10^9/L",
+   "comparators_allowed": true,
+   "units": {
+    "×10^9/L": "IDENTITY",
+    "×10⁹/L": "IDENTITY",
+    "10^9/L": "IDENTITY",
+    "×10^3/μL": "IDENTITY",
+    "×10^3/µL": "IDENTITY",
+    "×10³/μL": "IDENTITY",
+    "×10³/µL": "IDENTITY",
+    "x10^9/L": "IDENTITY",
+    "X10^9/L": "IDENTITY",
+    "10*9/L": "IDENTITY",
+    "x10*9/L": "IDENTITY"
+   }
+  },
+  "AST": {
+   "label_zh": "天门冬氨酸氨基转移酶",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/L",
+   "comparators_allowed": true,
+   "units": {
+    "U/L": "IDENTITY",
+    "IU/L": "IDENTITY"
+   }
+  },
+  "TG": {
+   "label_zh": "甘油三酯",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mg/dL",
+   "comparators_allowed": true,
+   "units": {
+    "mg/dL": "IDENTITY",
+    "mg/dl": "IDENTITY",
+    "mmol/L": "SCALE:88.57",
+    "mmol/l": "SCALE:88.57"
+   }
+  },
+  "FIB": {
+   "label_zh": "纤维蛋白原",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mg/dL",
+   "comparators_allowed": true,
+   "units": {
+    "mg/dL": "IDENTITY",
+    "mg/dl": "IDENTITY",
+    "g/L": "SCALE:100",
+    "g/l": "SCALE:100"
+   }
+  },
+  "LDH": {
+   "label_zh": "乳酸脱氢酶",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/L",
+   "comparators_allowed": true,
+   "units": {
+    "U/L": "IDENTITY",
+    "IU/L": "IDENTITY"
+   }
+  },
+  "HB": {
+   "label_zh": "血红蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "g/L",
+   "comparators_allowed": true,
+   "units": {
+    "g/L": "IDENTITY",
+    "g/l": "IDENTITY",
+    "g/dL": "SCALE:10",
+    "g/dl": "SCALE:10"
+   }
+  },
+  "ANC": {
+   "label_zh": "中性粒细胞绝对计数",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "×10^9/L",
+   "comparators_allowed": true,
+   "units": {
+    "×10^9/L": "IDENTITY",
+    "×10⁹/L": "IDENTITY",
+    "10^9/L": "IDENTITY",
+    "×10^3/μL": "IDENTITY",
+    "×10^3/µL": "IDENTITY",
+    "×10³/μL": "IDENTITY",
+    "×10³/µL": "IDENTITY",
+    "x10^9/L": "IDENTITY",
+    "X10^9/L": "IDENTITY",
+    "10*9/L": "IDENTITY",
+    "x10*9/L": "IDENTITY"
+   }
+  },
+  "SCD25": {
+   "label_zh": "可溶性 CD25（sIL-2R）",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/mL",
+   "comparators_allowed": true,
+   "units": {
+    "U/mL": "IDENTITY",
+    "U/ml": "IDENTITY"
+   }
+  },
+  "TEMP": {
+   "label_zh": "体温",
+   "family": "VITAL",
+   "value_type": "DECIMAL",
+   "unit_canonical": "°C",
+   "comparators_allowed": false,
+   "units": {
+    "°C": "IDENTITY",
+    "℃": "IDENTITY",
+    "°F": "F_TO_C:Q4",
+    "℉": "F_TO_C:Q4"
+   }
+  },
+  "FEVER": {
+   "label_zh": "发热",
+   "family": "FLAG",
+   "value_type": "BOOLEAN",
+   "unit_canonical": null,
+   "comparators_allowed": false,
+   "units": {}
+  },
+  "SPLENOMEGALY": {
+   "label_zh": "脾大",
+   "family": "FLAG",
+   "value_type": "BOOLEAN",
+   "unit_canonical": null,
+   "comparators_allowed": false,
+   "units": {}
+  },
+  "CNS_INVOLVEMENT": {
+   "label_zh": "中枢神经系统受累",
+   "family": "FLAG",
+   "value_type": "BOOLEAN",
+   "unit_canonical": null,
+   "comparators_allowed": false,
+   "units": {}
+  },
+  "HEMORRHAGE": {
+   "label_zh": "出血表现",
+   "family": "FLAG",
+   "value_type": "BOOLEAN",
+   "unit_canonical": null,
+   "comparators_allowed": false,
+   "units": {}
+  },
+  "ARTHRITIS": {
+   "label_zh": "活动性关节炎",
+   "family": "FLAG",
+   "value_type": "BOOLEAN",
+   "unit_canonical": null,
+   "comparators_allowed": false,
+   "units": {}
+  },
+  "HEMOPHAGOCYTOSIS": {
+   "label_zh": "噬血现象",
+   "family": "FLAG",
+   "value_type": "BOOLEAN",
+   "unit_canonical": null,
+   "comparators_allowed": false,
+   "units": {}
+  },
+  "NK_LOW": {
+   "label_zh": "NK 细胞活性降低或缺失",
+   "family": "FLAG",
+   "value_type": "BOOLEAN",
+   "unit_canonical": null,
+   "comparators_allowed": false,
+   "units": {}
+  },
+  "SJIA_KNOWN_OR_SUSPECTED": {
+   "label_zh": "已知或疑似 sJIA",
+   "family": "FLAG",
+   "value_type": "BOOLEAN",
+   "unit_canonical": null,
+   "comparators_allowed": false,
+   "units": {}
+  },
+  "LAB_NOT_OTHERWISE_EXPLAINED": {
+   "label_zh": "化验异常无其他解释",
+   "family": "FLAG",
+   "value_type": "BOOLEAN",
+   "unit_canonical": null,
+   "comparators_allowed": false,
+   "units": {}
+  },
+  "WBC": {
+   "label_zh": "白细胞计数",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "×10^9/L",
+   "comparators_allowed": true,
+   "units": {
+    "×10^9/L": "IDENTITY",
+    "×10⁹/L": "IDENTITY",
+    "10^9/L": "IDENTITY",
+    "×10^3/μL": "IDENTITY",
+    "×10^3/µL": "IDENTITY",
+    "×10³/μL": "IDENTITY",
+    "×10³/µL": "IDENTITY",
+    "10^3/uL": "IDENTITY",
+    "x10^9/L": "IDENTITY",
+    "X10^9/L": "IDENTITY",
+    "10*9/L": "IDENTITY",
+    "x10*9/L": "IDENTITY"
+   }
+  },
+  "LYMPH": {
+   "label_zh": "淋巴细胞绝对值",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "×10^9/L",
+   "comparators_allowed": true,
+   "units": {
+    "×10^9/L": "IDENTITY",
+    "×10⁹/L": "IDENTITY",
+    "10^9/L": "IDENTITY",
+    "×10^3/μL": "IDENTITY",
+    "×10^3/µL": "IDENTITY",
+    "×10³/μL": "IDENTITY",
+    "×10³/µL": "IDENTITY",
+    "10^3/uL": "IDENTITY",
+    "x10^9/L": "IDENTITY",
+    "X10^9/L": "IDENTITY",
+    "10*9/L": "IDENTITY",
+    "x10*9/L": "IDENTITY"
+   }
+  },
+  "MONO": {
+   "label_zh": "单核细胞绝对值",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "×10^9/L",
+   "comparators_allowed": true,
+   "units": {
+    "×10^9/L": "IDENTITY",
+    "×10⁹/L": "IDENTITY",
+    "10^9/L": "IDENTITY",
+    "×10^3/μL": "IDENTITY",
+    "×10^3/µL": "IDENTITY",
+    "×10³/μL": "IDENTITY",
+    "×10³/µL": "IDENTITY",
+    "10^3/uL": "IDENTITY",
+    "x10^9/L": "IDENTITY",
+    "X10^9/L": "IDENTITY",
+    "10*9/L": "IDENTITY",
+    "x10*9/L": "IDENTITY"
+   }
+  },
+  "NEUT_PCT": {
+   "label_zh": "中性粒细胞百分比",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "LYMPH_PCT": {
+   "label_zh": "淋巴细胞百分比",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "RBC": {
+   "label_zh": "红细胞计数",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "×10^12/L",
+   "comparators_allowed": true,
+   "units": {
+    "×10^12/L": "IDENTITY",
+    "×10¹²/L": "IDENTITY",
+    "10^12/L": "IDENTITY",
+    "×10^6/μL": "IDENTITY",
+    "×10^6/µL": "IDENTITY",
+    "x10^12/L": "IDENTITY",
+    "X10^12/L": "IDENTITY",
+    "10*12/L": "IDENTITY"
+   }
+  },
+  "HCT": {
+   "label_zh": "红细胞压积",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "MCV": {
+   "label_zh": "平均红细胞体积",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "fL",
+   "comparators_allowed": true,
+   "units": {
+    "fL": "IDENTITY",
+    "fl": "IDENTITY"
+   }
+  },
+  "CRP": {
+   "label_zh": "C 反应蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mg/L",
+   "comparators_allowed": true,
+   "units": {
+    "mg/L": "IDENTITY",
+    "mg/l": "IDENTITY",
+    "mg/dL": "SCALE:10",
+    "mg/dl": "SCALE:10"
+   }
+  },
+  "HSCRP": {
+   "label_zh": "超敏 C 反应蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mg/L",
+   "comparators_allowed": true,
+   "units": {
+    "mg/L": "IDENTITY",
+    "mg/l": "IDENTITY"
+   }
+  },
+  "ESR": {
+   "label_zh": "红细胞沉降率",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mm/h",
+   "comparators_allowed": true,
+   "units": {
+    "mm/h": "IDENTITY",
+    "mm/H": "IDENTITY",
+    "mm/hr": "IDENTITY"
+   }
+  },
+  "PCT_PROCALCITONIN": {
+   "label_zh": "降钙素原",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "ng/mL",
+   "comparators_allowed": true,
+   "units": {
+    "ng/mL": "IDENTITY",
+    "ng/ml": "IDENTITY",
+    "μg/L": "IDENTITY",
+    "µg/L": "IDENTITY"
+   }
+  },
+  "IL6": {
+   "label_zh": "白介素 6",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pg/mL",
+   "comparators_allowed": true,
+   "units": {
+    "pg/mL": "IDENTITY",
+    "pg/ml": "IDENTITY",
+    "ng/L": "IDENTITY"
+   }
+  },
+  "ALT": {
+   "label_zh": "丙氨酸氨基转移酶",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/L",
+   "comparators_allowed": true,
+   "units": {
+    "U/L": "IDENTITY",
+    "IU/L": "IDENTITY",
+    "u/L": "IDENTITY"
+   }
+  },
+  "GGT": {
+   "label_zh": "γ-谷氨酰转移酶",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/L",
+   "comparators_allowed": true,
+   "units": {
+    "U/L": "IDENTITY",
+    "IU/L": "IDENTITY",
+    "u/L": "IDENTITY"
+   }
+  },
+  "ALP": {
+   "label_zh": "碱性磷酸酶",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/L",
+   "comparators_allowed": true,
+   "units": {
+    "U/L": "IDENTITY",
+    "IU/L": "IDENTITY",
+    "u/L": "IDENTITY"
+   }
+  },
+  "CK": {
+   "label_zh": "肌酸激酶",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/L",
+   "comparators_allowed": true,
+   "units": {
+    "U/L": "IDENTITY",
+    "IU/L": "IDENTITY",
+    "u/L": "IDENTITY"
+   }
+  },
+  "TBIL": {
+   "label_zh": "总胆红素",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "μmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "μmol/L": "IDENTITY",
+    "µmol/L": "IDENTITY",
+    "umol/L": "IDENTITY",
+    "mg/dL": "SCALE:17.1",
+    "mg/dl": "SCALE:17.1"
+   }
+  },
+  "ALB": {
+   "label_zh": "白蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "g/L",
+   "comparators_allowed": true,
+   "units": {
+    "g/L": "IDENTITY",
+    "g/l": "IDENTITY",
+    "g/dL": "SCALE:10",
+    "g/dl": "SCALE:10"
+   }
+  },
+  "CREA": {
+   "label_zh": "肌酐",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "μmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "μmol/L": "IDENTITY",
+    "µmol/L": "IDENTITY",
+    "umol/L": "IDENTITY",
+    "mg/dL": "SCALE:88.4",
+    "mg/dl": "SCALE:88.4"
+   }
+  },
+  "UREA": {
+   "label_zh": "尿素",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY",
+    "mg/dL": "SCALE:0.357",
+    "mg/dl": "SCALE:0.357"
+   }
+  },
+  "GLU": {
+   "label_zh": "葡萄糖",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "TC": {
+   "label_zh": "总胆固醇",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY",
+    "mg/dL": "SCALE:0.02586",
+    "mg/dl": "SCALE:0.02586"
+   }
+  },
+  "SODIUM": {
+   "label_zh": "钠",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "POTASSIUM": {
+   "label_zh": "钾",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "DDIMER": {
+   "label_zh": "D-二聚体",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mg/L",
+   "comparators_allowed": true,
+   "units": {
+    "mg/L": "IDENTITY",
+    "mg/L FEU": "IDENTITY",
+    "μg/mL": "IDENTITY",
+    "µg/mL": "IDENTITY",
+    "ug/mL": "IDENTITY"
+   }
+  },
+  "PT": {
+   "label_zh": "凝血酶原时间",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "s",
+   "comparators_allowed": true,
+   "units": {
+    "s": "IDENTITY",
+    "秒": "IDENTITY",
+    "sec": "IDENTITY"
+   }
+  },
+  "APTT": {
+   "label_zh": "活化部分凝血活酶时间",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "s",
+   "comparators_allowed": true,
+   "units": {
+    "s": "IDENTITY",
+    "秒": "IDENTITY",
+    "sec": "IDENTITY"
+   }
+  },
+  "INR": {
+   "label_zh": "国际标准化比值",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "1",
+   "comparators_allowed": true,
+   "units": {
+    "1": "IDENTITY",
+    "ratio": "IDENTITY"
+   }
+  },
+  "OURA_HR": {
+   "label_zh": "心率（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "OURA_RESTING_HR": {
+   "label_zh": "静息心率（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "OURA_HRV": {
+   "label_zh": "夜间心率变异性（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "ms",
+   "comparators_allowed": false,
+   "units": {
+    "ms": "IDENTITY"
+   }
+  },
+  "OURA_TEMP_DEV": {
+   "label_zh": "体温偏差（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "°C",
+   "comparators_allowed": false,
+   "units": {
+    "°C": "IDENTITY",
+    "℃": "IDENTITY",
+    "degC": "IDENTITY"
+   }
+  },
+  "OURA_RESP_RATE": {
+   "label_zh": "呼吸频率（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "次/分",
+   "comparators_allowed": false,
+   "units": {
+    "次/分": "IDENTITY",
+    "breaths/min": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "OURA_SPO2": {
+   "label_zh": "血氧（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": false,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "OURA_SLEEP_SCORE": {
+   "label_zh": "睡眠评分（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "score",
+   "comparators_allowed": false,
+   "units": {
+    "score": "IDENTITY"
+   }
+  },
+  "OURA_READINESS_SCORE": {
+   "label_zh": "准备度评分（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "score",
+   "comparators_allowed": false,
+   "units": {
+    "score": "IDENTITY"
+   }
+  },
+  "OURA_ACTIVITY_SCORE": {
+   "label_zh": "活动评分（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "score",
+   "comparators_allowed": false,
+   "units": {
+    "score": "IDENTITY"
+   }
+  },
+  "OURA_STEPS": {
+   "label_zh": "步数（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "steps",
+   "comparators_allowed": false,
+   "units": {
+    "steps": "IDENTITY",
+    "count": "IDENTITY",
+    "步": "IDENTITY"
+   }
+  },
+  "OURA_TOTAL_SLEEP": {
+   "label_zh": "总睡眠时长（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "min",
+   "comparators_allowed": false,
+   "units": {
+    "min": "IDENTITY"
+   }
+  },
+  "SOMALOOP_HR": {
+   "label_zh": "心率（Somaloop）",
+   "family": "DEVICE_SOMALOOP",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "SOMALOOP_SPO2": {
+   "label_zh": "血氧（Somaloop）",
+   "family": "DEVICE_SOMALOOP",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": false,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "SOMALOOP_HRV": {
+   "label_zh": "心率变异性（Somaloop）",
+   "family": "DEVICE_SOMALOOP",
+   "value_type": "DECIMAL",
+   "unit_canonical": "ms",
+   "comparators_allowed": false,
+   "units": {
+    "ms": "IDENTITY"
+   }
+  },
+  "SOMALOOP_SKIN_TEMP": {
+   "label_zh": "皮肤温度（Somaloop）",
+   "family": "DEVICE_SOMALOOP",
+   "value_type": "DECIMAL",
+   "unit_canonical": "°C",
+   "comparators_allowed": false,
+   "units": {
+    "°C": "IDENTITY",
+    "℃": "IDENTITY",
+    "degC": "IDENTITY"
+   }
+  },
+  "QKEER_HR": {
+   "label_zh": "心率（Qkeer）",
+   "family": "DEVICE_QKEER",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "QKEER_SPO2": {
+   "label_zh": "血氧（Qkeer）",
+   "family": "DEVICE_QKEER",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": false,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "QKEER_SKIN_TEMP": {
+   "label_zh": "体表温度（Qkeer）",
+   "family": "DEVICE_QKEER",
+   "value_type": "DECIMAL",
+   "unit_canonical": "°C",
+   "comparators_allowed": false,
+   "units": {
+    "°C": "IDENTITY",
+    "℃": "IDENTITY",
+    "degC": "IDENTITY"
+   }
+  },
+  "AH_HR": {
+   "label_zh": "心率（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "AH_RESTING_HR": {
+   "label_zh": "静息心率（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "AH_HRV": {
+   "label_zh": "心率变异性（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "ms",
+   "comparators_allowed": false,
+   "units": {
+    "ms": "IDENTITY"
+   }
+  },
+  "AH_SPO2": {
+   "label_zh": "血氧（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": false,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "AH_RESP_RATE": {
+   "label_zh": "呼吸频率（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "次/分",
+   "comparators_allowed": false,
+   "units": {
+    "次/分": "IDENTITY",
+    "breaths/min": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "AH_BODY_TEMP": {
+   "label_zh": "体温（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "°C",
+   "comparators_allowed": false,
+   "units": {
+    "°C": "IDENTITY",
+    "℃": "IDENTITY",
+    "degC": "IDENTITY"
+   }
+  },
+  "AH_STEPS": {
+   "label_zh": "步数（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "steps",
+   "comparators_allowed": false,
+   "units": {
+    "steps": "IDENTITY",
+    "count": "IDENTITY",
+    "步": "IDENTITY"
+   }
+  },
+  "AH_ACTIVE_ENERGY": {
+   "label_zh": "活动能量（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "kcal",
+   "comparators_allowed": false,
+   "units": {
+    "kcal": "IDENTITY",
+    "Cal": "IDENTITY"
+   }
+  },
+  "AH_SLEEP": {
+   "label_zh": "睡眠时长（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "min",
+   "comparators_allowed": false,
+   "units": {
+    "min": "IDENTITY"
+   }
+  },
+  "AH_WEIGHT": {
+   "label_zh": "体重（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "kg",
+   "comparators_allowed": false,
+   "units": {
+    "kg": "IDENTITY"
+   }
+  },
+  "EO": {
+   "label_zh": "嗜酸性粒细胞绝对值",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "×10^9/L",
+   "comparators_allowed": true,
+   "units": {
+    "×10^9/L": "IDENTITY",
+    "×10⁹/L": "IDENTITY",
+    "10^9/L": "IDENTITY",
+    "×10^3/μL": "IDENTITY",
+    "×10^3/µL": "IDENTITY",
+    "×10³/μL": "IDENTITY",
+    "×10³/µL": "IDENTITY",
+    "10^3/uL": "IDENTITY",
+    "x10^9/L": "IDENTITY",
+    "X10^9/L": "IDENTITY",
+    "10*9/L": "IDENTITY",
+    "x10*9/L": "IDENTITY"
+   }
+  },
+  "BASO": {
+   "label_zh": "嗜碱性粒细胞绝对值",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "×10^9/L",
+   "comparators_allowed": true,
+   "units": {
+    "×10^9/L": "IDENTITY",
+    "×10⁹/L": "IDENTITY",
+    "10^9/L": "IDENTITY",
+    "×10^3/μL": "IDENTITY",
+    "×10^3/µL": "IDENTITY",
+    "×10³/μL": "IDENTITY",
+    "×10³/µL": "IDENTITY",
+    "10^3/uL": "IDENTITY",
+    "x10^9/L": "IDENTITY",
+    "X10^9/L": "IDENTITY",
+    "10*9/L": "IDENTITY",
+    "x10*9/L": "IDENTITY"
+   }
+  },
+  "MONO_PCT": {
+   "label_zh": "单核细胞百分比",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "EO_PCT": {
+   "label_zh": "嗜酸性粒细胞百分比",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "BASO_PCT": {
+   "label_zh": "嗜碱性粒细胞百分比",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "MCH": {
+   "label_zh": "平均红细胞血红蛋白量",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pg",
+   "comparators_allowed": true,
+   "units": {
+    "pg": "IDENTITY"
+   }
+  },
+  "MCHC": {
+   "label_zh": "平均红细胞血红蛋白浓度",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "g/L",
+   "comparators_allowed": true,
+   "units": {
+    "g/L": "IDENTITY",
+    "g/l": "IDENTITY",
+    "g/dL": "SCALE:10",
+    "g/dl": "SCALE:10"
+   }
+  },
+  "RDW_CV": {
+   "label_zh": "红细胞分布宽度 CV",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "RDW_SD": {
+   "label_zh": "红细胞分布宽度 SD",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "fL",
+   "comparators_allowed": true,
+   "units": {
+    "fL": "IDENTITY",
+    "fl": "IDENTITY"
+   }
+  },
+  "MPV": {
+   "label_zh": "平均血小板体积",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "fL",
+   "comparators_allowed": true,
+   "units": {
+    "fL": "IDENTITY",
+    "fl": "IDENTITY"
+   }
+  },
+  "PDW": {
+   "label_zh": "血小板分布宽度",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY",
+    "fL": "IDENTITY"
+   }
+  },
+  "TP": {
+   "label_zh": "总蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "g/L",
+   "comparators_allowed": true,
+   "units": {
+    "g/L": "IDENTITY",
+    "g/l": "IDENTITY",
+    "g/dL": "SCALE:10",
+    "g/dl": "SCALE:10"
+   }
+  },
+  "GLB": {
+   "label_zh": "球蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "g/L",
+   "comparators_allowed": true,
+   "units": {
+    "g/L": "IDENTITY",
+    "g/l": "IDENTITY",
+    "g/dL": "SCALE:10",
+    "g/dl": "SCALE:10"
+   }
+  },
+  "AG_RATIO": {
+   "label_zh": "白球比",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "1",
+   "comparators_allowed": true,
+   "units": {
+    "1": "IDENTITY",
+    "ratio": "IDENTITY"
+   }
+  },
+  "DBIL": {
+   "label_zh": "直接胆红素",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "μmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "μmol/L": "IDENTITY",
+    "µmol/L": "IDENTITY",
+    "umol/L": "IDENTITY",
+    "μmol/l": "IDENTITY",
+    "mg/dL": "SCALE:17.1"
+   }
+  },
+  "IBIL": {
+   "label_zh": "间接胆红素",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "μmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "μmol/L": "IDENTITY",
+    "µmol/L": "IDENTITY",
+    "umol/L": "IDENTITY",
+    "μmol/l": "IDENTITY",
+    "mg/dL": "SCALE:17.1"
+   }
+  },
+  "TBA": {
+   "label_zh": "总胆汁酸",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "μmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "μmol/L": "IDENTITY",
+    "µmol/L": "IDENTITY",
+    "umol/L": "IDENTITY",
+    "μmol/l": "IDENTITY"
+   }
+  },
+  "PA": {
+   "label_zh": "前白蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mg/L",
+   "comparators_allowed": true,
+   "units": {
+    "mg/L": "IDENTITY",
+    "mg/l": "IDENTITY"
+   }
+  },
+  "CHE": {
+   "label_zh": "胆碱酯酶",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/L",
+   "comparators_allowed": true,
+   "units": {
+    "U/L": "IDENTITY",
+    "IU/L": "IDENTITY",
+    "u/L": "IDENTITY"
+   }
+  },
+  "UA": {
+   "label_zh": "尿酸",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "μmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "μmol/L": "IDENTITY",
+    "µmol/L": "IDENTITY",
+    "umol/L": "IDENTITY",
+    "μmol/l": "IDENTITY"
+   }
+  },
+  "CYSC": {
+   "label_zh": "胱抑素 C",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mg/L",
+   "comparators_allowed": true,
+   "units": {
+    "mg/L": "IDENTITY",
+    "mg/l": "IDENTITY"
+   }
+  },
+  "EGFR": {
+   "label_zh": "估算肾小球滤过率",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mL/min/1.73m²",
+   "comparators_allowed": true,
+   "units": {
+    "mL/min/1.73m²": "IDENTITY",
+    "ml/min/1.73m2": "IDENTITY",
+    "mL/min/1.73m2": "IDENTITY",
+    "ml/min": "IDENTITY"
+   }
+  },
+  "CO2CP": {
+   "label_zh": "二氧化碳结合力",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "CHLORIDE": {
+   "label_zh": "氯",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "CALCIUM": {
+   "label_zh": "钙",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "MAGNESIUM": {
+   "label_zh": "镁",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "PHOSPHORUS": {
+   "label_zh": "无机磷",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "HDL_C": {
+   "label_zh": "高密度脂蛋白胆固醇",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY",
+    "mg/dL": "SCALE:0.02586",
+    "mg/dl": "SCALE:0.02586"
+   }
+  },
+  "LDL_C": {
+   "label_zh": "低密度脂蛋白胆固醇",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "APOA1": {
+   "label_zh": "载脂蛋白 A1",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "g/L",
+   "comparators_allowed": true,
+   "units": {
+    "g/L": "IDENTITY",
+    "g/l": "IDENTITY",
+    "g/dL": "SCALE:10",
+    "g/dl": "SCALE:10"
+   }
+  },
+  "APOB": {
+   "label_zh": "载脂蛋白 B",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "g/L",
+   "comparators_allowed": true,
+   "units": {
+    "g/L": "IDENTITY",
+    "g/l": "IDENTITY",
+    "g/dL": "SCALE:10",
+    "g/dl": "SCALE:10"
+   }
+  },
+  "HBA1C": {
+   "label_zh": "糖化血红蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY",
+    "mmol/mol": "IFCC_TO_NGSP:Q2"
+   }
+  },
+  "HBDH": {
+   "label_zh": "α-羟丁酸脱氢酶",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/L",
+   "comparators_allowed": true,
+   "units": {
+    "U/L": "IDENTITY",
+    "IU/L": "IDENTITY",
+    "u/L": "IDENTITY"
+   }
+  },
+  "TT": {
+   "label_zh": "凝血酶时间",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "s",
+   "comparators_allowed": true,
+   "units": {
+    "s": "IDENTITY",
+    "秒": "IDENTITY",
+    "sec": "IDENTITY"
+   }
+  },
+  "FDP": {
+   "label_zh": "纤维蛋白(原)降解产物",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mg/L",
+   "comparators_allowed": true,
+   "units": {
+    "mg/L": "IDENTITY",
+    "mg/l": "IDENTITY",
+    "μg/mL": "IDENTITY",
+    "µg/mL": "IDENTITY",
+    "ug/mL": "IDENTITY"
+   }
+  },
+  "IGG": {
+   "label_zh": "免疫球蛋白 G",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "g/L",
+   "comparators_allowed": true,
+   "units": {
+    "g/L": "IDENTITY",
+    "g/l": "IDENTITY",
+    "g/dL": "SCALE:10",
+    "g/dl": "SCALE:10"
+   }
+  },
+  "IGA": {
+   "label_zh": "免疫球蛋白 A",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "g/L",
+   "comparators_allowed": true,
+   "units": {
+    "g/L": "IDENTITY",
+    "g/l": "IDENTITY",
+    "g/dL": "SCALE:10",
+    "g/dl": "SCALE:10"
+   }
+  },
+  "IGM": {
+   "label_zh": "免疫球蛋白 M",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "g/L",
+   "comparators_allowed": true,
+   "units": {
+    "g/L": "IDENTITY",
+    "g/l": "IDENTITY",
+    "g/dL": "SCALE:10",
+    "g/dl": "SCALE:10"
+   }
+  },
+  "C3": {
+   "label_zh": "补体 C3",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "g/L",
+   "comparators_allowed": true,
+   "units": {
+    "g/L": "IDENTITY",
+    "g/l": "IDENTITY",
+    "g/dL": "SCALE:10",
+    "g/dl": "SCALE:10"
+   }
+  },
+  "C4": {
+   "label_zh": "补体 C4",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "g/L",
+   "comparators_allowed": true,
+   "units": {
+    "g/L": "IDENTITY",
+    "g/l": "IDENTITY",
+    "g/dL": "SCALE:10",
+    "g/dl": "SCALE:10"
+   }
+  },
+  "ASO": {
+   "label_zh": "抗链球菌溶血素 O",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "IU/mL",
+   "comparators_allowed": true,
+   "units": {
+    "IU/mL": "IDENTITY",
+    "IU/ml": "IDENTITY",
+    "U/mL": "IDENTITY"
+   }
+  },
+  "RF": {
+   "label_zh": "类风湿因子",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "IU/mL",
+   "comparators_allowed": true,
+   "units": {
+    "IU/mL": "IDENTITY",
+    "IU/ml": "IDENTITY",
+    "U/mL": "IDENTITY"
+   }
+  },
+  "SAA": {
+   "label_zh": "血清淀粉样蛋白 A",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mg/L",
+   "comparators_allowed": true,
+   "units": {
+    "mg/L": "IDENTITY",
+    "mg/l": "IDENTITY"
+   }
+  },
+  "SI": {
+   "label_zh": "血清铁",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "μmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "μmol/L": "IDENTITY",
+    "µmol/L": "IDENTITY",
+    "umol/L": "IDENTITY",
+    "μmol/l": "IDENTITY"
+   }
+  },
+  "TRF": {
+   "label_zh": "转铁蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "g/L",
+   "comparators_allowed": true,
+   "units": {
+    "g/L": "IDENTITY",
+    "g/l": "IDENTITY",
+    "g/dL": "SCALE:10",
+    "g/dl": "SCALE:10"
+   }
+  },
+  "TSH": {
+   "label_zh": "促甲状腺激素",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mIU/L",
+   "comparators_allowed": true,
+   "units": {
+    "mIU/L": "IDENTITY",
+    "μIU/mL": "IDENTITY",
+    "µIU/mL": "IDENTITY",
+    "uIU/mL": "IDENTITY",
+    "mU/L": "IDENTITY"
+   }
+  },
+  "FT3": {
+   "label_zh": "游离三碘甲状腺原氨酸",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "pmol/L": "IDENTITY",
+    "pmol/l": "IDENTITY"
+   }
+  },
+  "FT4": {
+   "label_zh": "游离甲状腺素",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "pmol/L": "IDENTITY",
+    "pmol/l": "IDENTITY"
+   }
+  },
+  "SBP": {
+   "label_zh": "收缩压",
+   "family": "VITAL",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmHg",
+   "comparators_allowed": true,
+   "units": {
+    "mmHg": "IDENTITY",
+    "mmhg": "IDENTITY",
+    "mm Hg": "IDENTITY",
+    "毫米汞柱": "IDENTITY",
+    "kPa": "SCALE:7.5006"
+   }
+  },
+  "DBP": {
+   "label_zh": "舒张压",
+   "family": "VITAL",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmHg",
+   "comparators_allowed": true,
+   "units": {
+    "mmHg": "IDENTITY",
+    "mmhg": "IDENTITY",
+    "mm Hg": "IDENTITY",
+    "毫米汞柱": "IDENTITY",
+    "kPa": "SCALE:7.5006"
+   }
+  },
+  "WAIST": {
+   "label_zh": "腰围",
+   "family": "VITAL",
+   "value_type": "DECIMAL",
+   "unit_canonical": "cm",
+   "comparators_allowed": true,
+   "units": {
+    "cm": "IDENTITY",
+    "厘米": "IDENTITY",
+    "m": "SCALE:100"
+   }
+  },
+  "CORTISOL": {
+   "label_zh": "皮质醇",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "nmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "nmol/L": "IDENTITY",
+    "nmol/l": "IDENTITY",
+    "μg/dL": "SCALE:27.59",
+    "µg/dL": "SCALE:27.59",
+    "ug/dL": "SCALE:27.59"
+   }
+  },
+  "OURA_LOWEST_HR": {
+   "label_zh": "夜间最低心率（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY"
+   }
+  },
+  "OURA_TIME_IN_BED": {
+   "label_zh": "卧床时长（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "min",
+   "comparators_allowed": false,
+   "units": {
+    "min": "IDENTITY"
+   }
+  },
+  "OURA_BEDTIME_START": {
+   "label_zh": "入睡时刻（Oura，距当天 0 点分钟）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "min",
+   "comparators_allowed": false,
+   "units": {
+    "min": "IDENTITY"
+   }
+  },
+  "OURA_BEDTIME_END": {
+   "label_zh": "醒来时刻（Oura，距当天 0 点分钟）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "min",
+   "comparators_allowed": false,
+   "units": {
+    "min": "IDENTITY"
+   }
+  },
+  "OURA_WORKOUT_MIN": {
+   "label_zh": "运动时长（Oura，每次）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "min",
+   "comparators_allowed": false,
+   "units": {
+    "min": "IDENTITY"
+   }
+  },
+  "OURA_CAL_TOTAL": {
+   "label_zh": "当天总消耗（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "kcal",
+   "comparators_allowed": false,
+   "units": {
+    "kcal": "IDENTITY"
+   }
+  },
+  "OURA_CAL_ACTIVE": {
+   "label_zh": "活动消耗（Oura）",
+   "family": "DEVICE_OURA",
+   "value_type": "DECIMAL",
+   "unit_canonical": "kcal",
+   "comparators_allowed": false,
+   "units": {
+    "kcal": "IDENTITY"
+   }
+  },
+  "AH_HR_DAY_MIN": {
+   "label_zh": "当天最低心率（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "AH_HR_DAY_AVG": {
+   "label_zh": "当天平均心率（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "AH_HR_DAY_MAX": {
+   "label_zh": "当天最高心率（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "AH_GLUCOSE_DAY_MIN": {
+   "label_zh": "当天最低血糖（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": false,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY",
+    "mg/dL": "SCALE:0.0555",
+    "mg/dl": "SCALE:0.0555"
+   }
+  },
+  "AH_GLUCOSE_DAY_AVG": {
+   "label_zh": "当天平均血糖（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": false,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY",
+    "mg/dL": "SCALE:0.0555",
+    "mg/dl": "SCALE:0.0555"
+   }
+  },
+  "AH_GLUCOSE_DAY_MAX": {
+   "label_zh": "当天最高血糖（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": false,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY",
+    "mg/dL": "SCALE:0.0555",
+    "mg/dl": "SCALE:0.0555"
+   }
+  },
+  "AH_STEPS_DAY": {
+   "label_zh": "当天步数（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "steps",
+   "comparators_allowed": false,
+   "units": {
+    "steps": "IDENTITY",
+    "count": "IDENTITY",
+    "步": "IDENTITY"
+   }
+  },
+  "AH_ACTIVE_ENERGY_DAY": {
+   "label_zh": "当天活动能量（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "kcal",
+   "comparators_allowed": false,
+   "units": {
+    "kcal": "IDENTITY",
+    "Cal": "IDENTITY"
+   }
+  },
+  "AH_SLEEP_DAY": {
+   "label_zh": "当晚睡眠时长（苹果健康）",
+   "family": "PHONE_HEALTH",
+   "value_type": "DECIMAL",
+   "unit_canonical": "min",
+   "comparators_allowed": false,
+   "units": {
+    "min": "IDENTITY"
+   }
+  },
+  "WITHINGS_HR_DAY_MIN": {
+   "label_zh": "当天最低心率（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "WITHINGS_HR_DAY_AVG": {
+   "label_zh": "当天平均心率（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "WITHINGS_HR_DAY_MAX": {
+   "label_zh": "当天最高心率（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "WITHINGS_GLUCOSE_DAY_MIN": {
+   "label_zh": "当天最低血糖（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": false,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY",
+    "mg/dL": "SCALE:0.0555",
+    "mg/dl": "SCALE:0.0555"
+   }
+  },
+  "WITHINGS_GLUCOSE_DAY_AVG": {
+   "label_zh": "当天平均血糖（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": false,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY",
+    "mg/dL": "SCALE:0.0555",
+    "mg/dl": "SCALE:0.0555"
+   }
+  },
+  "WITHINGS_GLUCOSE_DAY_MAX": {
+   "label_zh": "当天最高血糖（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": false,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY",
+    "mg/dL": "SCALE:0.0555",
+    "mg/dl": "SCALE:0.0555"
+   }
+  },
+  "WITHINGS_STEPS_DAY": {
+   "label_zh": "当天步数（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "steps",
+   "comparators_allowed": false,
+   "units": {
+    "steps": "IDENTITY",
+    "count": "IDENTITY",
+    "步": "IDENTITY"
+   }
+  },
+  "WITHINGS_WEIGHT": {
+   "label_zh": "体重（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "kg",
+   "comparators_allowed": false,
+   "units": {
+    "kg": "IDENTITY"
+   }
+  },
+  "WITHINGS_FAT_PCT": {
+   "label_zh": "体脂率（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": false,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "WITHINGS_SPO2": {
+   "label_zh": "血氧（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": false,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "WITHINGS_RESP_RATE": {
+   "label_zh": "呼吸频率（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "次/分",
+   "comparators_allowed": false,
+   "units": {
+    "次/分": "IDENTITY",
+    "breaths/min": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "WITHINGS_SLEEP": {
+   "label_zh": "睡眠时长（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "min",
+   "comparators_allowed": false,
+   "units": {
+    "min": "IDENTITY"
+   }
+  },
+  "WITHINGS_SLEEP_HR_AVG": {
+   "label_zh": "睡眠平均心率（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "WITHINGS_SBP": {
+   "label_zh": "收缩压（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmHg",
+   "comparators_allowed": false,
+   "units": {
+    "mmHg": "IDENTITY"
+   }
+  },
+  "WITHINGS_DBP": {
+   "label_zh": "舒张压（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmHg",
+   "comparators_allowed": false,
+   "units": {
+    "mmHg": "IDENTITY"
+   }
+  },
+  "WITHINGS_BP_HR": {
+   "label_zh": "测血压时的心率（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY",
+    "次/分": "IDENTITY",
+    "count/min": "IDENTITY"
+   }
+  },
+  "WITHINGS_PWV": {
+   "label_zh": "脉搏波速度（Withings）",
+   "family": "DEVICE_WITHINGS",
+   "value_type": "DECIMAL",
+   "unit_canonical": "m/s",
+   "comparators_allowed": false,
+   "units": {
+    "m/s": "IDENTITY"
+   }
+  },
+  "CGM_GLUCOSE_DAY_MIN": {
+   "label_zh": "当天最低血糖（连续血糖）",
+   "family": "DEVICE_CGM",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": false,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY",
+    "mg/dL": "SCALE:0.0555",
+    "mg/dl": "SCALE:0.0555"
+   }
+  },
+  "CGM_GLUCOSE_DAY_AVG": {
+   "label_zh": "当天平均血糖（连续血糖）",
+   "family": "DEVICE_CGM",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": false,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY",
+    "mg/dL": "SCALE:0.0555",
+    "mg/dl": "SCALE:0.0555"
+   }
+  },
+  "CGM_GLUCOSE_DAY_MAX": {
+   "label_zh": "当天最高血糖（连续血糖）",
+   "family": "DEVICE_CGM",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": false,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY",
+    "mg/dL": "SCALE:0.0555",
+    "mg/dl": "SCALE:0.0555"
+   }
+  },
+  "PLATELETCRIT": {
+   "label_zh": "血小板压积",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "P_LCR": {
+   "label_zh": "大型血小板比率",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "P_LCC": {
+   "label_zh": "大型血小板数目",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "×10^9/L",
+   "comparators_allowed": true,
+   "units": {
+    "×10^9/L": "IDENTITY",
+    "10^9/L": "IDENTITY",
+    "x10^9/L": "IDENTITY",
+    "X10^9/L": "IDENTITY"
+   }
+  },
+  "RET_PCT": {
+   "label_zh": "网织红细胞百分比",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "CKMB": {
+   "label_zh": "肌酸激酶同工酶 MB",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/L",
+   "comparators_allowed": true,
+   "units": {
+    "U/L": "IDENTITY",
+    "IU/L": "IDENTITY",
+    "u/L": "IDENTITY"
+   }
+  },
+  "ADA": {
+   "label_zh": "腺苷脱氨酶",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/L",
+   "comparators_allowed": true,
+   "units": {
+    "U/L": "IDENTITY",
+    "IU/L": "IDENTITY",
+    "u/L": "IDENTITY"
+   }
+  },
+  "LIPASE": {
+   "label_zh": "脂肪酶",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/L",
+   "comparators_allowed": true,
+   "units": {
+    "U/L": "IDENTITY",
+    "IU/L": "IDENTITY",
+    "u/L": "IDENTITY"
+   }
+  },
+  "AMY": {
+   "label_zh": "淀粉酶",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/L",
+   "comparators_allowed": true,
+   "units": {
+    "U/L": "IDENTITY",
+    "IU/L": "IDENTITY",
+    "u/L": "IDENTITY"
+   }
+  },
+  "MYO": {
+   "label_zh": "肌红蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "ng/mL",
+   "comparators_allowed": true,
+   "units": {
+    "ng/mL": "IDENTITY",
+    "ng/ml": "IDENTITY",
+    "μg/L": "IDENTITY",
+    "µg/L": "IDENTITY",
+    "ug/L": "IDENTITY"
+   }
+  },
+  "RBP": {
+   "label_zh": "视黄醇结合蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mg/L",
+   "comparators_allowed": true,
+   "units": {
+    "mg/L": "IDENTITY",
+    "mg/l": "IDENTITY"
+   }
+  },
+  "BHB": {
+   "label_zh": "β-羟丁酸",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "VITD_25OH": {
+   "label_zh": "25-羟基维生素 D",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "nmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "nmol/L": "IDENTITY",
+    "nmol/l": "IDENTITY",
+    "ng/mL": "SCALE:2.496",
+    "ng/ml": "SCALE:2.496"
+   }
+  },
+  "IGE_TOTAL": {
+   "label_zh": "总免疫球蛋白 E",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "IU/mL",
+   "comparators_allowed": true,
+   "units": {
+    "IU/mL": "IDENTITY",
+    "IU/ml": "IDENTITY"
+   }
+  },
+  "LIPEMIA_IDX": {
+   "label_zh": "血清脂浊指数",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "1",
+   "comparators_allowed": true,
+   "units": {
+    "1": "IDENTITY",
+    "ratio": "IDENTITY"
+   }
+  },
+  "ICTERUS_IDX": {
+   "label_zh": "血清黄疸指数",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "1",
+   "comparators_allowed": true,
+   "units": {
+    "1": "IDENTITY",
+    "ratio": "IDENTITY"
+   }
+  },
+  "HEMOLYSIS_IDX": {
+   "label_zh": "血清溶血指数",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "1",
+   "comparators_allowed": true,
+   "units": {
+    "1": "IDENTITY",
+    "ratio": "IDENTITY"
+   }
+  },
+  "PTA": {
+   "label_zh": "凝血酶原活动度",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "PTR": {
+   "label_zh": "凝血酶原比率",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "1",
+   "comparators_allowed": true,
+   "units": {
+    "1": "IDENTITY",
+    "ratio": "IDENTITY"
+   }
+  },
+  "AT3": {
+   "label_zh": "抗凝血酶 III 活性",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "BG_PH": {
+   "label_zh": "酸碱度（血气）",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "1",
+   "comparators_allowed": true,
+   "units": {
+    "1": "IDENTITY",
+    "ratio": "IDENTITY"
+   }
+  },
+  "PCO2": {
+   "label_zh": "二氧化碳分压",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmHg",
+   "comparators_allowed": true,
+   "units": {
+    "mmHg": "IDENTITY"
+   }
+  },
+  "PO2": {
+   "label_zh": "氧分压",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmHg",
+   "comparators_allowed": true,
+   "units": {
+    "mmHg": "IDENTITY"
+   }
+  },
+  "SO2": {
+   "label_zh": "血氧饱和度（血气）",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "HCO3": {
+   "label_zh": "碳酸氢根",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "SBC": {
+   "label_zh": "标准碳酸氢根",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "ABE": {
+   "label_zh": "实际碱剩余",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "SBE": {
+   "label_zh": "标准碱剩余",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "ANION_GAP": {
+   "label_zh": "阴离子间隙",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "METHB": {
+   "label_zh": "高铁血红蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "COHB": {
+   "label_zh": "碳氧血红蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "ICA": {
+   "label_zh": "离子钙",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "LACTATE": {
+   "label_zh": "乳酸",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mmol/L",
+   "comparators_allowed": true,
+   "units": {
+    "mmol/L": "IDENTITY",
+    "mmol/l": "IDENTITY"
+   }
+  },
+  "NSE": {
+   "label_zh": "神经元特异性烯醇化酶",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "ng/mL",
+   "comparators_allowed": true,
+   "units": {
+    "ng/mL": "IDENTITY",
+    "ng/ml": "IDENTITY",
+    "μg/L": "IDENTITY",
+    "µg/L": "IDENTITY",
+    "ug/L": "IDENTITY"
+   }
+  },
+  "CA125": {
+   "label_zh": "糖类抗原 125",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/mL",
+   "comparators_allowed": true,
+   "units": {
+    "U/mL": "IDENTITY",
+    "U/ml": "IDENTITY",
+    "AU/mL": "IDENTITY"
+   }
+  },
+  "CA199": {
+   "label_zh": "糖类抗原 19-9",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/mL",
+   "comparators_allowed": true,
+   "units": {
+    "U/mL": "IDENTITY",
+    "U/ml": "IDENTITY",
+    "AU/mL": "IDENTITY"
+   }
+  },
+  "CEA": {
+   "label_zh": "癌胚抗原",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "ng/mL",
+   "comparators_allowed": true,
+   "units": {
+    "ng/mL": "IDENTITY",
+    "ng/ml": "IDENTITY",
+    "μg/L": "IDENTITY",
+    "µg/L": "IDENTITY",
+    "ug/L": "IDENTITY"
+   }
+  },
+  "AFP": {
+   "label_zh": "甲胎蛋白",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "ng/mL",
+   "comparators_allowed": true,
+   "units": {
+    "ng/mL": "IDENTITY",
+    "ng/ml": "IDENTITY",
+    "μg/L": "IDENTITY",
+    "µg/L": "IDENTITY",
+    "ug/L": "IDENTITY"
+   }
+  },
+  "HCG": {
+   "label_zh": "人绒毛膜促性腺激素",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mIU/mL",
+   "comparators_allowed": true,
+   "units": {
+    "mIU/mL": "IDENTITY",
+    "mIU/ml": "IDENTITY",
+    "IU/L": "IDENTITY"
+   }
+  },
+  "ANTI_CCP": {
+   "label_zh": "抗环瓜氨酸肽抗体",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "RU/mL",
+   "comparators_allowed": true,
+   "units": {
+    "RU/mL": "IDENTITY",
+    "RU/ml": "IDENTITY",
+    "U/mL": "IDENTITY",
+    "U/ml": "IDENTITY"
+   }
+  },
+  "ANTI_DSDNA": {
+   "label_zh": "抗双链 DNA 抗体",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "IU/mL",
+   "comparators_allowed": true,
+   "units": {
+    "IU/mL": "IDENTITY",
+    "IU/ml": "IDENTITY"
+   }
+  },
+  "ACL_IGG": {
+   "label_zh": "抗心磷脂抗体 IgG",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/mL",
+   "comparators_allowed": true,
+   "units": {
+    "U/mL": "IDENTITY",
+    "U/ml": "IDENTITY",
+    "AU/mL": "IDENTITY"
+   }
+  },
+  "ACL_IGM": {
+   "label_zh": "抗心磷脂抗体 IgM",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/mL",
+   "comparators_allowed": true,
+   "units": {
+    "U/mL": "IDENTITY",
+    "U/ml": "IDENTITY",
+    "AU/mL": "IDENTITY"
+   }
+  },
+  "HLA_B27": {
+   "label_zh": "HLA-B27",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "IL1B": {
+   "label_zh": "白介素 1β",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pg/mL",
+   "comparators_allowed": true,
+   "units": {
+    "pg/mL": "IDENTITY",
+    "pg/ml": "IDENTITY",
+    "ng/L": "IDENTITY"
+   }
+  },
+  "IL2": {
+   "label_zh": "白介素 2",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pg/mL",
+   "comparators_allowed": true,
+   "units": {
+    "pg/mL": "IDENTITY",
+    "pg/ml": "IDENTITY",
+    "ng/L": "IDENTITY"
+   }
+  },
+  "IL4": {
+   "label_zh": "白介素 4",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pg/mL",
+   "comparators_allowed": true,
+   "units": {
+    "pg/mL": "IDENTITY",
+    "pg/ml": "IDENTITY",
+    "ng/L": "IDENTITY"
+   }
+  },
+  "IL5": {
+   "label_zh": "白介素 5",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pg/mL",
+   "comparators_allowed": true,
+   "units": {
+    "pg/mL": "IDENTITY",
+    "pg/ml": "IDENTITY",
+    "ng/L": "IDENTITY"
+   }
+  },
+  "IL8": {
+   "label_zh": "白介素 8",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pg/mL",
+   "comparators_allowed": true,
+   "units": {
+    "pg/mL": "IDENTITY",
+    "pg/ml": "IDENTITY",
+    "ng/L": "IDENTITY"
+   }
+  },
+  "IL10": {
+   "label_zh": "白介素 10",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pg/mL",
+   "comparators_allowed": true,
+   "units": {
+    "pg/mL": "IDENTITY",
+    "pg/ml": "IDENTITY",
+    "ng/L": "IDENTITY"
+   }
+  },
+  "IL12": {
+   "label_zh": "白介素 12",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pg/mL",
+   "comparators_allowed": true,
+   "units": {
+    "pg/mL": "IDENTITY",
+    "pg/ml": "IDENTITY",
+    "ng/L": "IDENTITY"
+   }
+  },
+  "IL17": {
+   "label_zh": "白介素 17",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pg/mL",
+   "comparators_allowed": true,
+   "units": {
+    "pg/mL": "IDENTITY",
+    "pg/ml": "IDENTITY",
+    "ng/L": "IDENTITY"
+   }
+  },
+  "TNFA": {
+   "label_zh": "肿瘤坏死因子 α",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pg/mL",
+   "comparators_allowed": true,
+   "units": {
+    "pg/mL": "IDENTITY",
+    "pg/ml": "IDENTITY",
+    "ng/L": "IDENTITY"
+   }
+  },
+  "IFNG": {
+   "label_zh": "干扰素 γ",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pg/mL",
+   "comparators_allowed": true,
+   "units": {
+    "pg/mL": "IDENTITY",
+    "pg/ml": "IDENTITY",
+    "ng/L": "IDENTITY"
+   }
+  },
+  "IFNA": {
+   "label_zh": "干扰素 α",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "pg/mL",
+   "comparators_allowed": true,
+   "units": {
+    "pg/mL": "IDENTITY",
+    "pg/ml": "IDENTITY",
+    "ng/L": "IDENTITY"
+   }
+  },
+  "CD3_PCT": {
+   "label_zh": "CD3+ T 细胞百分比",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "CD4_PCT": {
+   "label_zh": "CD4+ T 细胞百分比",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "CD8_PCT": {
+   "label_zh": "CD8+ T 细胞百分比",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "CD19_PCT": {
+   "label_zh": "CD19+ B 细胞百分比",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "NK_PCT": {
+   "label_zh": "NK 细胞百分比",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": true,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "CD4_CD8": {
+   "label_zh": "CD4/CD8 比值",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "1",
+   "comparators_allowed": true,
+   "units": {
+    "1": "IDENTITY",
+    "ratio": "IDENTITY"
+   }
+  },
+  "CD3_ABS": {
+   "label_zh": "CD3+ T 细胞绝对计数",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "cells/μL",
+   "comparators_allowed": true,
+   "units": {
+    "cells/μL": "IDENTITY",
+    "cells/µL": "IDENTITY",
+    "cells/ul": "IDENTITY",
+    "cells/uL": "IDENTITY",
+    "个/μL": "IDENTITY",
+    "个/uL": "IDENTITY",
+    "/μL": "IDENTITY",
+    "/uL": "IDENTITY"
+   }
+  },
+  "CD4_ABS": {
+   "label_zh": "CD4+ T 细胞绝对计数",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "cells/μL",
+   "comparators_allowed": true,
+   "units": {
+    "cells/μL": "IDENTITY",
+    "cells/µL": "IDENTITY",
+    "cells/ul": "IDENTITY",
+    "cells/uL": "IDENTITY",
+    "个/μL": "IDENTITY",
+    "个/uL": "IDENTITY",
+    "/μL": "IDENTITY",
+    "/uL": "IDENTITY"
+   }
+  },
+  "CD8_ABS": {
+   "label_zh": "CD8+ T 细胞绝对计数",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "cells/μL",
+   "comparators_allowed": true,
+   "units": {
+    "cells/μL": "IDENTITY",
+    "cells/µL": "IDENTITY",
+    "cells/ul": "IDENTITY",
+    "cells/uL": "IDENTITY",
+    "个/μL": "IDENTITY",
+    "个/uL": "IDENTITY",
+    "/μL": "IDENTITY",
+    "/uL": "IDENTITY"
+   }
+  },
+  "CD19_ABS": {
+   "label_zh": "CD19+ B 细胞绝对计数",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "cells/μL",
+   "comparators_allowed": true,
+   "units": {
+    "cells/μL": "IDENTITY",
+    "cells/µL": "IDENTITY",
+    "cells/ul": "IDENTITY",
+    "cells/uL": "IDENTITY",
+    "个/μL": "IDENTITY",
+    "个/uL": "IDENTITY",
+    "/μL": "IDENTITY",
+    "/uL": "IDENTITY"
+   }
+  },
+  "NK_ABS": {
+   "label_zh": "NK 细胞绝对计数",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "cells/μL",
+   "comparators_allowed": true,
+   "units": {
+    "cells/μL": "IDENTITY",
+    "cells/µL": "IDENTITY",
+    "cells/ul": "IDENTITY",
+    "cells/uL": "IDENTITY",
+    "个/μL": "IDENTITY",
+    "个/uL": "IDENTITY",
+    "/μL": "IDENTITY",
+    "/uL": "IDENTITY"
+   }
+  },
+  "TP_AB": {
+   "label_zh": "梅毒螺旋体特异性抗体",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "HCV_AB": {
+   "label_zh": "丙型肝炎病毒抗体",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "HIV_AGAB": {
+   "label_zh": "人类免疫缺陷病毒抗原抗体",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "HBSAG_Q": {
+   "label_zh": "乙型肝炎病毒表面抗原（定量）",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "IU/mL",
+   "comparators_allowed": true,
+   "units": {
+    "IU/mL": "IDENTITY",
+    "IU/ml": "IDENTITY"
+   }
+  },
+  "HBSAB_Q": {
+   "label_zh": "乙型肝炎病毒表面抗体（定量）",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "mIU/mL",
+   "comparators_allowed": true,
+   "units": {
+    "mIU/mL": "IDENTITY",
+    "mIU/ml": "IDENTITY",
+    "IU/L": "IDENTITY"
+   }
+  },
+  "HBEAG_Q": {
+   "label_zh": "乙型肝炎病毒 e 抗原（定量）",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "HBEAB_Q": {
+   "label_zh": "乙型肝炎病毒 e 抗体（定量）",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "TOXO_IGM": {
+   "label_zh": "弓形体抗体 IgM",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "TOXO_IGG": {
+   "label_zh": "弓形体抗体 IgG",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "IU/mL",
+   "comparators_allowed": true,
+   "units": {
+    "IU/mL": "IDENTITY",
+    "IU/ml": "IDENTITY"
+   }
+  },
+  "RUV_IGM": {
+   "label_zh": "风疹病毒抗体 IgM",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "RUV_IGG": {
+   "label_zh": "风疹病毒抗体 IgG",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "IU/mL",
+   "comparators_allowed": true,
+   "units": {
+    "IU/mL": "IDENTITY",
+    "IU/ml": "IDENTITY"
+   }
+  },
+  "CMV_IGM": {
+   "label_zh": "巨细胞病毒抗体 IgM",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "CMV_IGG": {
+   "label_zh": "巨细胞病毒抗体 IgG",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/mL",
+   "comparators_allowed": true,
+   "units": {
+    "U/mL": "IDENTITY",
+    "U/ml": "IDENTITY",
+    "AU/mL": "IDENTITY"
+   }
+  },
+  "HSV1_IGM": {
+   "label_zh": "单纯疱疹病毒 I 型抗体 IgM",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "HSV2_IGM": {
+   "label_zh": "单纯疱疹病毒 II 型抗体 IgM",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "HSV1_IGG": {
+   "label_zh": "单纯疱疹病毒 I 型抗体 IgG",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "HSV2_IGG": {
+   "label_zh": "单纯疱疹病毒 II 型抗体 IgG",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "EBV_EA_IGM": {
+   "label_zh": "EB 病毒早期抗原抗体 IgM",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "EBV_NA_IGG": {
+   "label_zh": "EB 病毒核抗原抗体 IgG",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/mL",
+   "comparators_allowed": true,
+   "units": {
+    "U/mL": "IDENTITY",
+    "U/ml": "IDENTITY",
+    "AU/mL": "IDENTITY"
+   }
+  },
+  "EBV_VCA_IGG": {
+   "label_zh": "EB 病毒衣壳抗原抗体 IgG",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/mL",
+   "comparators_allowed": true,
+   "units": {
+    "U/mL": "IDENTITY",
+    "U/ml": "IDENTITY",
+    "AU/mL": "IDENTITY"
+   }
+  },
+  "EBV_VCA_IGM": {
+   "label_zh": "EB 病毒衣壳抗原抗体 IgM",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "U/mL",
+   "comparators_allowed": true,
+   "units": {
+    "U/mL": "IDENTITY",
+    "U/ml": "IDENTITY",
+    "AU/mL": "IDENTITY"
+   }
+  },
+  "MP_IGM": {
+   "label_zh": "肺炎支原体抗体 IgM",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "CP_IGM": {
+   "label_zh": "肺炎衣原体抗体 IgM",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "LP_AB": {
+   "label_zh": "嗜肺军团菌抗体",
+   "family": "LAB",
+   "value_type": "DECIMAL",
+   "unit_canonical": "COI",
+   "comparators_allowed": true,
+   "units": {
+    "COI": "IDENTITY",
+    "COl": "IDENTITY",
+    "S/CO": "IDENTITY",
+    "s/co": "IDENTITY",
+    "Index": "IDENTITY",
+    "index": "IDENTITY"
+   }
+  },
+  "GARMIN_STEPS": {
+   "label_zh": "Garmin 步数",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "steps",
+   "comparators_allowed": false,
+   "units": {
+    "steps": "IDENTITY"
+   }
+  },
+  "GARMIN_CAL_TOTAL": {
+   "label_zh": "Garmin 总消耗",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "kcal",
+   "comparators_allowed": false,
+   "units": {
+    "kcal": "IDENTITY"
+   }
+  },
+  "GARMIN_CAL_ACTIVE": {
+   "label_zh": "Garmin 活动消耗",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "kcal",
+   "comparators_allowed": false,
+   "units": {
+    "kcal": "IDENTITY"
+   }
+  },
+  "GARMIN_RESTING_HR": {
+   "label_zh": "Garmin 静息心率",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY"
+   }
+  },
+  "GARMIN_HR_MIN": {
+   "label_zh": "Garmin 日最低心率",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY"
+   }
+  },
+  "GARMIN_HR_MAX": {
+   "label_zh": "Garmin 日最高心率",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY"
+   }
+  },
+  "GARMIN_STRESS_AVG": {
+   "label_zh": "Garmin 日平均压力",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "score",
+   "comparators_allowed": false,
+   "units": {
+    "score": "IDENTITY"
+   }
+  },
+  "GARMIN_BATTERY_MAX": {
+   "label_zh": "Garmin 身体电量最高值",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "score",
+   "comparators_allowed": false,
+   "units": {
+    "score": "IDENTITY"
+   }
+  },
+  "GARMIN_BATTERY_MIN": {
+   "label_zh": "Garmin 身体电量最低值",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "score",
+   "comparators_allowed": false,
+   "units": {
+    "score": "IDENTITY"
+   }
+  },
+  "GARMIN_HRV_NIGHT": {
+   "label_zh": "Garmin 夜间平均 HRV",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "ms",
+   "comparators_allowed": false,
+   "units": {
+    "ms": "IDENTITY"
+   }
+  },
+  "GARMIN_SLEEP_SECONDS": {
+   "label_zh": "Garmin 睡眠时长",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "s",
+   "comparators_allowed": false,
+   "units": {
+    "s": "IDENTITY"
+   }
+  },
+  "GARMIN_SLEEP_DEEP": {
+   "label_zh": "Garmin 深睡时长",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "s",
+   "comparators_allowed": false,
+   "units": {
+    "s": "IDENTITY"
+   }
+  },
+  "GARMIN_SLEEP_LIGHT": {
+   "label_zh": "Garmin 浅睡时长",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "s",
+   "comparators_allowed": false,
+   "units": {
+    "s": "IDENTITY"
+   }
+  },
+  "GARMIN_SLEEP_REM": {
+   "label_zh": "Garmin REM 睡眠时长",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "s",
+   "comparators_allowed": false,
+   "units": {
+    "s": "IDENTITY"
+   }
+  },
+  "GARMIN_SLEEP_AWAKE": {
+   "label_zh": "Garmin 清醒时长",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "s",
+   "comparators_allowed": false,
+   "units": {
+    "s": "IDENTITY"
+   }
+  },
+  "GARMIN_SPO2_AVG": {
+   "label_zh": "Garmin 日平均血氧",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": false,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "GARMIN_SPO2_MIN": {
+   "label_zh": "Garmin 日最低血氧",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "%",
+   "comparators_allowed": false,
+   "units": {
+    "%": "IDENTITY"
+   }
+  },
+  "GARMIN_RESP_AWAKE": {
+   "label_zh": "Garmin 清醒平均呼吸率",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "brpm",
+   "comparators_allowed": false,
+   "units": {
+    "brpm": "IDENTITY"
+   }
+  },
+  "GARMIN_RESP_SLEEP": {
+   "label_zh": "Garmin 睡眠平均呼吸率",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "brpm",
+   "comparators_allowed": false,
+   "units": {
+    "brpm": "IDENTITY"
+   }
+  },
+  "GARMIN_HR": {
+   "label_zh": "Garmin 心率",
+   "family": "DEVICE_GARMIN",
+   "value_type": "DECIMAL",
+   "unit_canonical": "bpm",
+   "comparators_allowed": false,
+   "units": {
+    "bpm": "IDENTITY"
+   }
+  }
+ }
+}
