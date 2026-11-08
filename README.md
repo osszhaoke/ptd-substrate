@@ -121,7 +121,7 @@ python3 -B -I tests/release_smoke.py
 | 可穿戴设备 | [Oura](docs/guides/oura.md) · [Garmin](docs/guides/garmin.md) · [Whoop](docs/guides/whoop.md) |
 | 产品、架构、隐私与操作 | [文档索引](docs/README.md) |
 | 伙伴指南 | [健康与隐私](docs/community/health-and-privacy.md) · [试用任务清单](docs/community/trial-tasks.md) · [卸载与删除](docs/community/uninstall.md) · [常见问题](docs/community/faq.md) |
-| 隐私、支持与计划 | [威胁模型](docs/community/threat-model.md) · [反馈指南](docs/community/feedback.md) · [更新方式](docs/community/updates.md) · [路线图草案](docs/community/roadmap.md) |
+| 隐私、支持与计划 | [威胁模型](docs/community/threat-model.md) · [反馈指南](docs/community/feedback.md) · [更新方式](docs/community/updates.md) · [路线图](docs/community/roadmap.md) |
 | Agent 安装 | [安装协议](AGENT_INSTALL.md) |
 
 [参与贡献](CONTRIBUTING.md) · [行为准则](CODE_OF_CONDUCT.md) · [安全报告](SECURITY.md) · [变更记录](CHANGELOG.md) · [Apache-2.0](LICENSE) · [第三方声明](NOTICE)

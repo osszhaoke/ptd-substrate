@@ -23,4 +23,4 @@
 - [威胁模型](community/threat-model.md)
 - [反馈指南](community/feedback.md)
 - [更新方式](community/updates.md)
-- [路线图草案](community/roadmap.md)
+- [路线图](community/roadmap.md)

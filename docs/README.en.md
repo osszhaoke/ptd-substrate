@@ -23,4 +23,4 @@
 - [Threat model](community/threat-model.en.md)
 - [Feedback guide](community/feedback.en.md)
 - [Updates](community/updates.en.md)
-- [Roadmap draft](community/roadmap.en.md)
+- [Roadmap](community/roadmap.en.md)

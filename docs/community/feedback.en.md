@@ -14,4 +14,4 @@ Prefer a single view of the fictional space. Crop out other windows, private add
 
 ## After you submit
 
-Maintainers will do their best to reply. Add new steps to the original issue or say if the problem has stopped. If you later find a possible security issue, send further details through the private channel.
+Maintainers will do their best to reply. There is no fixed response time. Add new steps to the original issue or say if the problem has stopped. If you later find a possible security issue, send further details through the private channel.

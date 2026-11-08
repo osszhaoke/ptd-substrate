@@ -121,7 +121,7 @@ Maintainers can run `python3 -B scripts/build_release.py --out ../ptd-substrate-
 | Wearables | [Oura](docs/guides/oura.en.md) · [Garmin](docs/guides/garmin.en.md) · [Whoop](docs/guides/whoop.en.md) |
 | Product, architecture, privacy and operations | [Documentation](docs/README.en.md) |
 | Partner guides | [Health and privacy](docs/community/health-and-privacy.en.md) · [Trial tasks](docs/community/trial-tasks.en.md) · [Uninstall and delete](docs/community/uninstall.en.md) · [Frequently asked questions](docs/community/faq.en.md) |
-| Privacy, support and plans | [Threat model](docs/community/threat-model.en.md) · [Feedback guide](docs/community/feedback.en.md) · [Updates](docs/community/updates.en.md) · [Roadmap draft](docs/community/roadmap.en.md) |
+| Privacy, support and plans | [Threat model](docs/community/threat-model.en.md) · [Feedback guide](docs/community/feedback.en.md) · [Updates](docs/community/updates.en.md) · [Roadmap](docs/community/roadmap.en.md) |
 | Agent installation | [Installation protocol](AGENT_INSTALL.en.md) |
 
 [Contributing](CONTRIBUTING.en.md) · [Code of conduct](CODE_OF_CONDUCT.en.md) · [Security](SECURITY.en.md) · [Changelog](CHANGELOG.en.md) · [Apache-2.0](LICENSE) · [Third-party notices](NOTICE)
