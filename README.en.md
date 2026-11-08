@@ -40,7 +40,7 @@ python3 -B app/tools/partner_trial_setup.py --data-root "$SPACE_ROOT" --output "
 python3 -B scripts/start_trial.py --root "$SPACE_ROOT" --config "$TRIAL_CONFIG"
 ```
 
-In the installer, choose the key PARTNER and enter the same ID, display name and time zone. Choose 1 for fictional data. Check the target and type YES yourself to create the configuration. Open the printed 127.0.0.1 address, choose your language and open the instance. Go to My sources → Files and reports → CSV file. Select data/sample-import.csv. Review both rows. Only you can confirm the save. Use Ctrl+C to quit.
+In the installer, choose the key PARTNER and enter the same ID, display name and time zone. Choose 1 for fictional data. Check the target and type YES yourself to create the configuration. Open the printed 127.0.0.1 address, choose your language and open the instance. Go to My sources → Files and reports → CSV file. Select data/sample-import.csv to review both rows. Their times match so the app refuses to save them together. For the save exercise, make a fictional copy with two times using the [trial tasks](docs/community/trial-tasks.en.md). Check both rows and confirm the save yourself. Use Ctrl+C to quit.
 
 | Module | English | Purpose |
 | --- | --- | --- |
@@ -51,13 +51,15 @@ In the installer, choose the key PARTNER and enter the same ID, display name and
 
 For a new personal space that you explicitly want to accept both types, use a new folder, pass `--kind REAL --accept REAL SYNTHETIC` when creating it and choose option 2 in the installer. An existing space with a different policy is rejected. Its data are untouched.
 
+Before you import a file, read [Health and privacy](docs/community/health-and-privacy.en.md). For a first visit, follow [Trial tasks](docs/community/trial-tasks.en.md).
+
 ## Capabilities and evidence
 | Feature | Evidence | In this release |
 | --- | --- | --- |
 | Raw genetic files | Fictional checks only | Import, look up, check coverage and delete by file. No interpretation. |
 | Local lab report OCR with review before save | Fictional verification only | Review every row and its source before saving. |
-| CSV, review and save | Fictional checks only | Both identical sample rows reach review. You confirm the save. |
-| Lists, details and sources | Fictional checks only | View records and their original sources in the selected space. |
+| CSV, review and save | Fictional checks only | Both original rows reach review. You can check and save a fictional copy with two times. |
+| Lists, details and sources | Fictional checks only | View readings and their source relationships in the selected space. Use your own copy to check the original CSV text. |
 | Corrections and deletions | Fictional checks only | Corrections and withdrawals append a history version. |
 | Language selection and switching | Fictional checks only | Choose a language at first launch or use the globe later. Inner pages show the disclaimer in that language. |
 | Oura | Fictional checks only | Use your own app and local credentials for this instance. You approve access yourself. |
@@ -75,7 +77,7 @@ For a new personal space that you explicitly want to accept both types, use a ne
 - Your health data stays on this computer. Remove personal health information and credentials before sharing feedback.
 - Include a screenshot and the steps you took. Cover any personal information in the screenshot.
 
-This guide is for the trial candidate. Final user acceptance and distribution are pending.
+[The installation archive is available](https://github.com/osszhaoke/ptd-substrate/releases/tag/v0.3.0-alpha.2). Maintainer acceptance is pending.
 
 You can correct or delete a record. After deletion, it disappears from the current list. Its earlier versions remain available in the history. Check the selected instance and record first.
 
@@ -118,6 +120,8 @@ Maintainers can run `python3 -B scripts/build_release.py --out ../ptd-substrate-
 | Setup and first launch | [Install](docs/guides/install-macos.en.md) · [First launch](docs/guides/first-run.en.md) |
 | Wearables | [Oura](docs/guides/oura.en.md) · [Garmin](docs/guides/garmin.en.md) · [Whoop](docs/guides/whoop.en.md) |
 | Product, architecture, privacy and operations | [Documentation](docs/README.en.md) |
+| Partner guides | [Health and privacy](docs/community/health-and-privacy.en.md) · [Trial tasks](docs/community/trial-tasks.en.md) · [Uninstall and delete](docs/community/uninstall.en.md) · [Frequently asked questions](docs/community/faq.en.md) |
+| Privacy, support and plans | [Threat model](docs/community/threat-model.en.md) · [Feedback guide](docs/community/feedback.en.md) · [Updates](docs/community/updates.en.md) · [Roadmap](docs/community/roadmap.en.md) |
 | Agent installation | [Installation protocol](AGENT_INSTALL.en.md) |
 
 [Contributing](CONTRIBUTING.en.md) · [Code of conduct](CODE_OF_CONDUCT.en.md) · [Security](SECURITY.en.md) · [Changelog](CHANGELOG.en.md) · [Apache-2.0](LICENSE) · [Third-party notices](NOTICE)

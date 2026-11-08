@@ -13,3 +13,14 @@
 - [Oura](guides/oura.md)
 - [Garmin](guides/garmin.md)
 - [Whoop](guides/whoop.md)
+
+## 伙伴指南
+
+- [健康与隐私](community/health-and-privacy.md)
+- [试用任务清单](community/trial-tasks.md)
+- [卸载与删除](community/uninstall.md)
+- [常见问题](community/faq.md)
+- [威胁模型](community/threat-model.md)
+- [反馈指南](community/feedback.md)
+- [更新方式](community/updates.md)
+- [路线图](community/roadmap.md)

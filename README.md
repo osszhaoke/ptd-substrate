@@ -40,7 +40,7 @@ python3 -B app/tools/partner_trial_setup.py --data-root "$SPACE_ROOT" --output "
 python3 -B scripts/start_trial.py --root "$SPACE_ROOT" --config "$TRIAL_CONFIG"
 ```
 
-在交互安装器中选定键 PARTNER，输入上面同一实例标识、显示名和时区，选 1（虚构）。核对后由本人输入 YES 创建配置。在终端给出的 127.0.0.1 地址首开选择语言，打开实例 → 我的数源 → 来自文件报告 → CSV 表格，选择 data/sample-import.csv。先核对两行；只有本人可以确认保存。用 Ctrl+C 退出。
+在交互安装器中选定键 PARTNER，输入上面同一实例标识、显示名和时区，选 1（虚构）。核对后由本人输入 YES 创建配置。在终端给出的 127.0.0.1 地址首开选择语言，打开实例 → 我的数源 → 来自文件报告 → CSV 表格，可选择 data/sample-import.csv 查看两行待核对记录。原文件中的两个时刻相同，同时保存会被拒绝。要练习保存，请按[试用任务](docs/community/trial-tasks.md)生成有两个时刻的虚构副本，对照两行后由本人确认。用 Ctrl+C 退出。
 
 | 中文模块 | 英文名 | 作用 |
 | --- | --- | --- |
@@ -51,13 +51,15 @@ python3 -B scripts/start_trial.py --root "$SPACE_ROOT" --config "$TRIAL_CONFIG"
 
 如需新建接收真实和虚构两种性质的本人空间，请在全新目录用 `--kind REAL --accept REAL SYNTHETIC` 建库，安装时选 2。原有空间与所选范围不一致时会被拒绝，原数据保留。
 
+导入文件前，先读[健康与隐私](docs/community/health-and-privacy.md)。第一次体验可以跟着[试用任务清单](docs/community/trial-tasks.md)逐步操作。
+
 ## 能力与证据
 | 功能 | 证据状态 | 本版体验 |
 | --- | --- | --- |
 | 基因原始文件 | 仅虚构验证 | 导入、查询、覆盖核对及按文件删除，不解读。 |
 | 化验单本机识别（OCR，本人逐项核对后保存） | 仅虚构验证 | 保存前逐项核对候选值与原文位置。 |
-| CSV、本人核对与保存 | 仅虚构验证 | 随包重复两行样例可到待确认。由本人按下保存。 |
-| 列表、明细与来源 | 仅虚构验证 | 查看选定空间的读数与原文。 |
+| CSV、本人核对与保存 | 仅虚构验证 | 原样样例可核对两行；有两个时刻的虚构副本可由本人确认后保存。 |
+| 列表、明细与来源 | 仅虚构验证 | 查看选定空间的读数与来源关系。CSV 练习的原文可用你保留的文件核对。 |
 | 更正与删除 | 仅虚构验证 | 更正与撤回追加历史版本。 |
 | 中英文与首开选择 | 仅虚构验证 | 首开选语言，顶部地球可再切换。内页显示对应语言的免责声明。 |
 | Oura | 仅虚构验证 | 自建应用，按实例保存本机凭据，真实授权由本人操作。 |
@@ -75,7 +77,7 @@ python3 -B scripts/start_trial.py --root "$SPACE_ROOT" --config "$TRIAL_CONFIG"
 - 健康数据保存在本机；不要在反馈中附上未经脱敏的健康内容或凭据。
 - 反馈请提供截图和操作步骤。截图中如有个人信息，请先遮盖。
 
-本文件是发行候选说明，尚未经过最终本人验收，不代表已经发包。
+[本版安装包已发布](https://github.com/osszhaoke/ptd-substrate/releases/tag/v0.3.0-alpha.2)。维护者本人验收仍待登记。
 
 你可以更正或删除一条数据。删除后它会从当前列表消失，历史版本仍可追溯。请先核对选中的实例和记录。
 
@@ -118,6 +120,8 @@ python3 -B -I tests/release_smoke.py
 | 安装与首开 | [安装](docs/guides/install-macos.md) · [首开](docs/guides/first-run.md) |
 | 可穿戴设备 | [Oura](docs/guides/oura.md) · [Garmin](docs/guides/garmin.md) · [Whoop](docs/guides/whoop.md) |
 | 产品、架构、隐私与操作 | [文档索引](docs/README.md) |
+| 伙伴指南 | [健康与隐私](docs/community/health-and-privacy.md) · [试用任务清单](docs/community/trial-tasks.md) · [卸载与删除](docs/community/uninstall.md) · [常见问题](docs/community/faq.md) |
+| 隐私、支持与计划 | [威胁模型](docs/community/threat-model.md) · [反馈指南](docs/community/feedback.md) · [更新方式](docs/community/updates.md) · [路线图](docs/community/roadmap.md) |
 | Agent 安装 | [安装协议](AGENT_INSTALL.md) |
 
 [参与贡献](CONTRIBUTING.md) · [行为准则](CODE_OF_CONDUCT.md) · [安全报告](SECURITY.md) · [变更记录](CHANGELOG.md) · [Apache-2.0](LICENSE) · [第三方声明](NOTICE)

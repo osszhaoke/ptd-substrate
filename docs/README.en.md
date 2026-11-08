@@ -13,3 +13,14 @@
 - [Oura](guides/oura.en.md)
 - [Garmin](guides/garmin.en.md)
 - [Whoop](guides/whoop.en.md)
+
+## Community guides
+
+- [Health and privacy](community/health-and-privacy.en.md)
+- [Trial tasks](community/trial-tasks.en.md)
+- [Uninstall and delete](community/uninstall.en.md)
+- [Frequently asked questions](community/faq.en.md)
+- [Threat model](community/threat-model.en.md)
+- [Feedback guide](community/feedback.en.md)
+- [Updates](community/updates.en.md)
+- [Roadmap](community/roadmap.en.md)
