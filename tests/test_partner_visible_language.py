@@ -39,7 +39,7 @@ class VisibleLanguage(unittest.TestCase):
                         port=(rt/'port').read_text();self.assertNotEqual(port,'8780')
                         csv=rt/'data/sample-import.csv';csv.parent.mkdir();csv.write_text('code,value,unit,comparator,observed_at,observed_date,tz\n'+'TEMP,36.50,°C,,2026-11-01T08:00:00+08:00,,\n'*2)
                         code=base/f'walk-{rev}.js'
-                        code.write_text('window.walkLang='+json.dumps(language)+';window.keepShots='+json.dumps(bool(out and data))+';\n'+(TOOLS/'scan-screen.js').read_text()+'\n'+(TOOLS/'walk.js').read_text())
+                        code.write_text('window.walkLang='+json.dumps(language)+';window.walkHasData='+json.dumps(bool(data))+';window.keepShots='+json.dumps(bool(out and data))+';\n'+(TOOLS/'scan-screen.js').read_text()+'\n'+(TOOLS/'walk.js').read_text())
                         cp=subprocess.run([str(binary),str(code),port,'walk',str(ev),str(csv)],env=e,capture_output=True,text=True,timeout=135)
                         (ev/'browser.log').write_text(cp.stderr+'\n'+cp.stdout)
                         v=json.loads(cp.stdout);self.assertFalse(v.get('error'),v.get('error'))

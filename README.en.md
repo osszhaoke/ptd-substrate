@@ -1,11 +1,11 @@
-# PTDS v0.3.0-alpha.1
+# PTDS v0.3.0-alpha.2
 
 [简体中文](README.md)
 
 
 Local-first personal health data space for macOS. Trial release. [Chinese guide](README.md).
 
-[![CI](https://github.com/osszhaoke/ptd-substrate/actions/workflows/ci.yml/badge.svg)](https://github.com/osszhaoke/ptd-substrate/actions/workflows/ci.yml) [![Apache-2.0](docs/assets/license.svg)](LICENSE) [![v0.3.0-alpha.1](docs/assets/version.svg)](CHANGELOG.en.md)
+[![CI](https://github.com/osszhaoke/ptd-substrate/actions/workflows/ci.yml/badge.svg)](https://github.com/osszhaoke/ptd-substrate/actions/workflows/ci.yml) [![Apache-2.0](docs/assets/license.svg)](LICENSE) [![v0.3.0-alpha.2](docs/assets/version.svg)](CHANGELOG.en.md)
 
 Your health data stay on your Mac. By default the app runs offline and listens only on loopback. The results are signals for your attention. They do not provide a diagnosis or treatment advice.
 
@@ -21,7 +21,7 @@ Your health data stay on your Mac. By default the app runs offline and listens o
 StarTorch manages data and sources. StarTrack shows state cards. StarCluster organizes access and collaboration. Start with a CSV file and review the records yourself. Sharing is closed in the partner edition. User names and original records keep their original text.
 
 ## Quick start
-Download the archive and external SHA256SUMS from the [Release](https://github.com/osszhaoke/ptd-substrate/releases/tag/v0.3.0-alpha.1). Run `shasum -a 256 -c SHA256SUMS` in the download directory. Extract the verified archive, enter its directory and run `sh scripts/verify_release.sh`. The installer uses the Python standard library. The rehearsal used macOS 27.0.1 on Apple silicon with Python 3.14.8. Other combinations are unverified. See the [installation guide](AGENT_INSTALL.en.md).
+Download the archive and external SHA256SUMS from the [Release](https://github.com/osszhaoke/ptd-substrate/releases/tag/v0.3.0-alpha.2). Run `shasum -a 256 -c SHA256SUMS` in the download directory. Extract the verified archive, enter its directory and run `sh scripts/verify_release.sh`. The installer uses the Python standard library. The rehearsal used macOS 27.0.1 on Apple silicon with Python 3.14.8. Other combinations are unverified. See the [installation guide](AGENT_INSTALL.en.md).
 
 Choose the folder, display name and time zone yourself. Use a new folder and an unused instance ID. Run as a regular user.
 ```sh
@@ -55,6 +55,7 @@ For a new personal space that you explicitly want to accept both types, use a ne
 | Feature | Evidence | In this release |
 | --- | --- | --- |
 | Raw genetic files | Fictional checks only | Import, look up, check coverage and delete by file. No interpretation. |
+| Local lab report OCR with review before save | Fictional verification only | Review every row and its source before saving. |
 | CSV, review and save | Fictional checks only | Both identical sample rows reach review. You confirm the save. |
 | Lists, details and sources | Fictional checks only | View records and their original sources in the selected space. |
 | Corrections and deletions | Fictional checks only | Corrections and withdrawals append a history version. |
@@ -78,7 +79,7 @@ This guide is for the trial candidate. Final user acceptance and distribution ar
 
 You can correct or delete a record. After deletion, it disappears from the current list. Its earlier versions remain available in the history. Check the selected instance and record first.
 
-This edition hides sharing and permissions, the state lab and rule editor, card pins and settings, thresholds, batch import, lab report recognition, medication, evidence packages, notes, phone sharing, the wristband bridge, the reminder calendar, profile editing and device panel settings. Device guides remain available. Garmin and Whoop offer read-only checks. Starling is unavailable in the partner edition.
+This edition hides sharing and permissions, the state lab and rule editor, card pins and settings, thresholds, batch import, medication, evidence packages, notes, phone sharing, the wristband bridge, the reminder calendar, profile editing and device panel settings. Device guides remain available. Garmin and Whoop offer read-only checks. Starling is unavailable in the partner edition.
 
 The home title and card text use the defaults in this edition.
 
@@ -109,7 +110,7 @@ python3 -B -I scripts/check_publication.py
 python3 -B -I tests/release_smoke.py
 ```
 
-Maintainers can run `python3 -B scripts/build_release.py --out ../ptd-substrate-v0.3.0-alpha.1.zip` to rebuild the ZIP from a verified directory. The external SHA256SUMS checks the ZIP. Its internal namesake checks every other repository file. The archive digest and external seal cover the internal manifest itself.
+Maintainers can run `python3 -B scripts/build_release.py --out ../ptd-substrate-v0.3.0-alpha.2.zip` to rebuild the ZIP from a verified directory. The external SHA256SUMS checks the ZIP. Its internal namesake checks every other repository file. The archive digest and external seal cover the internal manifest itself.
 
 ## Documentation and feedback
 | Topic | Guide |
@@ -122,3 +123,25 @@ Maintainers can run `python3 -B scripts/build_release.py --out ../ptd-substrate-
 [Contributing](CONTRIBUTING.en.md) · [Code of conduct](CODE_OF_CONDUCT.en.md) · [Security](SECURITY.en.md) · [Changelog](CHANGELOG.en.md) · [Apache-2.0](LICENSE) · [Third-party notices](NOTICE)
 
 The language chooser remembers your choice in this browser using only the ptds-language preference. Choosing a language sends no requests and writes no health or service data.
+
+The partner edition reads lab reports on your Mac with Vision and a local synonym list. No model is used or downloaded. First use needs the Xcode Command Line Tools. Handwriting and blurry images can reduce accuracy. Check each selected value, unit and sampling time against the original before saving. Only one report up to 64 MiB may be in review at once. A review expires after 30 minutes; discard it to clear the draft. The bundled lab report is fictional.
+
+[Lab report recognition FAQ](docs/OCR-FAQ.en.md)
+
+The partner reader uses a Vision helper compiled from this installation. After you restart PTDS, the first recognition or PDF preview requires the Xcode Command Line Tools again. Separate readings for the same metric appear as separate rows. Review each one against its source.
+
+The reader needs separate labelled columns for the test, result and unit. A reference limit, ambiguous value or unrecognised unit cannot be selected for saving. The running reader is verified on this Mac before it starts reading the file. Review unmatched lines against the original and enter them manually if needed.
+
+The reader requires a new result header after a table section ends. A conflict in previously stored source evidence, including page-specific records, stops the save.
+
+When an earlier batch and a whole-report import share a PDF, PTDS checks the page, original text and saved record before showing its source. If the line cannot be identified, PTDS reports that it is unavailable.
+
+If the result in the saved source text contradicts the recorded result, the app reports that it cannot identify the source line. A matching number in the reference range does not qualify.
+
+A lab report can have an empty flag or reference range. PTDS can show the original line when the remaining columns identify a single result. In the evidence graph, the document details use your chosen language and keep the original filename.
+
+A flag column can contain a note such as “Normal”. When you open a saved result, PTDS checks the original line, including the result and its unit.
+
+When you trace a result, PTDS checks the recorded source text against the original line. If they conflict, the source is shown as unavailable. Your saved result stays in your data space.
+
+Older lab reports can have a row number printed before the test name. You can open a saved result and see the original line, including its row number. A number that is part of the test name stays in that name.

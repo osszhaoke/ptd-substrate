@@ -62,6 +62,7 @@ import device_watch_read
 import evidence_graph  # noqa: E402
 import evidence_navigation
 import preview_session
+import partner_ocr
 import main_db_policy, trial_target
 import device_links
 import graph_read  # noqa: E402
@@ -398,7 +399,8 @@ class Instance:
             return {"role": "DAY", "observed_date": body["date"], "tz": self.ctx.tz}
         return {"role": "UNKNOWN"}
 
-    def save_rows(self, body: dict) -> dict:
+    @partner_ocr.reviewed_save
+    def save_rows(self, body: dict, *, ocr_keys=None) -> dict:
         input_guard.require_writable(self)
         request_id = body.get("request_id") or "R-" + uuid.uuid4().hex[:16]
         method = body.get("method", "manual")
@@ -415,7 +417,7 @@ class Instance:
                 source_ref = row["source_ref"]
             kind = "SYNTHETIC" if synthetic else METHOD_SOURCE.get(method, "MANUAL")
             trust = "SYNTHETIC" if synthetic else ("SELF_REPORT" if cdef and cdef.family == "FLAG" else "CLINICAL_LAB")
-            items.append(ObservationInput(unique_key_for_lab(code, temporal, source_ref), code, str(row["value"]),
+            items.append(ObservationInput(ocr_keys[source_ref] if ocr_keys is not None else unique_key_for_lab(code, temporal, source_ref), code, str(row["value"]),
                                           row.get("cmp") or row.get("comparator") or None, row.get("unit") or None,
                                           temporal, kind, source_ref, trust))
         return self.save_items(items, batch_id=body.get("batch_id") or "B-" + request_id[-8:],
@@ -586,6 +588,7 @@ class App:
         self.bridges = {}
         self.main_stores = main_db_policy.Stores(self, self.trial.specs(config), Instance)
         self.instances = self.main_stores.instances
+        self.ocr_reviews = partner_ocr.Reviews(self)
         self.pillbox = pillbox.Manager(root)
         self.desktop_panels = desktop_tail.Panels(self)
         self.phone_tail = phone_tail.Manager(self)
@@ -756,34 +759,6 @@ class App:
 
     def batch_wake(self) -> None:
         self.batch_worker.wake.set()
-
-    def recognize(self, key: str, name: str, data: bytes) -> dict:
-        """原件留存在实例目录（只新建不覆盖）→ 本机识别 → 待本人逐项确认的候选。不写正式库。"""
-        inst = self.inst(key)
-        input_guard.require_writable(inst)
-        if len(data) > input_guard.limit(self.config, "recognize_bytes"):
-            raise H1Error("FILE_TOO_LARGE", "")
-        if not data:
-            raise H1Error("FILE_EMPTY", "")
-        sha = hashlib.sha256(data).hexdigest()
-        ext = Path(name).suffix.lower() if Path(name).suffix.lower() in (".png", ".jpg", ".jpeg", ".heic", ".pdf",
-                                                                       ".tif", ".tiff", ".webp") else ".bin"
-        folder = inst.ctx.root / "startorch" / "originals"
-        folder.mkdir(parents=True, exist_ok=True)
-        target = folder / f"{sha[:16]}{ext}"
-        if not target.exists():
-            with open(target, "xb") as handle:
-                handle.write(data)
-        result = recognize.recognize_file(target, sha, self.registry, self.llm)
-        result.update({"name": name, "original": target.name, "sha256": sha,
-                       "nature": inst.nature})
-        # 识别记录（候选、参考范围、总结、原文行）和原件放在一起，留作寻源依据；不进正式库
-        record = dict(result, recognized_at=inst.now())
-        (folder / f"{sha[:16]}.recognition.json").write_text(json.dumps(record, ensure_ascii=False, indent=1), "utf-8")
-        result.pop("source_lines", None)
-        self.log("recognized", inst.ctx.instance_id, sha[:16], len(result["rows"]), result["engine"]["model"],
-                 result["summary"]["rejected"] or "-")
-        return result
 
     def engine(self) -> dict:
         return {"ocr": "macOS Vision（本机）" if sys.platform == "darwin" else "不可用（需要 macOS）",
@@ -1806,13 +1781,6 @@ def make_handler(app: App):
                     return self._json(500, {"ok": False, "error": type(exc).__name__, "detail": str(exc)[:300]})
                 finally:
                     app.pack_lock.release()
-            if url.path == "/api/torch/recognize":  # 识别不写库，不占全局锁
-                try:
-                    return self._json(200, app.recognize(q["key"], q.get("name", "化验单"), raw))
-                except Exception as exc:  # noqa: BLE001
-                    code = exc.code if isinstance(exc, H1Error) else (str(exc) if str(exc).isupper() else type(exc).__name__)
-                    app.log("recognize_failed", code)
-                    return self._json(400, {"error": code, "detail": str(exc)[:200]})
             try:
                 if url.path in ("/api/oura/sync", "/api/oura/disconnect", "/api/graph/reveal"):
                     body = input_guard.json_object(raw)
@@ -2099,7 +2067,7 @@ def main() -> None:
         except (report_phone.ReportPhoneError, phone_tail.ViewerError, OSError):
             app.log("report_phone_setup_required")
     app.log("started", os.getpid())
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(app))
+    server = trial_target.PartnerHTTPServer(("127.0.0.1", args.port), make_handler(app))
     # Oura 回调地址登记在别的本机端口（例如 localhost:8773）时，在那个端口另开监听接住回调（只听本机）
     cb = urlparse(config.get("oura", {}).get("redirect_uri") or "")
     if cb.hostname in ("localhost", "127.0.0.1", "::1") and cb.port and cb.port != args.port:
@@ -2122,6 +2090,7 @@ def main() -> None:
         app.phone_tail.stop()
         app.pillbox.close()
         server.server_close()
+        app.ocr_reviews.close()
         app.main_stores.close()
 
 

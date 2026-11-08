@@ -44,7 +44,7 @@
  row.querySelector('[data-gene-delete]').click();row.querySelector('[data-gene-confirm] button').click();
  await until(()=>!all('#partner-gene article h3').some(el=>el.textContent==='browser-fixture.csv'));
  await visit('records',()=>{x.st.xhView='records';x.st.graphJump='eg-diary';x.goTorch('graph');},'[data-xh-tab]');
- await visit('map',()=>{x.st.xhView='map';x.st.graphJump=null;x.goTorch('graph');},'#kg-box');
+ await visit('map',()=>{x.st.xhView='map';x.st.graphJump=null;x.goTorch('graph');},window.walkHasData?'#kg-box':'[data-ptds-ui="se5b69c643ba6"]');
 
  for(const [kind,dev] of [['ring','oura'],['band','whoop'],['band','garmin']]){
   await visit(dev,()=>{x.st.srcGroup='wearable';x.st.deviceKind=kind;x.st.sourceDevice=dev;x.goTorch('srcgroup');},'[data-device-connection]');

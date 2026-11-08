@@ -173,13 +173,18 @@ def vision_binary() -> Path:
 ORIGINAL_EXT = (".png", ".jpg", ".jpeg", ".heic", ".pdf", ".tif", ".tiff", ".webp")
 
 
+def _run_vision(args, timeout):
+    if vision_runtime.is_partner_request():
+        return vision_runtime.verified_run(SWIFT_SRC, BIN_DIR, args, timeout)
+    return subprocess.run([str(vision_binary()), *args], capture_output=True, timeout=timeout)
+
+
 def preview_pdf(path: Path, page: int) -> bytes:
     """Render one original PDF page locally, without OCR or persistence."""
     if path.suffix.lower() != ".pdf" or not 1 <= page <= 100000:
         raise ValueError("ORIGINAL_PREVIEW_PAGE")
     try:
-        result = subprocess.run([str(vision_binary()), "--preview", str(path), str(page)],
-                                capture_output=True, timeout=60)
+        result = _run_vision(["--preview", str(path), str(page)], 60)
     except subprocess.TimeoutExpired as exc:
         raise RuntimeError("ORIGINAL_PREVIEW_UNAVAILABLE") from exc
     if result.returncode or not result.stdout.startswith(b"\x89PNG\r\n\x1a\n"):
@@ -189,12 +194,12 @@ def preview_pdf(path: Path, page: int) -> bytes:
 
 def ocr(path: Path, page: int | None = None) -> dict:
     """page=None 读整份；page=N 只读 PDF 的第 N 页（大 PDF 一页一页读，不整份放进内存）。"""
-    fake = os.environ.get("PTDS_FAKE_OCR")  # 测试用：给一个 JSON 文件代替 Vision 输出（{"by_page": [...]} = 多页 PDF）
+    fake = None if vision_runtime.is_partner_request() else os.environ.get("PTDS_FAKE_OCR")  # 测试用：给一个 JSON 文件代替 Vision 输出（{"by_page": [...]} = 多页 PDF）
     if fake:
         doc = json.loads(Path(fake).read_text("utf-8"))
         return doc["by_page"][(page or 1) - 1] if "by_page" in doc else doc
-    cmd = [str(vision_binary()), str(path)] + (["--page", str(page)] if page else [])
-    r = subprocess.run(cmd, capture_output=True, timeout=180)
+    args = [str(path)] + (["--page", str(page)] if page else [])
+    r = _run_vision(args, 180)
     if r.returncode != 0:
         raise RuntimeError("OCR_FAILED")
     return json.loads(r.stdout)
@@ -202,12 +207,12 @@ def ocr(path: Path, page: int | None = None) -> dict:
 
 def pdf_pages(path: Path) -> int | None:
     """PDF 有几页。识别程序是旧版（不认 --count）时返回 None。"""
-    fake = os.environ.get("PTDS_FAKE_OCR")
+    fake = None if vision_runtime.is_partner_request() else os.environ.get("PTDS_FAKE_OCR")
     if fake:
         doc = json.loads(Path(fake).read_text("utf-8"))
         return len(doc["by_page"]) if "by_page" in doc else None
     try:
-        r = subprocess.run([str(vision_binary()), "--count", str(path)], capture_output=True, timeout=120)
+        r = _run_vision(["--count", str(path)], 120)
     except (OSError, subprocess.TimeoutExpired, RuntimeError):
         return None
     out = r.stdout.decode("utf-8", "replace").strip()
@@ -316,7 +321,79 @@ def strip_seq(segs: list) -> list:
     return segs
 
 
-def group_lines(items: list) -> list:
+
+def _column_layout(row, previous, known_names):
+    """Use the named headers on this panel and page. A partial new header resets it."""
+    from evidence_navigation import OCR_COLUMN_ROLES
+    def role(segment):
+        label = "".join(segment["text"].lower().split())
+        return "name" if label in HEADER_NAMES else OCR_COLUMN_ROLES.get(label)
+    roles = [role(segment) for segment in row]
+    if not any(roles):
+        # A heading need not contain any of our header words. Carry forward
+        # a layout only across a positively identified metric in its name cell.
+        name_cells = _column_cells(row, previous).get("name", [])
+        name = norm_name(" ".join(name_cells))
+        if not name or name not in known_names:
+            return None
+        return previous
+    # A header-like word by itself can also be a section boundary. No old
+    # column coordinates may leak into the following section.
+    if any(roles.count(key) != 1 for key in ("name", "result", "unit")):
+        return None
+    centers = [seg["x"] + seg["w"] / 2 for seg in row]
+    if any(a >= b for a, b in zip(centers, centers[1:])):
+        return None
+    edges = [0.0] + [(a + b) / 2 for a, b in zip(centers, centers[1:])] + [1.0]
+    return [(key, left, right) for key, left, right in zip(roles, edges, edges[1:])]
+
+
+def _column_cells(row, layout):
+    cells = {}
+    for key, left, right in layout or ():
+        if not key:
+            continue
+        within = []
+        for seg in row:
+            x, end = seg["x"], seg["x"] + seg["w"]
+            if end <= left or x >= right:
+                continue
+            if x < left or end > right or seg["conf"] < 0.3:
+                within = []
+                break
+            within.append(seg["text"].strip())
+        cells[key] = within
+    return cells
+
+
+def _partner_result(line, definition):
+    """Only a single complete result in the result cell, with its own unit."""
+    cells = line.get("cells", {})
+    values, units = cells.get("result", []), cells.get("unit", [])
+    if not cells.get("name") or len(units) != 1:
+        return None
+    if len(values) == 2 and values[0] in CMP:
+        value_text = " ".join(values)
+    elif len(values) == 1:
+        value_text = values[0]
+    else:
+        return None
+    from evidence_navigation import OCR_RESULT_LITERAL
+    match = OCR_RESULT_LITERAL.fullmatch(value_text)
+    if match is None:
+        return None
+    comparator = CMP.get(match.group(1), "")
+    literals = [unit for unit, _ in definition.units]
+    unit = units[0]  # Unit prefixes and case carry meaning; keep the literal from the unit cell.
+    if unit not in literals or (comparator and not definition.comparators_allowed):
+        return None
+    flag = ABN_RE.fullmatch(" ".join(cells.get("flag", [])))
+    abn = {"↑":"H", "↓":"L", "偏高":"H", "偏低":"L"}.get(flag[0], flag[0]) if flag else ""
+    return {"value": match.group(2), "cmp": comparator, "unit": unit,
+            "flag": None, "ref_range": " ".join(cells.get("reference", [])), "abn": abn}
+
+
+def group_lines(items: list, known_names=frozenset()) -> list:
     """Vision 给的是一段段文字；按页、按栏、按行（框的纵向中心接近）拼成表格行，行内按横向排序。
     并排两栏的报告先分栏，左栏读完再读右栏，免得左右两项拼成一行。"""
     lines = []
@@ -325,16 +402,21 @@ def group_lines(items: list) -> list:
         cuts = [0.0] + panel_bounds(deskew(raw)) + [9.0]
         for a, b in zip(cuts, cuts[1:]):
             part = deskew([s for s in raw if a <= s["x"] < b])  # 每栏单独拉平：照片有透视，左右两栏歪的程度不一样
+            layout = None
             for row in _rows(part):
-                lines.append((page, row))
+                if vision_runtime.is_partner_request():
+                    layout = _column_layout(row, layout, known_names)
+                lines.append((page, row, _column_cells(row, layout) if layout else {}))
     out = []
-    for n, (page, segs) in enumerate(lines, start=1):
+    for n, (page, segs, cells) in enumerate(lines, start=1):
         segs.sort(key=lambda s: s["x"])
         out.append({"n": n, "page": page, "segments": strip_seq([s["text"] for s in segs]),
                     "text": "\t".join(s["text"] for s in segs),
                     "conf": min(s["conf"] for s in segs),
                     "box": [min(s["x"] for s in segs), min(s.get("_raw", s)["y"] for s in segs),
                             max(s["x"] + s["w"] for s in segs), max(s.get("_raw", s)["y"] + s["h"] for s in segs)]})
+        if vision_runtime.is_partner_request():
+            out[-1]["cells"] = cells
     return out
 
 
@@ -812,7 +894,11 @@ def kind_of(lines: list, matched: int) -> str:
 def parse(raw: dict, file_sha: str, registry, llm: LocalLLM | None, with_summary: bool = True) -> dict:
     """Vision 原始结果 → 待确认的识别结果。评估工具（tools/ocr_eval.py）也走这一条，保证评的就是线上的代码。"""
     codes = {c: d for c, d in registry.current.codes.items() if d.family in ENTRY_FAMILIES}
-    lines = prep(group_lines(raw.get("items", [])), frozenset(norm_name(n) for c in codes for n in [codes[c].label_zh] + ALIASES.get(c, []) if n))
+    names = frozenset(norm_name(n) for c in codes for n in [codes[c].label_zh] + ALIASES.get(c, []) if n)
+    lines = prep(group_lines(raw.get("items", []), names | {norm_name(c) for c in codes}), names)
+    if vision_runtime.is_partner_request():
+        for line in lines:
+            line["name"] = " ".join(strip_seq(line.get("cells", {}).get("name", [])))
     model, mapping, tried = "", {}, False
     kind = kind_of(lines, len(set(alias_map(lines, codes).values())))  # 先用同义词粗看一遍，不是化验单就不去问千问
     work = lines if kind == "lab" else []  # 不是化验单：不硬配指标，照实说
@@ -830,18 +916,22 @@ def parse(raw: dict, file_sha: str, registry, llm: LocalLLM | None, with_summary
         model = "程序按规则判断：不是化验单"
     rows, used, unmatched = [], set(), []
     # 同一个指标对上了好几行时（“白细胞”小标题和“白细胞计数”），用第一个有数值的那一行
+    per_line = vision_runtime.is_partner_request()
     best = {}
-    for l in work:
+    for l in (() if per_line else work):
         c = mapping.get(l["n"])
         if c and (c not in best or (not best[c][1] and NUM_RE.search("\t".join(l.get("rest") or [])))):
             best[c] = (l["n"], bool(NUM_RE.search("\t".join(l.get("rest") or []))))
     for l in work:
         code = mapping.get(l["n"])
-        if code and best[code][0] != l["n"]:
+        if code and not per_line and best[code][0] != l["n"]:
             code = None
-        if code and code not in used:
+        if code and (per_line or code not in used):
             used.add(code)
-            got = extract(l, codes[code])
+            got = _partner_result(l, codes[code]) if per_line else extract(l, codes[code])
+            if per_line and (not got or not l.get("box")):
+                unmatched.append(l["text"].replace("\t", "　"))
+                continue
             rows.append({"code": code, "value": got["value"], "unit": got["unit"], "cmp": got["cmp"],
                          "flag": got["flag"], "ok": False, "text": l["segments"][0] if l["segments"] else l["text"],
                          "ref_range": got["ref_range"], "abn": got["abn"],

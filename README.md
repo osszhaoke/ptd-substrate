@@ -1,11 +1,11 @@
-# PTDS v0.3.0-alpha.1
+# PTDS v0.3.0-alpha.2
 
 [English](README.en.md)
 
 
 Local-first personal health data space for macOS. Trial release. [English guide](README.en.md).
 
-[![CI](https://github.com/osszhaoke/ptd-substrate/actions/workflows/ci.yml/badge.svg)](https://github.com/osszhaoke/ptd-substrate/actions/workflows/ci.yml) [![Apache-2.0](docs/assets/license.svg)](LICENSE) [![v0.3.0-alpha.1](docs/assets/version.svg)](CHANGELOG.md)
+[![CI](https://github.com/osszhaoke/ptd-substrate/actions/workflows/ci.yml/badge.svg)](https://github.com/osszhaoke/ptd-substrate/actions/workflows/ci.yml) [![Apache-2.0](docs/assets/license.svg)](LICENSE) [![v0.3.0-alpha.2](docs/assets/version.svg)](CHANGELOG.md)
 
 本机优先的个人可信数据基座。你的健康数据留在自己的 Mac；默认只监听本机，离线使用。试用结果是关注信号，不构成诊断或治疗建议。
 
@@ -21,7 +21,7 @@ Local-first personal health data space for macOS. Trial release. [English guide]
 星炬管理数据与来源，星轨展示状态卡，星簇组织授权与协作。伙伴版先从 CSV 和本人核对开始，星簇授权入口关闭。用户命名和原始记录保留原文。
 
 ## 快速开始
-在 macOS 上从 [Release](https://github.com/osszhaoke/ptd-substrate/releases/tag/v0.3.0-alpha.1) 下载压缩包和外部 SHA256SUMS。先在下载目录执行 `shasum -a 256 -c SHA256SUMS`，校验成功后解压。进入解压出的目录，运行 `sh scripts/verify_release.sh`。随包安装器只用 Python 标准库。本次演练使用 macOS 27.0.1、Apple Silicon、Python 3.14.8；其他组合尚未验证。详细步骤见[安装说明](AGENT_INSTALL.md)。
+在 macOS 上从 [Release](https://github.com/osszhaoke/ptd-substrate/releases/tag/v0.3.0-alpha.2) 下载压缩包和外部 SHA256SUMS。先在下载目录执行 `shasum -a 256 -c SHA256SUMS`，校验成功后解压。进入解压出的目录，运行 `sh scripts/verify_release.sh`。随包安装器只用 Python 标准库。本次演练使用 macOS 27.0.1、Apple Silicon、Python 3.14.8；其他组合尚未验证。详细步骤见[安装说明](AGENT_INSTALL.md)。
 
 以下示例由本人先选择目录、名称和时区。使用新目录及未使用的实例标识。以普通用户运行。
 ```sh
@@ -55,6 +55,7 @@ python3 -B scripts/start_trial.py --root "$SPACE_ROOT" --config "$TRIAL_CONFIG"
 | 功能 | 证据状态 | 本版体验 |
 | --- | --- | --- |
 | 基因原始文件 | 仅虚构验证 | 导入、查询、覆盖核对及按文件删除，不解读。 |
+| 化验单本机识别（OCR，本人逐项核对后保存） | 仅虚构验证 | 保存前逐项核对候选值与原文位置。 |
 | CSV、本人核对与保存 | 仅虚构验证 | 随包重复两行样例可到待确认。由本人按下保存。 |
 | 列表、明细与来源 | 仅虚构验证 | 查看选定空间的读数与原文。 |
 | 更正与删除 | 仅虚构验证 | 更正与撤回追加历史版本。 |
@@ -78,7 +79,7 @@ python3 -B scripts/start_trial.py --root "$SPACE_ROOT" --config "$TRIAL_CONFIG"
 
 你可以更正或删除一条数据。删除后它会从当前列表消失，历史版本仍可追溯。请先核对选中的实例和记录。
 
-伙伴版不展示授权与分享、状态实验室与规则编辑、卡片图钉与设置、阈值、批量导入、化验单识别、用药、证据包、笔记、手机分享、腕带桥接、提醒日历、个人资料编辑和设备小尾巴设置。设备说明仍可查看。Garmin 和 Whoop 仅提供只读检查。伙伴版不提供星灵。
+伙伴版不展示授权与分享、状态实验室与规则编辑、卡片图钉与设置、阈值、批量导入、用药、证据包、笔记、手机分享、腕带桥接、提醒日历、个人资料编辑和设备小尾巴设置。设备说明仍可查看。Garmin 和 Whoop 仅提供只读检查。伙伴版不提供星灵。
 
 伙伴版首页标题与卡片文字不可自定义。
 
@@ -109,7 +110,7 @@ python3 -B -I scripts/check_publication.py
 python3 -B -I tests/release_smoke.py
 ```
 
-维护者可运行 `python3 -B scripts/build_release.py --out ../ptd-substrate-v0.3.0-alpha.1.zip` 从已核对的目录重建 ZIP。外部 SHA256SUMS 核对 ZIP；包内同名清单核对仓库所有其他文件。清单自身由外部封存和 ZIP 摘要绑定。
+维护者可运行 `python3 -B scripts/build_release.py --out ../ptd-substrate-v0.3.0-alpha.2.zip` 从已核对的目录重建 ZIP。外部 SHA256SUMS 核对 ZIP；包内同名清单核对仓库所有其他文件。清单自身由外部封存和 ZIP 摘要绑定。
 
 ## 文档与反馈
 | 说明 | 文档 |
@@ -122,3 +123,25 @@ python3 -B -I tests/release_smoke.py
 [参与贡献](CONTRIBUTING.md) · [行为准则](CODE_OF_CONDUCT.md) · [安全报告](SECURITY.md) · [变更记录](CHANGELOG.md) · [Apache-2.0](LICENSE) · [第三方声明](NOTICE)
 
 首开选择只在当前浏览器写入一个 ptds-language 偏好以记住语言。选择时没有网络请求，也不写服务端或业务数据。
+
+伙伴版使用本机 Vision 和同义词表识别化验单，不使用或下载模型。首次使用需 Xcode 命令行工具。手写和模糊照片可能降低识别率。请对照原件逐项核对数值、单位和采样时间，再保存。一次仅可核对一份不超过 64 MiB 的文件，核对期限为 30 分钟；放弃可清理草稿。随包化验单为虚构样例。
+
+[化验单识别常见问题](docs/OCR-FAQ.md)
+
+伙伴版使用从本次安装源码编译的 Vision 程序。每次重开 PTDS 后，首次识别或预览 PDF 都需要 Xcode 命令行工具。同一指标的多条结果分别进入核对列表，请分别对照原件。
+
+识别需要能区分项目、结果和单位的表头。参考限值、含多个数值的结果、无法核实的单位均不能勾选保存。系统核对实际启动程序的身份后才开始读原件。未匹配行可对照原件手工录入。
+
+表格换段后，须出现可核实的新结果表头。已有原文和分页记录出现冲突时会停止保存。
+
+旧批次和整份导入共用同一 PDF 时，PTDS 核对页码、原文与已存记录后显示来源。无法唯一定位的行会显示不可用。
+
+若保存的来源原文与已登记的结果相互矛盾，系统会提示无法定位原文。参考区间里出现相同数字不能代替结果。
+
+化验单的提示栏或参考区间可以留空。只要其余列能确定唯一结果，就可以查看对应原文。证据图谱的原件详情跟随所选语言，原文件名保留原文。
+
+化验单的提示栏可含“正常”等文字。打开已保存结果时，PTDS 会核对原文行里的结果和单位。
+
+回溯结果时，PTDS 会比对已记录的来源文字与原文行。两者相互矛盾时，界面提示无法定位原文。已保存的结果仍在数据空间里。
+
+较早的化验单有时在项目名前印有行号。打开已保存的结果，可查看带原行号的对应原文。属于指标名本身的数字会保留。

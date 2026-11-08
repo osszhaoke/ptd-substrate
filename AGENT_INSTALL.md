@@ -1,10 +1,10 @@
-# Agent 安装协议 · v0.3.0-alpha.1
+# Agent 安装协议 · v0.3.0-alpha.2
 
 [English](AGENT_INSTALL.en.md)
 
 
 ## 来源与校验
-只从[本版本的 GitHub Release](https://github.com/osszhaoke/ptd-substrate/releases/tag/v0.3.0-alpha.1) 下载压缩包和同页 SHA256SUMS。下载后断开外网。在一个新的空目录运行 `shasum -a 256 -c SHA256SUMS`，再解压；在解压出的目录执行 `sh scripts/verify_release.sh`。核对所有文件才继续，缺项、多项或校验失败即停。包未签名；Hash 证明与取得的清单一致。完整性与发布者身份是两个检查。
+只从[本版本的 GitHub Release](https://github.com/osszhaoke/ptd-substrate/releases/tag/v0.3.0-alpha.2) 下载压缩包和同页 SHA256SUMS。下载后断开外网。在一个新的空目录运行 `shasum -a 256 -c SHA256SUMS`，再解压；在解压出的目录执行 `sh scripts/verify_release.sh`。核对所有文件才继续，缺项、多项或校验失败即停。包未签名；Hash 证明与取得的清单一致。完整性与发布者身份是两个检查。
 
 ## 环境
 仅检查本机 `sw_vers`、`python3 --version` 与 Python 的 SQLite 导入。演练平台见[快速开始](README.md)。本版不需要 pip、npm、额外依赖、管理员权限或模型。缺依赖即说明差异并停止。
@@ -23,3 +23,5 @@
 由本人选择文件并声明数据性质。Agent 仅可按本人指示调用导入，不得打开、读取、复述或分析用户的基因文件内容。演练使用 app/fixtures/fictional-genotype-sample.txt。
 
 虚构试用在建库时传入 `--accept SYNTHETIC`，安装时选 1。明确接收两种性质的本人空间在建库时传入 `--accept REAL SYNTHETIC` 和 `--kind REAL`，安装时选 2。遇到范围不一致请停下，安装器不会修改既有空间。
+
+使用化验单识别前，先征得本人同意，再引导安装 Xcode 命令行工具。不要读取或复述用户的化验单内容，不代为核对或保存。演示可使用 app/fixtures/fictional-lab-report.png。

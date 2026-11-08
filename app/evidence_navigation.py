@@ -166,6 +166,412 @@ def _original_record(inst, short: str) -> tuple[dict, Path]:
     return records[0]
 
 
+def batch_page_matches(page_doc, whole, page):
+    """Prove a historical batch page is a contiguous projection of this original."""
+    batch = page_doc.get("batch")
+    if not isinstance(batch, dict) or batch.get("page") != page or not batch.get("id"):
+        return False
+    if any(whole.get(k) != page_doc.get(k) for k in ("sha256", "original", "nature")):
+        return False
+    rows = page_doc.get("rows")
+    lines = page_doc.get("source_lines")
+    original = whole.get("source_lines")
+    if not all(isinstance(v, list) for v in (rows, lines, original)) or not rows or not lines:
+        return False
+    wanted = [r for r in whole.get("rows", []) if r.get("page") == page]
+    # A legacy parser may have interpreted spellings which the new strict
+    # reader leaves unmatched. Such rows never enter the new review. Establish
+    # the page offset solely from independently recognised physical rows.
+    page_rows = {}
+    prefix = "OCR:" + whole["sha256"][:16] + "#p" + str(page) + "l"
+    for item in rows:
+        if not isinstance(item, dict) or item.get("page") != page:
+            return False
+        n, box = item.get("line"), item.get("box")
+        if type(n) is not int or not 1 <= n <= len(lines) or item.get("ref") != prefix + str(n):
+            return False
+        if not isinstance(box, list) or len(box) != 4 or not all(type(x) in (float, int) for x in box):
+            return False
+        position = tuple(box)
+        if position in page_rows:
+            return False
+        page_rows[position] = item
+    delta = None
+    for reference in wanted:
+        item = page_rows.get(tuple(reference.get("box") or ()))
+        if item is None or any(item.get(k) != reference.get(k) for k in ("code", "value", "unit", "cmp", "text", "abn", "ref_range")):
+            return False
+        absolute = reference.get("line")
+        if type(absolute) is not int or reference.get("ref") != prefix + str(absolute):
+            return False
+        offset = absolute - item["line"]
+        if offset < 0 or (delta is not None and delta != offset):
+            return False
+        delta = offset
+    if delta is None:
+        return False
+    return original[delta:delta + len(lines)] == lines
+
+
+def ocr_page_matches(page_record, record, page):
+    """Compare the exact page and line selectors used by the evidence graph."""
+    if not isinstance(page_record, dict) or any(
+        page_record.get(key) != record.get(key) for key in ("sha256", "original", "nature")
+    ):
+        return False
+    canonical = record.get("rows", [])
+    if not isinstance(canonical, list) or not all(isinstance(r, dict) and type(r.get("page")) is int and type(r.get("line")) is int for r in canonical):
+        return False
+    if not isinstance(record.get("source_lines"), list):
+        return False
+    rows = page_record.get("rows")
+    lines = page_record.get("source_lines")
+    if not isinstance(rows, list) or not isinstance(lines, list):
+        return False
+    expected = [row for row in canonical if row["page"] == page]
+    page_count = record.get("pages", max((row["page"] for row in canonical), default=1))
+    if type(page_count) is not int or not 1 <= page <= page_count:
+        return False
+    # Older individual-page sidecars can include batch information and a different
+    # display filename. Their references must still address the same original line.
+    actual = [row for row in rows if isinstance(row, dict) and row.get("page") == page]
+    if rows != actual and rows != canonical:
+        return False
+    if expected != actual:
+        # The old batch parser numbers each separately processed page from one.
+        # Preserve that file and its old refs when the full source and geometry prove the offset.
+        return batch_page_matches(page_record, record, page)
+    source = record["source_lines"]
+    if lines != source:
+        # On one page the complete original text has just one valid projection.
+        # For a multipage legacy file, the graph still indexes by absolute line
+        # number; every supplied line must be the canonical line at that index.
+        if page_count == 1 or not lines or lines != source[:len(lines)]:
+            return False
+    if any(not 1 <= row["line"] <= len(lines) for row in expected):
+        return False
+    return True
+
+
+OCR_COLUMN_ROLES = {
+    "项目": "name", "指标": "name", "test": "name", "analyte": "name",
+    "结果": "result", "检验结果": "result", "检测结果": "result", "测定结果": "result",
+    "result": "result", "results": "result", "单位": "unit", "unit": "unit", "units": "unit",
+    "参考区间": "reference", "参考范围": "reference", "参考值": "reference",
+    "referencerange": "reference", "referenceinterval": "reference",
+    "提示": "flag", "标志": "flag", "flag": "flag",
+}
+OCR_RESULT_LITERAL = re.compile(r"(<=|>=|≤|≥|＜|＞|〈|〉|<|>)?\s*(-?[0-9]+(?:\.[0-9]+)?)")
+
+
+def _printed_flag_positions(parts, positions, abnormal):
+    """An absent abnormality code carries no evidence that the printed flag was empty.
+
+    Vision can omit a cell which crosses a column edge. Including every possible
+    width lets the rest of the row prove a result position independently.
+    """
+    if not abnormal:
+        possible = set(positions)  # An empty flag consumes no printed segment.
+        possible.update(range(min(positions) + 1, len(parts) + 1))
+        return possible
+    marks = {"H":"H", "↑":"H", "偏高":"H", "L":"L", "↓":"L", "偏低":"L"}
+    possible = {i + 1 for i in positions if i < len(parts) and marks.get(parts[i]) == abnormal}
+    return possible
+
+
+def _numbered_name_forms(tokens, intrinsic):
+    """Read at most one printed row number, only inside the metric-name field."""
+    from recognize import SEQ_RE, norm_name
+    raw = norm_name(" ".join(tokens))
+    if not raw or not raw[0].isdigit() or intrinsic(raw):
+        return {raw}
+    first, *tail = tokens
+    if tail and re.fullmatch(r"\d{1,2}", first.strip()):
+        return {raw, norm_name(" ".join(tail))}
+    unnumbered = SEQ_RE.sub("", first.strip())
+    return {raw, norm_name(" ".join([unnumbered, *tail]))}
+
+
+def _protected_numbered_names(dictionary_codes):
+    """The versioned dictionary is already in memory. Build this only for a numbered name."""
+    from recognize import ALIASES, norm_name
+    labels = [s for group in ALIASES.values() for s in group if s and s[0].isdigit()]
+    for code, definition in dictionary_codes.items():
+        labels.extend(s for s in (code, definition.label_zh) if s and s[0].isdigit())
+    return {norm_name(s) for s in labels}
+
+
+def _column_offsets(roles, cells, row, batch_page, names, intrinsic, backwards=False):
+    """Possible field boundaries on one side of a printed result. Never consult its value."""
+    from recognize import norm_name
+    import unicodedata
+    order, parts = (roles[::-1], cells[::-1]) if backwards else (roles, cells)
+    size = len(parts)
+    positions = {0}
+    for role in order:
+        if not positions:
+            break
+        if role is None or (role == "reference" and not row.get("ref_range")):
+            # Neither the text nor its number of Vision segments was recorded.
+            positions = set(range(min(positions), size + 1))
+            continue
+        if role == "flag":
+            positions = _printed_flag_positions(parts, positions, row.get("abn"))
+            continue
+        if role == "unit":
+            unit = str(row.get("unit") or "")
+            if batch_page:
+                unit = unicodedata.normalize("NFKC", unit)
+            possible = set()
+            for start in positions:
+                if start >= size:
+                    continue
+                text = unicodedata.normalize("NFKC", parts[start]) if batch_page else parts[start]
+                if batch_page and re.fullmatch(r"10~[0-9]+/L", text):
+                    text = text.replace("~", "^")
+                if text == unit:
+                    possible.add(start + 1)
+            positions = possible
+            continue
+        reference = row.get("ref_range")
+        normalize = norm_name if role == "name" else lambda text: " ".join(text.split())
+        expected = names if role == "name" else {normalize(reference)} if isinstance(reference, str) else set()
+        possible = set()
+        for start in positions:
+            tokens = []
+            for index in range(start, size):
+                tokens.append(parts[index])
+                ordered = tokens[::-1] if backwards else tokens
+                forms = _numbered_name_forms(ordered, intrinsic) if role == "name" else {normalize(" ".join(ordered))}
+                if forms & expected:
+                    possible.add(index + 1)
+                if role == "name" and not backwards and len(tokens) == 1 and re.fullmatch(r"\d{1,2}", tokens[0]):
+                    continue  # With a following segment this token can be a printed ordinal.
+                if not any(label.endswith(part) if backwards else label.startswith(part) for label in expected for part in forms):
+                    break
+        positions = possible
+    return positions
+
+
+def _source_line_agrees(lines, number, row, batch_page=False, metric_label=None, dictionary_codes=None):
+    """A displayed source must support its identified result, including its qualifier."""
+    from recognize import ALIASES, CMP, HEADER_NAMES, norm_name
+    import unicodedata
+    protected = None
+    def intrinsic(name):
+        nonlocal protected
+        if protected is None:
+            protected = _protected_numbered_names(dictionary_codes or {})
+        return name in protected
+    raw = lines[number-1]
+    expected = (row.get("cmp") or "", str(row.get("value")))
+    def numeric(cell):
+        match = OCR_RESULT_LITERAL.fullmatch(cell.strip())
+        return (CMP.get(match[1], ""), match[2]) if match else None
+    # Tabular metadata stores literal Vision segments. Use the most recent
+    # named headers and never use a matching number from a reference column.
+    if "\t" in raw:
+        cells = [cell.strip() for cell in raw.split("\t")]
+        roles = []
+        for index in range(number-2, -1, -1):
+            heading = lines[index]
+            if not isinstance(heading, str):
+                return False
+            labels = ["".join(label.lower().split()) for label in heading.split("\t")]
+            fields = ["name" if label in HEADER_NAMES else OCR_COLUMN_ROLES.get(label) for label in labels]
+            if not any(fields):
+                continue
+            if any(fields.count(required) != 1 for required in ("name","result","unit")):
+                return False
+            # Each later optional header of the same kind replaces its predecessor in _column_cells.
+            roles = [None if role in ("flag", "reference") and role in fields[i+1:] else role
+                     for i, role in enumerate(fields)]
+            break
+        if not roles:
+            return False
+        # Vision does not serialize an empty box into the tab-separated text.
+        # Locate the result by independently proving the roles on either side.
+        # The recorded value plays no part in choosing which field is the result.
+        cells = [cell for cell in cells if cell]
+        pos = roles.index("result")
+        code = row.get("code")
+        if not isinstance(code, str) or not code:
+            return False
+        names = {norm_name(name) for name in (code, metric_label, *ALIASES.get(code, ())) if isinstance(name, str) and name}
+        # row.text is the first printed segment; it may be a fragment of a
+        # longer name or belong to another column. Only code-bound names count.
+        names.discard("")
+        starts = _column_offsets(roles[:pos], cells, row, batch_page, names, intrinsic)
+        tails = _column_offsets(roles[pos+1:], cells, row, batch_page, names, intrinsic, backwards=True)
+        by_position = {}
+        for start in sorted(starts):
+            if start >= len(cells):
+                continue
+            index = start
+            joined = cells[start]
+            if joined in CMP and start + 1 < len(cells):
+                index += 1
+                joined += cells[index]
+            parsed = numeric(joined)
+            if parsed is not None and len(cells)-index-1 in tails:
+                # A free-standing comparison sign and its number are one result.
+                # Prefer that full literal over the same number without its sign.
+                by_position.setdefault(index, parsed)
+        matches = list(by_position.values())
+        if len(matches) != 1:
+            return False
+        return matches[0] == expected
+    # Old text-only evidence has no columns. Require a single complete
+    # numeric token and reject multiple possibilities and separated qualifiers.
+    if re.search(r"参考|对照|(?i:\breference\b|\brange\b)", raw):
+        return False
+    tokens = raw.split()
+    values = []
+    for i, token in enumerate(tokens):
+        parsed = numeric(token)
+        if parsed is None:
+            continue
+        start = i
+        if i and tokens[i-1] in CMP and not parsed[0]:
+            parsed = (CMP[tokens[i-1]], parsed[1])
+            start -= 1
+        code = row.get("code")
+        if not isinstance(code, str):
+            return False
+        labels = {norm_name(x) for x in (row.get("text"), code, metric_label, *ALIASES.get(code, ())) if isinstance(x, str) and x}
+        tail = " ".join(tokens[i+1:])
+        last = norm_name(tokens[start-1]) if start else ""
+        if not start or (tail and tail != row.get("unit")):
+            continue
+        prefix = tokens[:start]
+        if not (_numbered_name_forms(prefix, intrinsic) & labels):
+            # Preserve old text-only rows carrying an unnumbered source prefix.
+            # Unmatched digits in a prefix are never discarded to find a result.
+            if last not in labels or any(t[:1].isdigit() for t in prefix):
+                continue
+        values.append(parsed)
+    return values == [expected]
+
+
+
+def _stored_segment_agrees(raw, row, metric_label=None):
+    """row.text records the first segment after strip_seq, even when it is a flag or unit."""
+    if "text" not in row:
+        return True  # Older records without a segment still require the separate source checks.
+    saved = row["text"]
+    if not isinstance(saved, str):
+        return False
+    from recognize import ALIASES, norm_name, strip_seq
+    parts = raw.split("\t")
+    printed = strip_seq(parts)
+    if printed and printed[0] == saved:
+        return True
+    if len(parts) == 1:
+        # Legacy flat text may spell the entire metric with its registered alias.
+        # A suffix match could instead identify a different metric (e.g. HSCRP).
+        code = row.get("code")
+        if not isinstance(code, str):
+            return False
+        spellings = [code, *ALIASES.get(code, ())]
+        if metric_label:
+            spellings.append(metric_label)
+        names = {norm_name(spelling) for spelling in spellings}
+        if norm_name(saved) not in names:
+            return False
+        words = printed[0].split()
+        for index, word in enumerate(words):
+            if OCR_RESULT_LITERAL.fullmatch(word):
+                from recognize import CMP
+                edge = index - 1 if index > 0 and words[index - 1] in CMP else index
+                return norm_name(" ".join(words[:edge])) in names
+        return False
+    if "\t" not in saved:
+        return False
+    # Vision can emit a tab *inside* a single recognised phrase. Rejoin exactly
+    # the recorded number of tabs, with and without a leading sequence field.
+    width = saved.count("\t") + 1
+    for offset in (0, 1):
+        if offset + width > len(parts):
+            continue
+        candidate = parts[:offset] + ["\t".join(parts[offset:offset+width])] + parts[offset+width:]
+        first = strip_seq(candidate)
+        if first and first[0] == saved:
+            return True
+    return False
+
+
+def ocr_line(inst, short, page, number, observation=None, unique_key=None):
+    """Resolve the exact formal record; whole-document and batch line numbers can overlap."""
+    folder = Path("startorch/originals")
+    ref = f"OCR:{short}#p{page}l{number}"
+    records = {}
+    for owner, suffix in (("page", f".p{page}.recognition.json"), ("whole", ".recognition.json")):
+        try:
+            records[owner] = _json(inst, folder / (short + suffix))
+        except H1Error as exc:
+            if exc.code != "ORIGINAL_NOT_FOUND":
+                raise
+    if not records:
+        _fail("ORIGINAL_NOT_FOUND", "没有找到该文档已保存的原件登记")
+    hashes = [d.get("sha256") for d in records.values()]
+    if any(not isinstance(h, str) or not re.fullmatch(r"[0-9a-f]{64}", h) or h[:16] != short for h in hashes) or len(set(hashes)) != 1:
+        _fail("ORIGINAL_AMBIGUOUS", "该文档关联了多个原件，不能自动选择")
+    if "page" in records and "whole" in records and not ocr_page_matches(records["page"], records["whole"], page):
+        _fail("ORIGINAL_AMBIGUOUS", "原件的分页与整件记录不一致")
+    candidates = []
+    sha = next(iter(records.values())).get("sha256")
+    whole_key = f"OCR|{sha}|p{page}l{number}"
+    if isinstance(unique_key, str) and unique_key.startswith("OCR|") and unique_key != whole_key:
+        _fail("ORIGINAL_AMBIGUOUS", "无法唯一定位这条数据的原文")
+    requires_whole = unique_key == whole_key
+    for owner, doc in records.items():
+        if requires_whole and owner != "whole":
+            continue
+        lines = doc.get("source_lines")
+        if not isinstance(lines, list) or not 1 <= number <= len(lines) or not isinstance(lines[number-1], str) or not lines[number-1].strip():
+            continue
+        rows = doc.get("rows")
+        if not isinstance(rows, list):
+            # A legacy unstructured sidecar is usable only for an unambiguous direct lookup.
+            if observation is None and len(records) == 1:
+                candidates.append((None, lines[number-1], doc))
+            continue
+        for row in rows:
+            if not isinstance(row, dict) or (row.get("ref"), row.get("page"), row.get("line")) != (ref, page, number):
+                continue
+            if observation:
+                if row.get("code") != observation.get("code") or (row.get("unit") or "") != (observation.get("unit_raw") or ""):
+                    continue
+                if observation.get("revision", 1) == 1 and (
+                    str(row.get("value")) != str(observation.get("value_raw")) or
+                    (row.get("cmp") or "") != (observation.get("comparator") or "")
+                ):
+                    continue
+            box = row.get("box")
+            if not isinstance(box, list) or len(box) != 4 or not all(type(x) in (int,float) for x in box):
+                continue
+            registry = getattr(getattr(inst, "app", None), "registry", None)
+            definition = None
+            dictionary = None
+            if registry is not None and isinstance(row.get("code"), str):
+                version = (observation or {}).get("dictionary_version")
+                dictionary = registry.get(version) if version else registry.current
+                definition = dictionary.codes.get(row.get("code"))
+            caption = getattr(definition, "label_zh", None)
+            if not _stored_segment_agrees(lines[number-1], row, caption):
+                _fail("ORIGINAL_AMBIGUOUS", "原件的识别记录与原文不一致")
+            if not _source_line_agrees(lines, number, row, bool(doc.get("batch")), caption, dictionary.codes if dictionary else None):
+                _fail("ORIGINAL_AMBIGUOUS", "原件的识别记录与原文不一致")
+            identity = (tuple(box), row.get("code"), row.get("value"), row.get("unit"), row.get("cmp"))
+            candidates.append((identity, lines[number-1], doc))
+    if not candidates:
+        _fail("ORIGINAL_NOT_FOUND", "无法定位这条数据的原文")
+    identity, text, chosen = candidates[0]
+    if any((key, raw) != (identity, text) for key, raw, _ in candidates[1:]):
+        _fail("ORIGINAL_AMBIGUOUS", "无法唯一定位这条数据的原文")
+    return chosen, text
+
+
 def _gene_record(inst, receipt_id: str) -> dict:
     ledger = _checked(inst, Path("startorch/gene/receipts.jsonl"))
     # Stream the receipt ledger; never instantiate GeneStore or load genetic data.
@@ -303,10 +709,10 @@ def observation(inst, observation_id: str, revision=None) -> dict:
     else:
         revision = None
     with closing(open_startorch(inst.ctx)) as torch:
-        latest = torch.execute("SELECT revision,payload,saved_at FROM formal_observation WHERE observation_id=? "
+        latest = torch.execute("SELECT revision,payload,saved_at,unique_key FROM formal_observation WHERE observation_id=? "
                                "ORDER BY revision DESC LIMIT 1", (observation_id,)).fetchone()
         row = latest if revision is None or (latest and latest[0] == revision) else torch.execute(
-            "SELECT revision,payload,saved_at FROM formal_observation WHERE observation_id=? AND revision=?",
+            "SELECT revision,payload,saved_at,unique_key FROM formal_observation WHERE observation_id=? AND revision=?",
             (observation_id, revision)).fetchone()
     if not row:
         return {"found": False, "observation_id": observation_id, "revision": revision,
@@ -315,5 +721,5 @@ def observation(inst, observation_id: str, revision=None) -> dict:
     from evidence_graph import _origin
     return {"found": True, "observation_id": observation_id, "revision": row[0], "payload": payload,
             "saved_at": row[2], "latest_revision": latest[0], "latest_status": current.get("status"),
-            "superseded": row[0] != latest[0], "origin": _origin(inst, payload.get("source_ref") or ""),
+            "superseded": row[0] != latest[0], "origin": _origin(inst, payload.get("source_ref") or "", payload, row[3]),
             "destination": destination({"kind": "observation", "observation_id": observation_id, "revision": row[0]})}

@@ -27,7 +27,7 @@ LEVEL_ZH = {"ALERT": "关注", "WATCH": "观察", "UNDETERMINED": "无法判定"
 CHAN_ZH = {"MACOS": "Mac 通知", "SOMALOOP": "手环", "BANNER": "站内横幅", "TEST": "测试通道"}
 
 
-def _origin(inst, source_ref: str) -> dict:
+def _origin(inst, source_ref: str, observation=None, unique_key=None) -> dict:
     """source_ref 写着原件在哪；这里只按它去找，找不到就如实说找不到。"""
     out = {"ref": source_ref, "kind": source_ref.split(":", 1)[0] if source_ref else ""}
     m = re.match(r"OCR:([0-9a-f]{16})#p(\d+)l(\d+)$", source_ref or "")
@@ -44,18 +44,9 @@ def _origin(inst, source_ref: str) -> dict:
             original = evidence_navigation.resolve_original(inst, doc_id)
             out["original"] = original.name
             folder = Path("startorch/originals")
-            for suffix in (".p" + m.group(2) + ".recognition.json", ".recognition.json"):
-                try:
-                    doc = evidence_navigation._json(inst, folder / (m.group(1) + suffix))
-                except H1Error as exc:
-                    if exc.code == "ORIGINAL_NOT_FOUND":
-                        continue
-                    raise
-                lines, n = doc.get("source_lines") or [], int(m.group(3))
-                out.update(line=str(lines[n - 1]).replace("\t", "　") if 0 < n <= len(lines) else None,
-                           recognized_at=doc.get("recognized_at"), engine=(doc.get("engine") or {}).get("model"),
-                           file_name=doc.get("name"))
-                break
+            doc, line = evidence_navigation.ocr_line(inst, m.group(1), int(m.group(2)), int(m.group(3)), observation, unique_key)
+            out.update(line=line.replace("\t", "　"), recognized_at=doc.get("recognized_at"),
+                       engine=(doc.get("engine") or {}).get("model"), file_name=doc.get("name"))
             try:
                 deid = evidence_navigation._json(inst, folder / (m.group(1) + ".deid.json"))
                 if deid.get("deidentified"):
@@ -218,7 +209,7 @@ def trace(inst, tp: str, records: list | None = None, grants: list | None = None
         inputs = []
         for oid, rev, role in track.execute("SELECT observation_id, revision, role FROM run_input WHERE run_id = ? "
                                             "AND tp_date = ? ORDER BY role DESC, observation_id", (rid, tp)):
-            exact = torch.execute("SELECT payload,saved_at FROM formal_observation WHERE observation_id=? AND revision=?",
+            exact = torch.execute("SELECT payload,saved_at,unique_key FROM formal_observation WHERE observation_id=? AND revision=?",
                                   (oid, rev)).fetchone()
             used = dict(json.loads(exact[0]), revision=rev, saved_at=exact[1]) if exact else None
             if used is None:
@@ -240,7 +231,7 @@ def trace(inst, tp: str, records: list | None = None, grants: list | None = None
                 "destination": evidence_navigation.destination({"kind": "observation", "observation_id": oid, "revision": rev}),
                 "latest": {"revision": latest["revision"], "value": latest["value_raw"], "status": latest.get("status"),
                            "saved_at": latest["saved_at"]} if latest["revision"] != rev else None,
-                "origin": _origin(inst, used.get("source_ref") or ""), "handoff": _commit_of(torch, oid, rev),
+                "origin": _origin(inst, used.get("source_ref") or "", used, exact[2]), "handoff": _commit_of(torch, oid, rev),
                 "missing": _complete(used)})
         alerts = []
         card_name = cdef.get("name") or _card_names(track).get(card_id, card_id)
@@ -539,12 +530,15 @@ def knowledge(inst, snap: dict, records: list, grants: list, gene: list, objects
     for g in grants or []:
         if g.get("example"):
             continue
+        targets = {"*": [n for n in nodes if n.startswith("card:")], "GENE_LOCI": ["store:gene"],
+                   "SJIA_FOCUS": ["card:sjia-mas"], "VITALS": ["card:VITALS"]}.get(g["card"], ["card:" + str(g["card"])])
+        if g.get("preset") and not any(t in nodes for t in targets):
+            if (g["id"], "READ") not in reads and (g["id"], "PUSH") not in reads:
+                continue
         obj = objects.get(g["object"], {})
         party = node("party:" + g["object"], "party", obj.get("zh", g["object"]))
         gr = node("grant:" + g["id"], "grant", "授权 " + g["id"] + " · " + ("读取" if g["method"] == "read" else "推送"),
                   status=g["status"], card=g["card"])
-        targets = {"*": [n for n in nodes if n.startswith("card:")], "GENE_LOCI": ["store:gene"],
-                   "SJIA_FOCUS": ["card:sjia-mas"], "VITALS": ["card:VITALS"]}.get(g["card"], ["card:" + str(g["card"])])
         for t in targets:
             if t in nodes:
                 edge(t, gr, "授权给出", "grant_def.card")

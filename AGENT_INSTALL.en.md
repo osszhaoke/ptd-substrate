@@ -1,10 +1,10 @@
-# Agent installation protocol · v0.3.0-alpha.1
+# Agent installation protocol · v0.3.0-alpha.2
 
 [简体中文](AGENT_INSTALL.md)
 
 
 ## Source and verification
-Download only the archive and SHA256SUMS from [this GitHub Release](https://github.com/osszhaoke/ptd-substrate/releases/tag/v0.3.0-alpha.1). Go offline afterwards. In a fresh directory run `shasum -a 256 -c SHA256SUMS` before extraction. Enter the extracted directory and run `sh scripts/verify_release.sh`. Continue only if all files match. Stop on missing, extra or changed files. The release is unsigned. The hashes check consistency with the manifest you obtained. Publisher identity requires a separate check.
+Download only the archive and SHA256SUMS from [this GitHub Release](https://github.com/osszhaoke/ptd-substrate/releases/tag/v0.3.0-alpha.2). Go offline afterwards. In a fresh directory run `shasum -a 256 -c SHA256SUMS` before extraction. Enter the extracted directory and run `sh scripts/verify_release.sh`. Continue only if all files match. Stop on missing, extra or changed files. The release is unsigned. The hashes check consistency with the manifest you obtained. Publisher identity requires a separate check.
 
 ## Environment
 Check only `sw_vers`, `python3 --version` and the Python SQLite import. See [Quick start](README.en.md) for the tested environment. No pip install, npm packages, administrator access or model is needed. If a requirement is missing, report it and stop.
@@ -23,3 +23,5 @@ Real account access needs a separate user decision. See the [Oura guide](docs/gu
 The person chooses the file and declares its data type. An agent may invoke import only at their request. The agent must not open, read, repeat or analyze the contents of a personal genetic file. Use app/fixtures/fictional-genotype-sample.txt for rehearsal.
 
 For a fictional trial, pass `--accept SYNTHETIC` when creating the space, then choose 1. For an explicitly dual-type personal space, pass `--accept REAL SYNTHETIC` with `--kind REAL` and choose 2. Stop if the installer reports different data types. It does not change an existing space.
+
+For lab report OCR, ask the user before guiding them to install the Xcode Command Line Tools. Do not read or repeat the contents of a user’s report. Never confirm a row or save the report for the user. Use app/fixtures/fictional-lab-report.png to demonstrate how to start a review.

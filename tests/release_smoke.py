@@ -12,7 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class Release(unittest.TestCase):
     def test_version(self):
         tag=re.search(r'^## (v[^\s]+)$',(ROOT/'CHANGELOG.md').read_text(),re.M)[1]
-        self.assertEqual(tag,'v0.3.0-alpha.1')
+        self.assertEqual(tag,'v0.3.0-alpha.2')
         for name,pattern in [('app/web/product.html',r'<title>PTDS - ([^<]+)</title>'),
                              ('app/web/ptds_live.js',r"id = 'sidebar-version'; version.textContent = '([^']+)'")]:
             self.assertEqual(re.findall(pattern,(ROOT/name).read_text()),[tag[1:]])

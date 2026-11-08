@@ -107,6 +107,13 @@
     }
     return null;
   }
+  function documentLabel(id, value) {
+    if (/^doc:TABLE:/.test(id)) return template('table-file', value);
+    if (!/^doc:OCR:[0-9a-f]{16}$/.test(id)) return null;
+    const report = resources.s4ce69702630c;
+    if (value === report.zh) return report.en;
+    return value.startsWith(report.zh + ' ') ? report.en + value.slice(report.zh.length) : null;
+  }
   function graphText(el, value) {
     const n=el.closest('[data-kg]');
     if(n){
@@ -114,7 +121,7 @@
       const pair=graphKinds[kind], id=n.getAttribute('data-kg');
       let en=kind==='indicator'?metric(id,name):null;
       if(kind==='source' && id==='src:SYNTHETIC' && name===resources.source_synthetic.zh)en=resources.source_synthetic.en;
-      if(kind==='document' && /^doc:TABLE:/.test(id))en=template('table-file',name);
+      if(kind==='document')en=documentLabel(id,name);
       if(id==='src:GENE' && name==='基因测序数据')en=resources.s8d548e77958d.en;
       if(id==='store:gene' && name==='基因位点库')en=resources.gene_store_name.en;
       if(kind==='document' && id.startsWith('gene:G-') && name.startsWith('基因文件 '))en='Genetic file '+name.slice(5);
@@ -128,12 +135,18 @@
       return en ? (en.length>20 ? en.slice(0,20)+'…' : en) : null;
     }
     const id=el.getAttribute('data-kg-go') || el.getAttribute('data-kg-detail');
-    if(id) return /^doc:TABLE:/.test(id)?template('table-file',value):metric(id,value);
+    if(id) return documentLabel(id,value) || metric(id,value);
     const pair=graphKinds[el.getAttribute('data-kg-kind')];
     if(pair && value.startsWith(pair[0]+' '))return pair[1]+value.slice(pair[0].length);
     return null;
   }
   rules.push({selector:'g[data-kg] > title,g[data-kg] > text,[data-kg-go],[data-kg-detail],[data-kg-kind]',graph:true});
+  rule('#graph-target > .dh > strong',['original_drawer_title']);
+  rule('#graph-target',['original_drawer_title'],null,'aria-label');
+  rule('#graph-target [data-original-size]',[],value=>{
+    const match=/^PTDS 保存副本 · ([0-9]+) 字节$/.exec(value);
+    return match ? resources.saff535dacad4.en.trimEnd()+' '+match[1]+' '+noun(match[1],'byte','bytes') : null;
+  });
   const deviceCopy = ["device_995c8bad9efe", "device_984ba272fb1a", "device_68ca9afc4a41", "device_6363d6ecb5c3", "device_e3724929414c", "device_1eeee8d390ed", "device_32559941e647", "device_f68014f2b164", "device_e5f4577dc27c", "device_5171fac32c0c", "device_a1c8e03c9f0c", "device_f7659d494778", "device_6fbb0d1a8946", "device_a4a82f5ad4d4", "device_5fc968550650", "device_fd26d2fa22b0", "device_f3548ada1cb4", "device_e0e30f9f06e1", "device_751f410cad9f", "device_b6f3303d0714", "device_942bd2b9db4f", "device_1e743d200048", "device_17edaabbad12", "device_4a53f603261e", "device_2788a13a7777", "device_c7617fa73e20", "device_051e3f172e6b", "device_996064035b3a", "device_97fe751d31af", "device_d2c5dd609a38", "device_3d466b044ab8", "device_21dec63bc36c", "device_88d2f93efc57", "device_0d16eb92da0e", "device_1e643339e026", "device_d85b09d6c43e", "device_87036102bfbb", "device_00f6e264edf9", "device_4343ad757e92", "device_cae949d9ccd1", "device_81002ff82cfd", "device_2cebdddd360e", "device_bb540a99b58f", "device_d494071290a1", "device_43cef0a68c2e", "device_cbd59b967e79", "device_9dec64f7e511", "device_5aa26160e9de", "device_48fcc61c3c35", "device_b48696b38986", "device_6f4ed66ab503", "device_ba98c1c17a54", "device_ace421ab9edf", "device_0c0379b7a815", "device_1bd7b5ee9127", "device_0e28c9bfa4f5", "device_0308ff3f2f1c", "device_7e12b343d9bb", "device_f6f85999e4b9", "device_038e362d878e", "device_0e2067b674ba", "device_d28090ba080a", "device_4040149dda64", "device_572cf45ba436", "device_b8f945ea49ff", "device_b47b72ee1664", "device_3afbb05dc459", "device_2ccd68f256d5", "device_9bf79639ee77", "device_e983a7b097c6", "device_12532dbccf5f", "device_f51bc1439591", "device_c4791f28d54f", "device_d1f1cdef6a47", "device_9b39a38ff63e", "device_707e3cbd0abd", "device_c6afacac4d20", "device_50f703856d78", "device_4913c0ebf67b", "device_bc11ba8e5a04", "device_beb902fddf1a", "device_7dbc4d81020f", "device_e3a33cb53ef3", "device_f91af23d4d5a", "device_c9b9ae7a6144", "device_8a8542f69648", "device_4f8cf23dd84d", "device_a30216d4003e", "device_d2342efd86fa", "device_521e65ffc7d0", "device_4a98d9b2e395", "device_21c04b2eeeb4", "device_91ead424189d", "device_2ba3eaf59636", "device_f88dc65910c7", "device_e5c62a05441a", "device_d39cd338e316", "device_db088d4f7fc1"];
   rule('[data-device-connection] h3,[data-device-connection] > p,[data-device-connection] .kv2 > :not(:nth-child(4)),[data-device-connection] button,[data-device-connection] ~ section > h3,[data-device-connection] ~ section li,[data-device-connection] ~ section > p,[data-device-connection] ~ section summary,[data-device-connection] ~ section pre,[data-device-connection] ~ section #dc-copy',deviceCopy);
   rule('#graph-page-prev,#graph-page-next',deviceCopy);
@@ -162,15 +175,25 @@
   rule('[data-synthetic-date]',[],sourceLabel);
   rules.push({selector:'[data-overview-items]',overviewItems:true});
   rules.push({selector:'[data-overview-codes]',overviewCodes:true});
-  const chartLabels = {"单次观测": "Single observation", "暂无历史观测": "No previous observations", "结果为范围表达，无法确定精确读数。": "The result is a range and has no exact value", "含缺失记录": "Some records are missing", "暂无有效数值": "No valid numbers", "记录类型未提供": "Record type unavailable", "暂不比较，保留原值": "Original value retained without comparison", "单位不同，暂不比较": "Different units; comparison unavailable", "单位未提供，暂不比较": "Unit unavailable; comparison unavailable", "检测方法未提供": "Test method unavailable", "检测方法不同": "Different test methods", "同日顺序未确认": "Order within the day is unconfirmed", "观测时间未提供": "Observation time unavailable", "非数值记录": "Non-numeric record", "计数单位未提供": "Count unit unavailable", "数量缺失或无效": "Count missing or invalid", "各组独立计数，不合计": "Groups counted separately", "保留各版本原始记录": "Original record versions retained", "保留原始记录": "Original record retained", "连线仅表示观测顺序，方法可比性未确认": "The line shows observation order; method comparability is unconfirmed", "按观测顺序，间距不代表天数": "In recorded order, spacing does not represent days"};
+  const chartLabels = {"结果为范围表达":"The result is a range", "单次观测": "Single observation", "暂无历史观测": "No previous observations", "结果为范围表达，无法确定精确读数。": "The result is a range and has no exact value", "含缺失记录": "Some records are missing", "暂无有效数值": "No valid numbers", "记录类型未提供": "Record type unavailable", "暂不比较，保留原值": "Original value retained without comparison", "单位不同，暂不比较": "Different units; comparison unavailable", "单位未提供，暂不比较": "Unit unavailable; comparison unavailable", "检测方法未提供": "Test method unavailable", "检测方法不同": "Different test methods", "同日顺序未确认": "Order within the day is unconfirmed", "观测时间未提供": "Observation time unavailable", "非数值记录": "Non-numeric record", "计数单位未提供": "Count unit unavailable", "数量缺失或无效": "Count missing or invalid", "各组独立计数，不合计": "Groups counted separately", "保留各版本原始记录": "Original record versions retained", "保留原始记录": "Original record retained", "连线仅表示观测顺序，方法可比性未确认": "The line shows observation order; method comparability is unconfirmed", "按观测顺序，间距不代表天数": "In recorded order, spacing does not represent days"};
   function chartLabel(value) {
     return value.split('；').map((part,i) => {
       if (part.startsWith('最后一条 ')) return 'latest ' + part.slice(5);
-      const word = chartLabels[part];
+      const word = chartLabels[part] || chartLabels[part+'。'];
       if (!word) return part;
       return i ? word[0].toLowerCase()+word.slice(1) : word;
     }).join('; ');
   }
+  rule('[data-metric-ux="history"] .hv > .mx-inline',[],v=>Object.hasOwn(chartLabels,v)?chartLabels[v]:null);
+  rule('[data-metric-ux="history"] .ends > .mx-order',[],v=>{
+    const note=/^( · )(.+)$/.exec(v);
+    return note && Object.hasOwn(chartLabels,note[2])?note[1]+chartLabels[note[2]]:null;
+  });
+  rule('svg.mx-plot .mx-empty',[],v=>Object.hasOwn(chartLabels,v)?chartLabels[v]:null);
+  rule('[data-ui-date-range]',[],v=>{
+    const range=/^日期范围：(不限|[0-9]{4}-[0-9]{2}-[0-9]{2}) 至 (不限|[0-9]{4}-[0-9]{2}-[0-9]{2})$/.exec(v.trim());
+    return range?'Date range: '+(range[1]==='不限'?'Any date':range[1])+' to '+(range[2]==='不限'?'Any date':range[2])+(v.endsWith(' ')?' ':''):null;
+  });
   rule('svg.mx-plot[aria-label]',[],chartLabel,'aria-label');
   rule('.mx-mini[title]',[],chartLabel,'title');
   for (const attribute of ['title','aria-label']) {
@@ -198,6 +221,26 @@
   rule('#go-track,#t-go',[],value=>({'去星炬看我的数据':'Go to My data in StarTorch','去星轨看我的状态':'Go to My state in StarTrack','回星轨看我的状态':'Return to My state in StarTrack','返回我的数据':'Return to My data'})[value]||null);
   rule('#appbar .crumb .up',[fixedSlots['来自文件报告']]);
   rule('#appbar .crumb .t',['s8d548e77958d']);
+  rule('[data-cmp="T06"] > .tip',['manual_save_together']);
+  rule('[data-cmp="T06"] > .sub2',[],v=>{
+    const day=/^(\d{4}-\d{2}-\d{2})（只有日期）$/.exec(v);
+    return day?day[1]+' (date only)':v==='时间未知'?'Time unknown':null;
+  });
+  rule('[data-cmp="T07"] > .big',[],v=>{
+    const m=/^(时间未知|\d{4}-\d{2}-\d{2}) 化验单 · (\d+) 条$/.exec(v);
+    return m?(m[1]==='时间未知'?'Time unknown':m[1])+' lab report · '+m[2]+' '+noun(m[2],'record','records'):null;
+  });
+  rule('[data-cmp="T07"] > .sub2',[],v=>{
+    const m=/^(\d+) · 已更正 (\d+) · 无变化 (\d+)$/.exec(v);
+    return m?m[1]+' · Corrected: '+m[2]+' · Unchanged: '+m[3]:null;
+  });
+  rule('[data-cmp="T07"] .chan > .grow',['audit_pending','audit_failed','audit_saved','manual_received_empty','manual_sync_failed'],v=>{
+    const m=/^已保存到我的数据，并已交给星轨：(.+) 已按新数据自动算好，不用再点。$/.exec(v);
+    return m?'Saved to My data and sent to StarTrack. Updated: '+m[1]+'.':null;
+  });
+  rule('[data-cmp="T07"] .more > summary',['manual_more']);
+  rule('[data-cmp="T07"] .kv2 > span:nth-child(4)',['manual_method','s05fd0cca0594','sbd0c813dbe6e']);
+  rule('[data-cmp="T07"] .kv2 > span:nth-child(6)',['source_synthetic','manual_real','manual_redacted']);
   rule('[data-data-root] .dcode .mx-name',['s8d548e77958d']);
   rule('[data-data-root] .mx-empty',['gene_empty_plot','gene_ambiguous_plot']);
   rule('#kg-svg .kg-el',[],v=>{const m=/^装入 (\d+) 个位点$/.exec(v);return m?'Indexed '+m[1]+' '+noun(m[1],'locus','loci'):null;});
@@ -224,6 +267,11 @@
   const sourceName=v=>({'合成':'Synthetic','手动录入':'Manual entry','表格导入':'Table import','真实':'Real'}[v]||v);
   rule('[data-detail-source]',[],v=>{const m=/^([^·]+?)( · .*)?$/.exec(v);return m?sourceName(m[1])+(m[2]||''):null;});
   rule('[data-cmp="T08"] .confirm > .sub2',[],v=>{const m=/^保存后，星轨里 (.+) 会先标"来源已更新"，随后自动按新数据更新。$/.exec(v);return m?'After you save, StarTrack marks '+m[1]+' as updated and recalculates its state.':null;});
+  // Both data renderers put the revision badge inside the observation row.
+  rule('button.lrow.c6[data-ref] > span > .tag',[],v=>{
+    const revision=/^第 ([0-9]+) 版$/.exec(v);
+    return revision?'Version '+revision[1]:null;
+  });
   rule('[data-mx-version] strong,[data-mx-version] > span,[data-mx-version] .mx-version',[],v=>{
     const m=/^第 (\d+) 版 · (当前记录版本|当前|旧版，保留|已删除（历史保留）)$/.exec(v);
     return m?'Version '+m[1]+' · '+({'当前记录版本':'Current','当前':'Current','旧版，保留':'Earlier version, retained','已删除（历史保留）':'Deleted, history retained'}[m[2]]):null;
@@ -235,6 +283,7 @@
   rule('[data-receipt-status]',["receipt_states_updated", "receipt_removed_updated", "receipt_removed_unsynced"]);
   rules.push({selector:'[data-receipt-kind]',receipt:true});
   rules.push({selector:'[data-detail-code],[data-retract-code]',detailMetric:true});
+  rules.push({selector:'[data-manual-code]',manualMetric:true});
   var selector=rules.map(function(r){return r.selector;}).join(',');
   function apply(scope,api){
     var base=scope && (scope.documentElement || scope);
@@ -243,6 +292,20 @@
     if(base.matches(selector))candidates.unshift(base);
     candidates.forEach(function(el){rules.forEach(function(r){
       if(el.matches(r.selector)){
+        if(r.manualMetric){
+          const code=el.getAttribute('data-manual-code'), original=el.getAttribute('data-manual-name');
+          if(!code || !original)return;
+          const english=metric('code:'+code,original)||code;
+          const name=root.document.documentElement.lang==='en'?english:original;
+          if(el.tagName==='OPTION'){
+            el.value=name; el.label=name+' · '+code;
+          }else{
+            // A partially typed search is user input. Localize only the bound selection.
+            if(el.value===original || el.value===english)el.value=name;
+            api.attr(el,'title',[],v=>v==='代码 '+code?'Code '+code:null);
+          }
+          return;
+        }
         if(r.receipt){
           const kind=el.getAttribute('data-receipt-kind');
           const code=el.getAttribute('data-receipt-code');

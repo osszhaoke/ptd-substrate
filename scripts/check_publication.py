@@ -27,7 +27,7 @@ MAIL=re.compile(r'[\w.+-]+@[\w.-]+\.[a-zA-Z]{2,}')
 HOME=re.compile(r'/(?:Users|home)/[^\s/]+')
 SECRET_VALUE=re.compile(r'''(?i)(?:client_secret|access_token|refresh_token|api_key)\s*[:=]\s*["'][^"']{8,}''')
 # The immutable release policy contains three exact lines rejecting legacy installation identities.
-REJECTIONS={13: '35886f3e9fa7b9db979089fa97668374d7594acf7fc5de5a0546ea934db1bc78', 14: 'f2c96103e8ca6ef4b1a8cbd99e288b2c7ef837fe9327a2c742027f58fed50b79', 43: 'af623ead9efa0dfc4caae85d75d71627e91b40961cf2102706620e9d6ac46624'}
+REJECTIONS={17: '35886f3e9fa7b9db979089fa97668374d7594acf7fc5de5a0546ea934db1bc78', 18: 'f2c96103e8ca6ef4b1a8cbd99e288b2c7ef837fe9327a2c742027f58fed50b79', 47: 'af623ead9efa0dfc4caae85d75d71627e91b40961cf2102706620e9d6ac46624'}
 PERSONAL=re.compile(r'\b(?:live[_-]'+r'real|live-'+r'replay|eld'+r'er)\b|-wal-'+r'20261106',re.I)
 OWNER_PATTERN=re.compile(r'ossz' + r'haoke|\bO' + r'ss\b|\u8d75',re.I)
 APPROVED_URL=re.compile(re.escape(REPOSITORY)+r'(?=/|[\s?#)\]<>"]|$)')

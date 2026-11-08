@@ -5,6 +5,10 @@ access, replaces source provenance or changes the underlying input limits.
 """
 from dataclasses import dataclass
 import io
+from http.server import ThreadingHTTPServer
+import socket
+import vision_runtime
+import partner_ocr
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 import input_guard
@@ -18,7 +22,7 @@ TARGET_GET = frozenset(('/api/gene', '/api/gene/db', '/api/gene/lookup', '/api/g
     '/api/torch/engine', '/api/torch/versions', '/api/torch/original', '/api/graph/document',
     '/api/graph/observation', '/api/graph/related', '/api/graph/kg', '/api/graph/read', '/api/graph', '/api/graph/trace',
     '/api/pillbox/status', '/api/compute/status'))
-TARGET_POST = frozenset(('/api/gene', '/api/gene/delete', '/api/torch/table', '/api/torch/save', '/api/torch/correct', '/api/torch/retract', '/api/data/read', '/api/pillbox/scan', '/api/pillbox/find'))
+TARGET_POST = frozenset((partner_ocr.UPLOAD, partner_ocr.CONFIRM, partner_ocr.CANCEL, '/api/gene', '/api/gene/delete', '/api/torch/table', '/api/torch/save', '/api/torch/correct', '/api/torch/retract', '/api/data/read', '/api/pillbox/scan', '/api/pillbox/find'))
 OURA_POST = frozenset(('/api/oura/sync', '/api/oura/disconnect', '/api/device-links/action'))
 NOT_FOUND = {'error': 'NOT_FOUND'}
 
@@ -134,7 +138,7 @@ class Policy:
             return False
         if path.startswith('/api/gene') and (len(values) != 1 or 'instance_id' in query or len(query.get('nature', [])) > 1):
             return False
-        if path == '/api/graph/kg' and ('instance_id' in query or len(values) != 1):
+        if path in ('/api/graph/kg', partner_ocr.UPLOAD, partner_ocr.CONFIRM, partner_ocr.CANCEL) and ('instance_id' in query or len(values) != 1):
             return False
         if path == self.callback and method == 'GET':
             return self.oura
@@ -154,6 +158,11 @@ class Policy:
         if path == '/api/device-links/action':
             return self.oura and body.get('id') == 'oura' and body.get('action') == 'retry'
         return True
+
+
+class PartnerHTTPServer(ThreadingHTTPServer):
+    """Let the kernel queue connections while the application returns busy receipts."""
+    request_queue_size = socket.SOMAXCONN
 
 
 def install(handler_class, app):
@@ -176,6 +185,12 @@ def install(handler_class, app):
         # Do not read a body before the existing local-browser header check.
         if handler.headers.get('X-PTDS') != '1':
             return original_post(handler)
+        if url.path == partner_ocr.UPLOAD:
+            query = parse_qs(url.query, keep_blank_values=True)
+            if not policy.request_allowed('POST', url.path, query):
+                handler.close_connection = True
+                return handler._json(404, NOT_FOUND)
+            return partner_ocr.upload_http(handler, app, query)
         if url.path == '/api/gene':
             # A raw upload is target-checked before any body read. The normal handler owns
             # the byte limit, per-instance nature admission and streaming deadline.
@@ -191,6 +206,12 @@ def install(handler_class, app):
             query = parse_qs(url.query, keep_blank_values=True)
             if not policy.request_allowed('POST', url.path, query, data):
                 return handler._json(404, NOT_FOUND)
+            if url.path in (partner_ocr.CONFIRM, partner_ocr.CANCEL):
+                inst = app.inst(query['key'][0])
+                if url.path == partner_ocr.CANCEL:
+                    app.ocr_reviews.cancel(inst, data.get('draft'))
+                    return handler._json(200, {'cancelled': True})
+                return handler._json(200, app.ocr_reviews.confirm(inst, data))
             handler.rfile = io.BytesIO(raw)
             return original_post(handler)
         except input_guard.RequestError as exc:
@@ -201,7 +222,7 @@ def install(handler_class, app):
             return handler._json(400, {'error': exc.code, 'detail': exc.detail})
         finally:
             handler.rfile = original
-    handler_class.do_GET, handler_class.do_POST = get, post
+    handler_class.do_GET, handler_class.do_POST = vision_runtime.partner_request(get), vision_runtime.partner_request(post)
     return handler_class
 
 

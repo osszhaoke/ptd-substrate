@@ -5,7 +5,7 @@
       "name": "PTDS",
       "source": "app/",
       "text": "LICENSE",
-      "version": "0.3.0-alpha.1"
+      "version": "0.3.0-alpha.2"
     },
     {
       "distribution": "embedded unchanged with attribution",
@@ -130,9 +130,13 @@
     {
       "path": "app/fixtures/fictional-genotype-sample.txt",
       "sha256": "8ed7d6713049c2c51a464f024c4479f205e19c2d4ae18b5ae9aedfa4971a629e"
+    },
+    {
+      "path": "app/fixtures/fictional-lab-report.png",
+      "sha256": "4055a293325e5dcb5ea90729de5d0ccae01e334e88e37688bf08652e6b3a3d08"
     }
   ],
-  "release": "v0.3.0-alpha.1",
+  "release": "v0.3.0-alpha.2",
   "runtime_installs": [],
   "schema": "ptds-release-components/1"
 }

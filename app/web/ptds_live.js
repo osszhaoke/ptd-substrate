@@ -3602,7 +3602,7 @@
         var res;
         try {
           res = (await call('POST', '/api/torch/save', LIVE.writeBody({ key: key, method: e.method || 'manual', tpMode: e.tpMode,
-            date: e.date, time: e.time, rows: rows, request_id: e.request_id, nature: e.nature })));
+            date: e.date, time: e.time, rows: rows, request_id: e.request_id, nature: e.nature, draft: e.method === 'ocr' ? e.ocrDraft : undefined, time_confirmed: e.method === 'ocr' ? e.timeConfirmed : undefined })));
         } catch (err) { if(err&&(err.viewPending||err.code==='VIEW_CHANGED'))throw err; C.toast('尚未确认保存：' + LIVE.saveErr(err)); throw err; }
         if((!res.snapshot&&!LIVE.isConfirmedWrite(key,res))||!Array.isArray(res.results)){var invalid=new Error('SAVE_CONFIRMATION_MISSING');invalid.detail='未收到完整保存回执，请刷新核对；不会自动重复提交';throw invalid;}
         if(res.snapshot){core.SNAPS[key] = res.snapshot;delete res.snapshot;}
@@ -4009,7 +4009,7 @@
       if(d.kind==='document'){
         var doc=await callAsync('GET','/api/graph/document?key='+encodeURIComponent(key)+'&doc='+encodeURIComponent(d.document_id));if(!current())return;
         if(!doc.found){body.textContent=doc.reason||'未找到已保存的原件';return;}
-        body.innerHTML='<h3>'+esc(doc.name)+'</h3><p class="sub2" data-ptds-inline><!--ptds-ui:saff535dacad4-->PTDS 保存副本 · <!--/ptds-ui-->'+esc(doc.bytes)+' 字节</p><p data-reveal-status data-ptds-ui="s45b66caae284">正在访达中定位保存副本…</p><button class="btn2" data-reveal data-ptds-ui="s3131d651cc22">再次在访达中显示</button>';
+        body.innerHTML='<h3>'+esc(doc.name)+'</h3><p class="sub2" data-original-size>PTDS 保存副本 · '+esc(doc.bytes)+' 字节</p><p data-reveal-status data-ptds-ui="s45b66caae284">正在访达中定位保存副本…</p><button class="btn2" data-reveal data-ptds-ui="s3131d651cc22">再次在访达中显示</button>';
         if(globalThis.PTDS_TRIAL_UI&&!PTDS_TRIAL_UI.can('finder'))return; var reveal=async function(){if(!current())return;var btn=body.querySelector('[data-reveal]');if(btn.disabled)return;btn.disabled=true;try{await callAsync('POST','/api/graph/reveal',{key:key,doc:d.document_id});if(current())body.querySelector('[data-reveal-status]').textContent='已在这台 Mac 的访达中选中保存副本';}catch(err){if(current())body.querySelector('[data-reveal-status]').textContent=err.detail||'暂时无法定位原件，请重试';}finally{if(current())btn.disabled=false;}};body.querySelector('[data-reveal]').onclick=reveal;await reveal();return;
       }
       if(d.kind==='observation'){
@@ -5399,7 +5399,7 @@
       ['wearable','file','phone','manual'].filter(function(g){return summary.counts[g];}).map(function(g){return '<button class="chip" data-af="'+g+'" aria-pressed="'+(category===g)+'">'+GZH[g]+' '+summary.counts[g]+'条</button>';}).join('')+
       '<button class="chip" id="data-muse" data-ptds-ui="sdd4a36e5ad4d">Muse 会话</button><button class="link" id="data-reload" data-ptds-ui="reread">重新读取</button></div>';
     if(st.dataSources&&st.dataSources.length)head+='<p class="sub2" data-ptds-inline><!--ptds-ui:s6181ed6f9734-->来源：<!--/ptds-ui-->'+st.dataSources.map(esc).join('、')+' <button class="link" id="data-source-clear" data-ptds-ui="sae65e7db20c7">显示所有来源</button></p>';
-    if(st.dataFrom||st.dataTo)head+='<p class="sub2">日期范围：'+esc(st.dataFrom||'不限')+' 至 '+esc(st.dataTo||'不限')+' <button class="link" id="data-range-clear" data-ptds-ui="s2328f69c3f74">显示全部日期</button></p>';
+    if(st.dataFrom||st.dataTo)head+='<p class="sub2" data-ui-date-range>日期范围：'+esc(st.dataFrom||'不限')+' 至 '+esc(st.dataTo||'不限')+' <button class="link" id="data-range-clear" data-ptds-ui="s2328f69c3f74">显示全部日期</button></p>';
     var pager=function(r,slot){return r.total>r.limit?'<div class="opts"><button class="chip" data-page-prev="'+slot+'"'+(!r.previous_cursor?' disabled':'')+'>较新</button><span class="sub2">第 '+(Math.floor(r.offset/r.limit)+1)+' / '+Math.ceil(r.total/r.limit)+' 页</span><button class="chip" data-page-next="'+slot+'"'+(!r.has_more?' disabled':'')+'>较早</button></div>':'';};
     var rowHtml=function(item,detail){var r=dataAsset(item),isGene=!r.ref&&r.g==='file'&&r.name==='基因测序数据',geneName=isGene?' data-gene-row-name':'',sourceMark=isGene?' data-gene-row-source':(r.observation?.source_kind==='SYNTHETIC'?' data-gene-row-synthetic':''),tag=r.ver>1?' <span class="tag">第 '+r.ver+' 版</span>':'';
       if(detail)return r.ref?'<button class="lrow c6" data-ref="'+esc(r.ref)+'"><span>'+metricValueHtml(r.observation,r.val)+tag+'</span><span>'+esc(r.when)+'</span><span class="sub2"'+sourceMark+'>'+esc(r.src)+'</span><span class="sub2">'+ic('chevron-right')+'</span></button>':'<div class="lrow c6"><span>'+esc(r.val)+'</span><span>'+esc(r.when)+'</span><span class="sub2"'+sourceMark+'>'+esc(r.src)+'</span><span></span></div>';
@@ -5408,7 +5408,7 @@
       rows=page('rows','rows',50);series=page('series','series',200);
       var seq=dataSequence(series.presentation,series.items,st.dataCode),pts=seq.points;
       var name=C.DICT[st.dataCode]&&C.DICT[st.dataCode].zh||st.dataCode;
-      body='<section class="box ebox" data-metric-ux="history" data-cmp="T16" data-sem="SEM-03"><h3><button class="link" id="dc-back">'+ic('chevron-left')+'全部指标</button><span class="grow"></span><span class="sub2">'+rows.total+' 条</span></h3><div class="hv">'+esc(humanLabel(name))+(!seq.oldPlot?'<span class="mx-inline">'+(pts.length===1&&pts[0].exact?'<i></i>':'')+esc(seq.note)+'</span>':'')+'</div>'+
+      body='<section class="box ebox" data-metric-ux="history" data-cmp="T16" data-sem="SEM-03"><h3><button class="link" id="dc-back">'+ic('chevron-left')+'全部指标</button><span class="grow"></span><span class="sub2">'+rows.total+' 条</span></h3><div class="hv"'+(C.DICT[st.dataCode]?' data-ui-metric="'+esc(st.dataCode)+'"':'')+'>'+esc(humanLabel(name))+(!seq.oldPlot?'<span class="mx-inline">'+(pts.length===1&&pts[0].exact?'<i></i>':'')+esc(seq.note)+'</span>':'')+'</div>'+
         '<div class="opts"><label>起始日期 <input class="inp" type="date" id="data-from" value="'+esc(st.dataFrom||'')+'"></label><label>结束日期 <input class="inp" type="date" id="data-to" value="'+esc(st.dataTo||'')+'"></label><button class="chip" id="data-range" data-ptds-ui="sa9c1deca85be">查看范围</button><button class="link" id="data-range-all" data-ptds-ui="s2e2479f8f842">浏览全部历史</button></div>'+
         (seq.oldPlot?metricPlot(seq,true):'')+
         '<div class="sub2 ends"><span>'+esc(pts.length?String(pts[0].tp).slice(0,10):'')+'</span><span>当前第 '+(series.total?Math.max(1,series.total-series.offset-series.items.length+1):0)+'–'+Math.max(0,series.total-series.offset)+' 条／共 '+series.total+' 条 · 分段完整展示</span><span>'+esc(pts.length?String(pts[pts.length-1].tp).slice(0,10):'')+'</span></div>'+pager(series,'series')+
@@ -5465,7 +5465,7 @@
       var nm = mine[0] ? humanLabel(mine[0].name) : st.dataCode;
       var seq = metricSequence(mine, tl), pts = seq.points;
       var cut = st.dataAll ? mine.length : 10;
-      body = '<section class="box ebox" data-metric-ux="history" data-cmp="T16" data-sem="SEM-03"><h3><button class="link" id="dc-back">' + ic('chevron-left') + '全部指标</button><span class="grow"></span><span class="sub2">' + mine.length + ' 条</span></h3><div class="hv">' + esc(nm) + (!seq.oldPlot ? '<span class="mx-inline">' + (pts.length === 1 && pts[0].exact ? '<i></i>' : '') + esc(seq.note) + '</span>' : '') + '</div>' + (seq.oldPlot ? metricPlot(seq, true) : '') +
+      body = '<section class="box ebox" data-metric-ux="history" data-cmp="T16" data-sem="SEM-03"><h3><button class="link" id="dc-back">' + ic('chevron-left') + '全部指标</button><span class="grow"></span><span class="sub2">' + mine.length + ' 条</span></h3><div class="hv"' + (mine.some(function(r){return r.ref && tl[r.ref] && tl[r.ref].code === st.dataCode;}) ? ' data-ui-metric="' + esc(st.dataCode) + '"' : '') + '>' + esc(nm) + (!seq.oldPlot ? '<span class="mx-inline">' + (pts.length === 1 && pts[0].exact ? '<i></i>' : '') + esc(seq.note) + '</span>' : '') + '</div>' + (seq.oldPlot ? metricPlot(seq, true) : '') +
         (pts.length > 1 ? '<div class="sub2 ends"><span>' + esc(String(pts[0].tp).slice(0, 10)) + '</span><span class="mx-order" data-ptds-inline><!--ptds-ui:sc8b019c0f724-->按观测顺序<!--/ptds-ui-->' + (seq.note ? ' · ' + esc(seq.note) : '') + '</span><span>' + esc(String(pts[pts.length - 1].tp).slice(0, 10)) + '</span></div>' : '') +
         '<div class="lrow c6 hd"><span data-ptds-ui="scda1d55c5231">值</span><span data-ptds-ui="s9b6e85289091">时点</span><span data-ptds-ui="sa488e93d69cc">来源</span><span></span></div>' + mine.slice(0, cut).map(function (r) {
           return r.ref ? '<button class="lrow c6" data-ref="' + esc(r.ref) + '"><span>' + valueHtml(r) + verTag(r) + '</span><span>' + esc(r.when) + '</span><span class="sub2">' + esc(r.src) + '</span><span class="sub2">' + ic('chevron-right') + '</span></button>'
@@ -5706,7 +5706,7 @@
     }).join('') + '<button class="xmod xhm' + (xh ? ' act' : '') + '" data-xmod="xh"' + (xh ? ' aria-current="page"' : '') + '>' + XH_ICON + '<span class="mn" data-ptds-ui="sb97408c4375f">星痕</span><span class="ms" data-ptds-ui="s2c518b70b181">我的证据</span></button>' +
       '<div class="xtiles">' + [['records', '操作记录', 'scroll-text'], ['map', '证据图谱', 'network']].map(function (n) { return '<button class="xsub xtile" data-xh-view="' + n[0] + '"' + (xh && (C.st.xhView || 'map') === n[0] ? ' aria-current="page"' : '') + '>' + C.ic(n[2]) + '<span>' + n[1] + '</span></button>'; }).join('') + '</div>';
     nav.classList.add('xtree'); nav.setAttribute('aria-label', '导航'); sw.remove();
-    var version = document.createElement('div'); version.id = 'sidebar-version'; version.textContent = '0.3.0-alpha.1'; version.style.cssText = 'text-align:center;color:var(--theme-text-tertiary);font-size:14px;padding:10px 0 4px;letter-spacing:.04em'; side.appendChild(version);
+    var version = document.createElement('div'); version.id = 'sidebar-version'; version.textContent = '0.3.0-alpha.2'; version.style.cssText = 'text-align:center;color:var(--theme-text-tertiary);font-size:14px;padding:10px 0 4px;letter-spacing:.04em'; side.appendChild(version);
     var P = window.__ptds, st = C.st;
     var go = function (a, id) {
       st.foot = null; C.closeDrawer();

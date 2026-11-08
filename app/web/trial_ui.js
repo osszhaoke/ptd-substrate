@@ -218,3 +218,153 @@
 
   root.PTDS_TRIAL_UI = Object.freeze({install, can, defaultHome, showBlocked, renderGene, entries});
 })(typeof window === 'undefined' ? globalThis : window);
+
+/* The partner OCR view owns one local preview and its pending server review. */
+(function(root) {
+  'use strict';
+  let active = null;
+  const unavailable = ['识别没有完成。请重新选择文件。','Recognition did not finish. Select the file again.'];
+  const errors = {
+    OCR_ENGINE_UNAVAILABLE: ['本机识别工具不可用或无法验证。首次使用需要 Xcode 命令行工具，可在终端运行 xcode-select --install。','The local reader is unavailable or could not be verified. First use requires the Xcode Command Line Tools. To install them, run xcode-select --install in Terminal.'],
+    BODY_TOO_LARGE: ['文件超过 64 MiB，请选择较小的文件。','The file exceeds 64 MiB. Select a smaller file.'],
+    OCR_REVIEW_BUSY: ['已有一份文件在核对，请先完成或取消。','Finish or cancel the current review first.'],
+    OCR_ORIGINAL_CONFLICT: ['现有原件或识别明细与本次核对不一致，请查看已保存的来源。','The existing source or its recognition details differ from this review. Check the saved source.'],
+    OCR_DRAFT_EXPIRED: ['本次核对已结束，请重新选择文件。','This review has ended. Select the file again.'],
+    OCR_FORMAT_UNSUPPORTED: ['请选择支持的图片或 PDF。','Select a supported image or PDF.'],
+    OCR_ROW_INVALID: ['此行不能保存，请对照原件手工录入。','Check the original and enter this row manually.'],
+    TIME_FUTURE: ['采样日期或时间不能在未来。','The sample date and time must not be in the future.']
+  };
+  function node(parent, tag, text, cls) {
+    const el=document.createElement(tag);
+    if (cls) el.className=cls;
+    if (text!=null) el.textContent=text;
+    parent.appendChild(el);
+    return el;
+  }
+  function label(el, zh, en) {
+    node(el,'span',zh,'trial-only-zh');
+    node(el,'span',en,'trial-only-en');
+    return el;
+  }
+  function button(parent, zh, en, fn) {
+    const el=label(node(parent,'button',null,'btn'),zh,en);
+    el.type='button';
+    el.onclick=fn;
+    return el;
+  }
+  function release(d) {
+    if (!d) return;
+    clearTimeout(d.timer);
+    if (d.url) URL.revokeObjectURL(d.url);
+    active=null;
+    if (d.draft && !d.saved) {
+      fetch('/api/torch/ocr/cancel?key='+encodeURIComponent(d.key),{
+        method:'POST',headers:{'X-PTDS':'1','Content-Type':'application/json'},
+        body:JSON.stringify({draft:d.draft}),keepalive:true
+      }).catch(()=>{});
+    }
+    d.abort?.abort();
+  }
+  function leave(st) {
+    if (active && (active.entry!==st.entry || active.key!==st.key || st.foot ||
+        st.app!=='torch' || st.tview!=='entry' || st.entry.method!=='ocr')) release(active);
+  }
+  async function result(response) {
+    let body=await response.json();
+    if (!response.ok) throw Object.assign(new Error('OCR request failed'), {code:body.error});
+    return body;
+  }
+  function render(st, redraw, modes, dictionary, torch) {
+    leave(st);
+    const entry=st.entry;
+    const d=active || (active={entry,key:st.key});
+    const current=()=>active===d && entry===st.entry && d.key===st.key;
+    const view=document.getElementById('view');
+    const panel=document.createElement('section'); panel.className='panel'; view.replaceChildren(panel);
+    const nav=node(panel,'div'); nav.innerHTML=modes(entry);
+    for (const btn of nav.querySelectorAll('[data-method]')) btn.onclick=()=>{entry.method=btn.dataset.method; redraw();};
+    label(node(panel,'h2'),'化验单本机识别','Read a lab report on this Mac');
+    label(node(panel,'p'),'文件只在本机识别。请对照原件逐项核对，识别结果可能有误。','The file is read on this Mac. Check each result against the original because recognition can make mistakes.');
+    label(node(panel,'p'),'首次需要 Xcode 命令行工具。使用 Vision 读字和同义词对照，本版不使用模型。','The first use requires the Xcode Command Line Tools. Vision reads the text. A local dictionary matches metric names; no model is used.');
+    if (d.error) label(node(panel,'p',null,'tip'),...d.error);
+    if (d.saved) { label(node(panel,'p'),'已保存所选项目，可在“我的数据”查看明细与来源。','Selected records saved. Open My data to see the details and source.');return; }
+    const cancel=()=>{release(d); redraw();};
+    if (!d.reply) {
+      if (d.busy) {label(node(panel,'p'),'正在本机读字…','Reading on this Mac…');button(panel,'取消','Cancel',cancel);return;}
+      const file=node(panel,'input'); file.type='file';file.accept='.png,.jpg,.jpeg,.heic,.pdf,.tif,.tiff,.webp';
+      file.onchange=async()=>{
+        const picked=file.files[0]; if (!picked) return;
+        if (picked.size>64*1024*1024) {d.error=errors.BODY_TOO_LARGE;redraw();return;}
+        d.busy=true; d.error=null; d.draft=crypto.randomUUID().replace(/-/g,'');d.abort=new AbortController();
+        d.url=URL.createObjectURL(picked); d.pdf=/\.pdf$/i.test(picked.name);redraw();
+        try {
+          const reply=await result(await fetch('/api/torch/recognize?key='+encodeURIComponent(d.key)+'&name='+encodeURIComponent(picked.name),{
+            method:'POST',body:picked,signal:d.abort.signal,headers:{'X-PTDS':'1','X-PTDS-Draft':d.draft,'Content-Type':'application/octet-stream'}
+          }));
+          if (!current()) return;
+          d.reply=reply;d.date=reply.date||'';d.time=reply.time||'';d.checked=new Set();
+          d.timer=setTimeout(()=>{if(current()){release(d);redraw();}},30*60*1000);
+        } catch (ex) { if(current()){const warning=errors[ex.code]||unavailable; release(d); active={entry,key:st.key,error:warning};redraw();} }
+        finally { if(current()){d.busy=false;redraw();} }
+      };
+      return;
+    }
+    const info=d.reply;
+    const preview=node(panel,d.pdf?'iframe':'img');preview.src=d.url;
+    preview.style.cssText='display:block;max-width:100%;max-height:42vh';
+    if (d.pdf) preview.setAttribute('sandbox','');
+    preview.title=info.name; if(!d.pdf) preview.alt=info.name;
+    label(node(panel,'p'),'对照原件后，逐项勾选要保存的结果。','Check each row against the original and select the results to save.');
+    if (Array.isArray(info.unmatched) && info.unmatched.length) {
+      label(node(panel,'p'),'无法定位唯一结果和单位的行仅显示原文。请对照原件，需要时手工录入。','Rows without a clear result and unit are shown as source text. Check the original and enter the reading manually if needed.');
+      const details=node(panel,'details');
+      label(node(details,'summary'),'未匹配的原文行','Unmatched source lines');
+      for (const text of info.unmatched) node(details,'blockquote',text);
+    }
+    for (const row of info.rows) {
+      const line=node(panel,'div',null,'box');
+      const metric=root.PTDS_LANGUAGE_RESOURCES?.messages?.['metric_'+row.code];
+      label(node(line,'strong'),dictionary[row.code]?.zh||row.code,metric?.en||row.code);
+      node(line,'p',[row.cmp||'',row.value||'',row.unit||''].join(' '));
+      label(node(line,'small'),'原文 · 第 '+row.page+' 页，第 '+row.line+' 行','Original · Page '+row.page+', line '+row.line);
+      node(line,'blockquote',row.raw_line);
+      if(row.unit && !row.raw_line.includes(row.unit)) label(node(line,'small'),'原件中的单位写法见上方原文。下方核对使用的单位：'+row.unit,'The original unit spelling is shown above. Unit used for review: '+row.unit);
+      if(Array.isArray(row.box)) label(node(line,'small'),'原件定位框：'+row.box.join(', '),'Original bounding box: '+row.box.join(', '));
+      const b=button(line,d.checked.has(row.ref)?'已核对':'确认此项',d.checked.has(row.ref)?'Confirmed':'Confirm this row',async()=>{
+        b.disabled=true;
+        try {
+          await result(await fetch('/api/torch/ocr/confirm?key='+encodeURIComponent(d.key),{
+            method:'POST',headers:{'X-PTDS':'1','Content-Type':'application/json'},
+            body:JSON.stringify({draft:d.draft,source_ref:row.ref,code:row.code,value:row.value,unit:row.unit,cmp:row.cmp})
+          }));
+          if(current()) d.checked.add(row.ref);
+        } catch(ex){ if(current()) d.error=errors[ex.code]||unavailable; }
+        finally { if(current()) redraw(); }
+      });
+      b.disabled=d.checked.has(row.ref)||!row.value||!row.unit||d.saving;
+    }
+    const dt=label(node(panel,'label'),'采样日期','Sample date');
+    const date=node(dt,'input'); date.type='date'; date.value=d.date;
+    const tm=label(node(panel,'label'),'采样时间','Sample time');
+    const time=node(tm,'input');time.type='time';time.value=d.time;
+    const ack=node(panel,'label');const tick=node(ack,'input');tick.type='checkbox';tick.checked=!!d.timeOk;
+    label(ack,'我已核对采样日期与时间','I have checked the sample date and time');
+    date.onchange=time.onchange=()=>{d.date=date.value;d.time=time.value;d.timeOk=false;redraw();};
+    tick.onchange=()=>{d.timeOk=tick.checked;redraw();};
+    const save=button(panel,'确认保存所选项目','Save selected records',async()=>{
+      if(d.saving || !d.timeOk || !d.checked.size)return;
+      d.saving=true; d.saveAttempted=true; redraw();
+      const selected=info.rows.filter(r=>d.checked.has(r.ref)).map(r=>({...r,source_ref:r.ref}));
+      Object.assign(entry,{request_id:'OCR-'+d.draft,ocrDraft:d.draft,timeConfirmed:true,date:d.date,time:d.time,tpMode:'INSTANT',nature:info.nature});
+      try {
+        await torch.save(selected,d.key);
+        if(current()){d.saved=true;clearTimeout(d.timer);URL.revokeObjectURL(d.url);d.url=null;delete d.reply;}
+      } catch(ex){if(current())d.error=errors[ex.code]||['保存回执未确认，请到“我的数据”核对。','Save receipt unavailable. Check My data.'];}
+      finally {if(current()){d.saving=false;redraw();}}
+    });
+    save.disabled=d.saving||d.saveAttempted||!d.timeOk||!d.date||!d.time||!d.checked.size;
+    button(panel,'放弃本次识别','Discard this review',cancel).disabled=!!d.saving;
+  }
+  if (root.addEventListener) root.addEventListener('pagehide',()=>release(active));
+  root.PTDS_PARTNER_OCR=Object.freeze({render,leave});
+})(typeof window!=='undefined'?window:globalThis);
